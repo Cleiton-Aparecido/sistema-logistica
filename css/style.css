@@ -1,0 +1,167 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    /* border: 1px solid red; */
+    background-color: rgb(254, 245, 255);
+}
+
+
+/* #formatação do cabecalho */
+
+header {
+    background: rgb(1, 75, 136);
+    background: linear-gradient(90deg, rgba(1, 75, 136, 1) 2%, rgba(1, 75, 136, 1) 9%, rgba(5, 81, 139, 1) 37%, rgba(90, 195, 190, 1) 92%, rgba(90, 195, 190, 1) 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+header#cabecalho_master div#cabecalho .imglogo {
+    width: 120px;
+}
+
+header#cabecalho_master div#cabecalho span.titulo_cabecalho {
+    font-size: 8vh;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+header#cabecalho_master div#cabecalho {
+    margin: 15px;
+}
+
+
+/* #style container master */
+
+#container_master {}
+
+#container_menu_usuario {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+
+/* Container menu */
+
+#container_primary {
+    margin-left: 6%;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid rgba(148, 127, 127, 0.32);
+    border-radius: 10px;
+}
+
+.container_menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.container_menu label,
+.container_menu input {
+    margin: 2px 0;
+}
+#Menu_lateral{
+    margin-right: 2%;
+    border: 1px solid rgba(148, 127, 127, 0.32);
+    border-radius: 10px;
+    height: 20%;
+    width: 20%;
+    max-width: 300px;
+    padding: 1px;
+}
+
+#container_user {
+    display: flex;
+    justify-content: flex-start;
+    
+}
+
+#container_user img {
+    width: 50%;
+    max-width: 50px;
+    display: inline;
+}
+.buttons{
+    display: block;
+    width: 150px;
+    margin: 10px auto;
+}
+
+#container_table {
+    margin: auto auto;
+    width: 95%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+#table_master{
+    border: 1px solid rgb(0, 0, 0);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.614);
+}
+#table_master .table_title{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.614);
+}
+
+
+/* estilização de novo registro */
+.form_new{
+    border: 2px solid rgba(148, 127, 127, 0.32);
+    border-radius: 10px;
+    width: 70%;
+    max-width: 500px;
+    display: flex ;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#form_new_js{
+    display: flex ;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.container_from{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+.MenuLogistica{
+    border: 1px solid rgba(129, 12, 12, 0.055);
+    background-color: rgba(129, 12, 12, 0.055);
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+    margin: 10px;
+}
+.input_style{
+    width: 60%;
+}
+#container_master_newregistro{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+#container_inf{
+    border: 1px solid rgba(148, 127, 127, 0.32);
+    border-radius: 10px;
+    width: 40%;
+    margin: auto auto;
+    margin-top: 10px;
+    padding: 10px;
+    
+}
+#container_inf h3{
+    text-align: center;
+    text-decoration:underline;
+}
+.status{
+    font-size: 3vh;
+}
