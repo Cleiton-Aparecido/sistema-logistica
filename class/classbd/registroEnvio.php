@@ -123,7 +123,7 @@ class registroEnvio
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE registroencomendaenviocorreio.dataregistro 
         BETWEEN '".$datestart." 00:00:00' and '".$dateend." 23:59:59'");
-
+        echo 'teste';
         return $resultado;
     }
     public function listDateCodeQueryEnvio($search,$datestart,$dateend){
