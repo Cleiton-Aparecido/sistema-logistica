@@ -2,8 +2,6 @@
 require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
 $interaction = new interaction();
-
-
 ?>
 
 
@@ -33,13 +31,14 @@ $interaction = new interaction();
     <input class="form-control input_style " type="text" name="remetente" id="remetente">
 </div>
 <div class="container_from">
-    <label for="obs">Observação:</label>
-    <input class="form-control input_style " type="text" name="obs" id="obs">
-</div>
-<div class="container_from">
     <label for="datacoleta">Data coleta:</label>
     <input class="form-control input_style " type="date" name="datacoleta" id="datacoleta" value=<?php echo date("Y-m-d"); ?>>
 </div>
+<div class="container_from">
+    <label for="obs">Observação:</label>
+    <textarea class="form-control input_style " type="text" name="obs" id="obs"></textarea>
+</div>
+
 <div class="container_from">
     <input type="submit" value="Registrar" class="btn btn-primary" style="margin:auto;">
 </div>

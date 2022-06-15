@@ -29,11 +29,12 @@ if ($_POST) {
      echo '<br>'.  $complementar = $_POST['complementar'];
      echo '<br>'.  $obs = $_POST['obs'];
         $x = $interaction->insertEnvio($setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs);
+        if ($x) {
+            header('Location: index_envio.php');
+        }
     }
 }
-if ($x) {
-    header('Location: index.php');
-}
+
 
 ?>
 <!DOCTYPE html>

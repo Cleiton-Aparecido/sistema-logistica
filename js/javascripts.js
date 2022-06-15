@@ -1,7 +1,7 @@
 
 function requisitarPagina(url) {
     let ajax = new XMLHttpRequest();
-   
+   var url = "../php/pacote/" + url
     ajax.open('GET', url)
     ajax.onreadystatechange = () => {
 
@@ -16,8 +16,6 @@ function requisitarPagina(url) {
     }
     ajax.send()
     
-
-
 }
 
 var callbackErro = function() {

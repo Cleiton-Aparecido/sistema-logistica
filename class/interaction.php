@@ -96,7 +96,7 @@ class interaction
         }
     }
     #imprime a lista de registros
-    public function impress($x){
+    public function impress($x,$s){
         if (count($x) == 0) {
             echo '<tr>
             <script>alert("Busca Não Encontrada")</script>
@@ -123,7 +123,7 @@ class interaction
                             echo '<td>' . $value . '</td>';
                         }
                     }
-                    else if ($key == 'datacoleta') {
+                    else if ($key == 'datacoleta' || $key == 'datapostagem') {
                         if($value == ''){
                             echo '<td></td>';
                         }
@@ -153,13 +153,20 @@ class interaction
 
                 }
                 
-
+                
             
-                
-                echo '<td>
+                if($s == 'e'){
+
+                    echo '<td>
                     <a class="btn btn-outline-primary" href="index_viewCorreio.php?cod='.$row['id'].'">View</a>
-                </td>';
-                
+                    </td>';
+                }
+                if($s == 's'){
+
+                    echo '<td>
+                    <a class="btn btn-outline-primary" href="index_view.php?type=s&cod='.$row['id'].'">View</a>
+                    </td>';
+                }
                 echo '</tr>';
             }
         }
@@ -180,12 +187,12 @@ class interaction
         } else if (($sector != 'all') && (strlen($busca) != 0)) {
             $x = $this->objectRegister->listDateSectorSearchQuery($sector, $busca, $DateStart, $DateEnd);
         }
-        $this->impress($x);
+        $this->impress($x,'e');
     }
 
     public function SearchRelatorioEnvio($sector, $busca, $DateStart, $DateEnd){
         if (($sector == 'all') && (strlen($busca) > 0)) {
-           
+            $x = $this->RegistroEnvioEncomenda->listDateCodeQueryEnvio($busca, $DateStart, $DateEnd);
         }
         #Busca sem setor e codigo, somente data
         else if ((($sector) == 'all') && (strlen($busca) == 0)) {
@@ -193,56 +200,14 @@ class interaction
         }
         #busca somente de setores e data
         else if (($sector != 'all') && (strlen($busca) == 0)) {
-       
+            $x = $this->RegistroEnvioEncomenda->listDateSectorQueryEnvio($sector, $DateStart, $DateEnd);
         } else if (($sector != 'all') && (strlen($busca) != 0)) {
-            
+            $x = $this->RegistroEnvioEncomenda->listDateSectorSearchQueryEnvio($sector, $busca, $DateStart, $DateEnd);
         }
-        $this->impress($x);
+        $this->impress($x,'s');
     }
     # responsavel por imprimir os dados em na tela view
-    public function dadosView($id){
-        $x= $this->objectRegister->queryRegistro($id);
-        foreach ($x as $key => $value) {
-            if ($key == 'Status') {
-                $value = $this->group->searchstatusid($value);
-                if($value == 'Pendente'){
-                    echo '<p><strong> '.$key.': </strong><span class="badge badge-danger status">' .  $value . '</span></p>';
-                }
-                else if($value == 'Entregue'){
-                    echo '<p><strong> '.$key.': </strong><span class="badge badge-success status">' . $value . '</span></p>';
-                }
-                else if($value == 'Negado'){
-                    echo '<p><strong> '.$key.': </strong><span class="badge badge-warning status">' . $value . '</span></p>';
-                }
-            }
-            else if ($key == 'Data Registro') {
-                $date = new DateTime($value);
-                $value = $date->format('d/m/Y H:i:s');
-                echo '<p><strong> '.$key.':</strong> ' . $value . '</p>';
-            }
-            else if ($key == 'Data Coleta') {
-                $date = new DateTime($value);
-                $value = $date->format('d/m/Y');
-                echo '<p><strong> '.$key.':</strong> ' . $value . '</p>';
-            }
-            else if ($key == 'Data Entrega Setor') {
-                if($value==''){
 
-                }else {
-                    $date = new DateTime($value);
-                    $value = $date->format('d/m/Y H:i:s');
-                    echo '<p><strong> '.$key.':</strong> ' . $value . '</p>';
-                }
-            }
-            else if ($key == 'Setor') {
-                $value = $this->objectSector->searchsectorid($value);
-                echo '<p><strong> '.$key.':</strong> '. $value . '</p>';
-            }
-            else {
-                echo '<p><strong> '.$key.':</strong> '.$value.'</p>';    
-            }
-        }
-    }
     #responsavel por inserir as informações no banco de dados e criar grupos
     public function listagrupopendente(){
         $listaPendente = $this->objectRegister->listGroupPendente();

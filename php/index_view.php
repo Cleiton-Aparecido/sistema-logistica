@@ -8,7 +8,7 @@ $interactionview = new interaction_view();
 <html lang="pt-br">
 
 <head>
-    <title>View Registro</title>
+    <title id="title" >View Registro</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,6 +44,8 @@ $interactionview = new interaction_view();
                 ]
             });
         });
+
+    
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -55,7 +57,7 @@ $interactionview = new interaction_view();
     <header id="cabecalho_master">
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" >
-            <span class="titulo_cabecalho" id="titulocabecalho">Visualização de Registro</span>
+            <span class="titulo_cabecalho" id="titulocabecalho"></span>
         </div>
         
     </header>
@@ -63,7 +65,7 @@ $interactionview = new interaction_view();
         <section id="container_inf">
             <article class="">
                 <h3>Dados do Registro</h3>
-                <?php $interactionview->dadosViewEntrada($_GET['cod']);
+              <?php $interactionview->dadosViewEnvio($_GET['cod'],$_GET['type']);
  ?>
             </article>
 
