@@ -11,6 +11,7 @@ class interaction
     
     public function __construct()
     {
+
         $this->objectSector = new setor();
         $this->objectUser = new usuario();
         $this->objectRegister = new registro();
@@ -156,7 +157,7 @@ class interaction
             
                 
                 echo '<td>
-                    <a class="btn btn-outline-primary" href="index_viewCorreio.php?cod='.$row['idregistroenc'].'">View</a>
+                    <a class="btn btn-outline-primary" href="index_viewCorreio.php?cod='.$row['id'].'">View</a>
                 </td>';
                 
                 echo '</tr>';

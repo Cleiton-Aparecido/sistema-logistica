@@ -1,4 +1,6 @@
 <?php
+require_once("configbd.php");
+
 class interaction_view{
     private $objectSector = array();
     private $objectUser = array();

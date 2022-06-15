@@ -108,7 +108,20 @@ class registroEnvio
         $this->sql->query($comando);
     }
     public function listDateQueryRegistroenvio($datestart,$dateend){
-        $resultado = $this->sql->select("");
+        $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
+        registroencomendaenviocorreio.dataregistro,
+        registroencomendaenviocorreio.Nomefuncionario,
+        setor.descsetor,
+        statusentrega.descstatusentrega,
+        tipoencomenda.desctipoencomenda,
+        registroencomendaenviocorreio.codigopostagem,
+        registroencomendaenviocorreio.datapostagem
+        FROM registroencomendaenviocorreio
+        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
+        INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
+        ");
 
         return $resultado;
     }

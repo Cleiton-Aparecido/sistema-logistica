@@ -1,4 +1,5 @@
 <?php
+require_once("configbd.php");
 class interaction_entrega
 {
     private $objectSector = array();

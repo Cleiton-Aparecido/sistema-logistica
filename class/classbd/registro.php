@@ -127,7 +127,7 @@ class registro
     public function listDateQueryRegistro($datestart,$dateend){
         
         $resultado = $this->sql->select("SELECT 
-        registroencomenda.idregistroenc,
+        registroencomenda.idregistroenc AS id,
         usuario.nome,
         registroencomenda.codigo,
         registroencomenda.remetente,
@@ -150,7 +150,7 @@ class registro
     public function listDateCodeQuery($search,$datestart,$dateend){
         
         $resultado = $this->sql->select( "SELECT 
-        registroencomenda.idregistroenc,
+        registroencomenda.idregistroenc AS id,
         usuario.nome,
         registroencomenda.codigo,
         registroencomenda.remetente,
@@ -175,7 +175,7 @@ class registro
     public function listDateSectorQuery($sector,$datestart,$dateend){
         $sector= $this->objectSector->SearchSector($sector);
         $resultado = $this->sql->select( "SELECT 
-        registroencomenda.idregistroenc,
+        registroencomenda.idregistroenc AS id,
         usuario.nome,
         registroencomenda.codigo,
         registroencomenda.remetente,
@@ -200,7 +200,7 @@ class registro
     public function listDateSectorSearchQuery($sector,$search,$datestart,$dateend){
         $sector = $this->objectSector->SearchSector($sector);
         $resultado = $this->sql->select( "SELECT 
-        registroencomenda.idregistroenc,
+        registroencomenda.idregistroenc AS id ,
         usuario.nome,
         registroencomenda.codigo,
         registroencomenda.remetente,
@@ -225,7 +225,7 @@ class registro
     public function listGroupPendente(){
       
         $resultado = $this->sql->select( "SELECT 
-        registroencomenda.idregistroenc,
+        registroencomenda.idregistroenc AS id,
         registroencomenda.codigo,
         registroencomenda.remetente,
         registroencomenda.idgrupo,

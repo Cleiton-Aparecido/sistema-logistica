@@ -123,11 +123,12 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                     <tr class="table_title">
                         <th style="border-top-left-radius: 10px;" class="align-text-bottom">ID</th>
                         <th class="align-text-bottom">Data Registro</th>
-                        <th class="align-text-bottom">Usuario</th>
-                        <th class="align-text-bottom">Status</th>
-                        <th class="align-text-bottom">Setor</th>
-                        <th class="align-text-bottom">Encomenda</th>
                         <th class="align-text-bottom">Funcionario</th>
+                        <th class="align-text-bottom">Setor</th>
+                        <th class="align-text-bottom">Status</th>
+                        <th class="align-text-bottom">Encomenda</th>
+                        <th class="align-text-bottom">Codigo</th>
+                        <th class="align-text-bottom">Data postagem</th>
                         <th style="border-top-right-radius: 10px;" class="align-text-bottom">View</th>
                     </tr>
                 </thead>
