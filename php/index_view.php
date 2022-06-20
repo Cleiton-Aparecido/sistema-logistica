@@ -3,12 +3,19 @@ require_once("config.php");
 $interaction = new interaction();
 $interactionview = new interaction_view();
 
+if ($_POST) {
+    echo 'PASSOU';
+}
+
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-    <title id="title" >View Registro</title>
+    <title id="title">View Registro</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +41,6 @@ $interactionview = new interaction_view();
     <style type="text/css">
         <?php include('../css/style.css');   ?>
     </style>
-
     <script>
         $(document).ready(function() {
             $('#table_master').DataTable({
@@ -44,8 +50,6 @@ $interactionview = new interaction_view();
                 ]
             });
         });
-
-    
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -53,32 +57,46 @@ $interactionview = new interaction_view();
 </head>
 
 <body>
-    
+
     <header id="cabecalho_master">
         <div id="cabecalho">
-            <img class="imglogo " src="../img/correios-logo.png" >
+            <img class="imglogo " src="../img/correios-logo.png">
             <span class="titulo_cabecalho" id="titulocabecalho"></span>
         </div>
-        
+
     </header>
     <div id="container_master_newregistro">
         <section id="container_inf">
             <article class="">
                 <h3>Dados do Registro</h3>
-              <?php $interactionview->dadosViewEnvio($_GET['cod'],$_GET['type']);
- ?>
+                <form id="container_inf2" method="POST">
+                    <?php
+
+                    if ($_GET) {
+                        if ($_GET['type'] == 's') {
+                            $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
+                        } elseif ($_GET['type'] == 'e') {
+                            # code...
+                        } elseif ($_GET['type'] == 'ee') {
+                            # code...
+                        }
+                    }
+
+
+                    ?>
+                </form>
             </article>
 
 
         </section>
         <div id="Menu_lateral">
-                <article id="container_user">
-                    <img src="../img/user.png">
-                    <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-                </article>
-                <article class="buttons">
-                    <a href="index.php" class="btn btn-primary buttons">Voltar</a>
-                </article>
+            <article id="container_user">
+                <img src="../img/user.png">
+                <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
+            </article>
+            <article class="buttons">
+                <a href="index_envio.php" id="voltar" class="btn btn-primary buttons">Voltar</a>
+            </article>
         </div>
     </div>
 </body>

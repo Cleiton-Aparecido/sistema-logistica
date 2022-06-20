@@ -44,15 +44,19 @@ if (!("erro" in conteudo)) {
 
     // if(conteudo.logradouro.length != 0){
     //     document.getElementById('rua').disabled=true;
+    //      var asd = document.querySelector('#rua').value
+    //      document.getElementById('rua').disabled=true;
     // }
     // if(conteudo.bairro.length != 0){
     //     document.getElementById('bairro').disabled=true;
+        
     // }
     // if(conteudo.localidade.length != 0){
     //     document.getElementById('cidade').disabled=true;
+    //     console.log(document.querySelector('#cidade').value)
     // }
     // if(conteudo.uf.length != 0){
-    //     document.getElementById('uf').disabled=true;
+    //     document.getElementById('uf').disabled=1;
     // }
 } //end if.
 else {

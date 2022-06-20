@@ -1,6 +1,6 @@
 <?php
-require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
+require_once("config.php");
 $interaction = new interaction();
 if (isset($_POST['setor']) && isset($_POST['datainicio']) && isset($_POST['datafinal']) && isset($_POST['busca'])) {
     $busca = $_POST['busca'];

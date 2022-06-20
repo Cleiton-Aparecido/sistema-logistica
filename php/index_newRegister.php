@@ -17,17 +17,17 @@ if ($_POST) {
         }
     }
     if($_POST['tiporegistro'] == 'envio'){
-        echo $setor = $_POST['setor'];
-     echo '<br>'.  $encomenda = $_POST['encomenda'];
-     echo '<br>'.  $func = $_POST['func'];
-     echo '<br>'.  $rua = $_POST['rua'];
-     echo '<br>'.  $cep = $_POST['cep'];
-     echo '<br>'.  $num = $_POST['num'];
-     echo '<br>'.  $bairro = $_POST['bairro'];
-     echo '<br>'.  $cidade = $_POST['cidade'];
-     echo '<br>'.  $uf = $_POST['uf'];
-     echo '<br>'.  $complementar = $_POST['complementar'];
-     echo '<br>'.  $obs = $_POST['obs'];
+        $setor = $_POST['setor'];
+        $encomenda = $_POST['encomenda'];
+        $func = $_POST['func'];
+        $rua = $_POST['rua'];
+        $cep = $_POST['cep'];
+        $num = $_POST['num'];
+        $bairro = $_POST['bairro'];
+        $cidade = $_POST['cidade'];
+        $uf = $_POST['uf'];
+        $complementar = $_POST['complementar'];
+        $obs = $_POST['obs'];
         $x = $interaction->insertEnvio($setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs);
         if ($x) {
             header('Location: index_envio.php');

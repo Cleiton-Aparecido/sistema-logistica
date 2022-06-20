@@ -63,7 +63,7 @@ $interactionview = new interaction_view();
         <section id="container_inf">
             <article class="">
                 <h3>Dados do Registro</h3>
-                <?php $interactionview->dadosViewEntrada($_GET['cod']);
+                <?php $interactionview->dadosViewEntrada($_GET['cod'],$_GET['type']);
  ?>
             </article>
 

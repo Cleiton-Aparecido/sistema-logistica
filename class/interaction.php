@@ -21,8 +21,9 @@ class interaction
         $this->RegistroEnvioEncomenda = new registroEnvio();
     }
     
-    public function insertEntrada($setor,$encomenda,$code,$remetente,$datacoleta,$obs){
     
+    public function insertEntrada($setor,$encomenda,$code,$remetente,$datacoleta,$obs){
+        
         $salva = false;
     
         if (strlen($code) == 0 || strlen($remetente) == 0 || $setor == 'null' || $encomenda == 'null') {
@@ -158,13 +159,19 @@ class interaction
                 if($s == 'e'){
 
                     echo '<td>
-                    <a class="btn btn-outline-primary" href="index_viewCorreio.php?cod='.$row['id'].'">View</a>
+                    <a class="btn btn-outline-primary" href="index_viewCorreio.php?type=e&cod='.$row['id'].'">View</a>
                     </td>';
                 }
                 if($s == 's'){
 
                     echo '<td>
                     <a class="btn btn-outline-primary" href="index_view.php?type=s&cod='.$row['id'].'">View</a>
+                    </td>';
+                }
+                if($s == 'ee'){
+
+                    echo '<td>
+                    <a class="btn btn-outline-primary" href="index_viewCorreio.php?type=ee&cod='.$row['id'].'">View</a>
                     </td>';
                 }
                 echo '</tr>';
@@ -211,7 +218,7 @@ class interaction
     #responsavel por inserir as informações no banco de dados e criar grupos
     public function listagrupopendente(){
         $listaPendente = $this->objectRegister->listGroupPendente();
-        $this->impress($listaPendente);
+        $this->impress($listaPendente,'ee');
     }
     
     public function alterarStatus($dataentrega,$idgroup,$status){

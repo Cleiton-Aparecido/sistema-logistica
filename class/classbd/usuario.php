@@ -92,6 +92,11 @@ class usuario{
             "setor"=>$this->getsetoruser()
         );
     }
+    public function level($ip){
+       $dados = $this->loadByIdUsuario($ip);
+       return $dados['nivel'];
+
+    }
 }
 
 ?>

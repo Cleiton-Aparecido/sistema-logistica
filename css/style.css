@@ -149,12 +149,15 @@ header#cabecalho_master div#cabecalho {
     justify-content: space-around;
     padding: 10px;
 }
+.status{
+    font-size: 3vh;
+}
 #container_inf{
     border: 1px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
-    width: 40%;
+    width: 80%;
     margin: auto auto;
-    margin-top: 10px;
+    margin: 10px;
     padding: 10px;
     
 }
@@ -162,6 +165,16 @@ header#cabecalho_master div#cabecalho {
     text-align: center;
     text-decoration:underline;
 }
-.status{
-    font-size: 3vh;
+/* Formatação do view  */
+#container_inf2{
+    border: 1px solid rgba(0, 0, 0, 0.296);
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 5px;
+}
+.container_view{
+    width: 45%;
+    margin: 10px;
 }
