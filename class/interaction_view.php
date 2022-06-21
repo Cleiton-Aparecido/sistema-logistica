@@ -9,6 +9,9 @@ class interaction_view  extends interaction
     private $encomenda = array();
     private $statusentrega = array();
     private $RegistroEnvioEncomenda = array();
+    private $disabled_save;
+    private $disabled_endereco;
+    private $disabled_atualizacao_registro;
 
     public function __construct()
     {
