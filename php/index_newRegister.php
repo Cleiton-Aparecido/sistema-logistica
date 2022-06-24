@@ -19,8 +19,9 @@ if ($_POST) {
     if($_POST['tiporegistro'] == 'envio'){
         $setor = $_POST['setor'];
         $encomenda = $_POST['encomenda'];
+        $tipoenvio = $_POST['tipoenvio'];
         $func = $_POST['func'];
-        $rua = $_POST['rua'];
+        $rua = $_POST['endereco'];
         $cep = $_POST['cep'];
         $num = $_POST['num'];
         $bairro = $_POST['bairro'];
@@ -28,7 +29,7 @@ if ($_POST) {
         $uf = $_POST['uf'];
         $complementar = $_POST['complementar'];
         $obs = $_POST['obs'];
-        $x = $interaction->insertEnvio($setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs);
+        $x = $interaction->insertEnvio($setor,$encomenda,$tipoenvio,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs);
         if ($x) {
             header('Location: index_envio.php');
         }
@@ -87,7 +88,7 @@ if ($_POST) {
         </div>
     </header>
     <section id="container_master_newregistro">
-        <form action="" class="form_new" method="post" name="menu" onsubmit='Registrar'>
+        <form action="" id="FormEntrega" class="form_new" method="post" name="menu" onsubmit='Registrar'>
             <div class="MenuLogistica">
                 <h4>Tipo de Registro</h4>
                 <div class="container_menu_logistica">

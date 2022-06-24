@@ -115,7 +115,7 @@ header#cabecalho_master div#cabecalho {
     border: 2px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
     width: 70%;
-    max-width: 500px;
+    max-width: 1200px;
     display: flex ;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -178,3 +178,12 @@ header#cabecalho_master div#cabecalho {
     width: 45%;
     margin: 10px;
 }
+/* Formatação checkbox na tela de entrega */
+
+  .input_checkbox{
+  
+    margin: auto auto;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+  }

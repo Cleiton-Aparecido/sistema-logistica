@@ -5,14 +5,12 @@ $interaction = new interaction();
 if (!isset($_POST['dataentrega'])) {
     // echo '<script>alert("Paramentros inválidos")</script>';
     echo '';
-}
-else if(isset($_POST['dataentrega'])) {
-    if($_POST['listagrupo'] == 'null'  || $_POST['status'] == 'null' || $_POST['dataentrega'] == ''){
-        echo '<script>alert("Paramentros inválidos")</script>';
-    }
-    else {
-        $interaction->alterarStatus($_POST['dataentrega'],$_POST['listagrupo'],$_POST['status']);
-    }
+} else if (isset($_POST['dataentrega'])) {
+        // $interaction->alterarStatus($_POST['dataentrega'], $_POST['listagrupo'], $_POST['status']);
+        $dados = filter_input_array(INPUT_POST,FILTER_DEFAULT);
+        $interaction->alterarstatusentrega($dados);
+        header('Location: index.php');
+    
 }
 
 ?>
@@ -48,7 +46,11 @@ else if(isset($_POST['dataentrega'])) {
     <style type="text/css">
         <?php include('../css/style.css');   ?>
     </style>
+    <script>
+        <?php include('../js/javascripts.js');   ?>
 
+        	
+    </script>
     <script>
         $(document).ready(function() {
             $('#table_master').DataTable({
@@ -72,62 +74,61 @@ else if(isset($_POST['dataentrega'])) {
         </div>
     </header>
     <section id="container_master">
-        <article id="container_menu_usuario">
-            <article id="container_primary">
-                <section id="menu_busca">
-                    <h5 style="text-align: center;">MENU DE ENTREGA</h5>
-                    <form class="container_menu" method="POST" name="menu" onsubmit=''>
-                        <label for="listagrupo">Lista de Grupo Pendente:</label>
-                        <select class="form-control" name="listagrupo" id="listagrupo">
-                            <option value="null">Escolha</option>
-                            <?php $interaction->grupopendente(); ?>
-                        </select>
+        <form class="container_menu" method="POST" name="menu" id="formealterarstatusentrega">
+            <article id="container_menu_usuario">
+                <article id="container_primary">
+                    <section id="menu_busca">
+                        <h5 style="text-align: center;">MENU DE ENTREGA</h5>
                         <label for="listagrupo">Status de Entrega:</label>
-                            <select class="form-control" name="status" id="status">
-                                <option value="null">Escolher</option>
-                                <?php $interaction->listaDeStatus(); ?>
-                            </select>
+                        <select class="form-control" name="status" id="status">
+                            <option value="null">Escolher</option>
+                            <?php $interaction->listaDeStatus(); ?>
+                        </select>
                         <label for="Dataentrega">Data Entrega:</label>
-                            <input name="dataentrega" type="datetime-local" id="dataentrega" class="form-control">
-                        <input class="btn btn-primary" type="submit" value="Salvar">
-                    </form>
-                </section>
+                        <input name="dataentrega" type="datetime-local" id="dataentrega" class="form-control">
+                        <input class="btn btn-primary" type="button" value="Salvar" onclick=" submitformentrega();">
+                    </section>
 
+                </article>
+
+                <div id="Menu_lateral">
+                    <article id="container_user">
+                        <img src="../img/user.png">
+                        <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
+                    </article>
+
+                    <article class="buttons">
+                        <a href="index.php" class="btn btn-primary buttons">Voltar</a>
+                    </article>
+                </div>
             </article>
-
-            <div id="Menu_lateral">
-                <article id="container_user">
-                    <img src="../img/user.png">
-                    <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-                </article>
-
-                <article class="buttons">
-                    <a href="index.php" class="btn btn-primary buttons">Voltar</a>
-                </article>
-            </div>
-        </article>
-        <article id="container_table">
-            <table id="table_master" class="table display" style="width:100%">
-                <thead class="thead-dark">
-                    <tr class="table_title">
-                        <th style="border-top-left-radius: 10px;" class="align-text-bottom">ID</th>
+            <article id="container_table">
+                <table id="table_master" class="table display" style="width:100%">
+                    <thead class="thead-dark">
+                        <tr class="table_title">
+                        <th style="border-top-left-radius: 10px;" class="align-text-bottom">Seleção</th>
+                        <th class="align-text-bottom">ID</th>
+                        <th class="align-text-bottom">Registro</th>
+                        <th class="align-text-bottom">Usuario</th>
                         <th class="align-text-bottom">Codigo</th>
                         <th class="align-text-bottom">Remetente</th>
-                        <th class="align-text-bottom">Grupo</th>
+                        <th class="align-text-bottom">DataColeta</th>
+                        <th class="align-text-bottom">Item</th>
                         <th class="align-text-bottom">Status</th>
-                        <th class="align-text-bottom">Data Coleta</th>
+                        <th class="align-text-bottom">Data entrega</th>
                         <th class="align-text-bottom">Setor</th>
                         <th style="border-top-right-radius: 10px;" class="align-text-bottom">View</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    #informa conteudo
-                    $interaction->listagrupopendente();
-                    ?>
-                </tbody>
-            </table>
-        </article>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        #informa conteudo
+                        $interaction->listagrupopendente();
+                        ?>
+                    </tbody>
+                </table>
+            </article>
+        </form>
     </section>
 </body>
 

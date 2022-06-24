@@ -196,12 +196,12 @@ class registroEnvio
          $this->idusuariocodigo = $value;
      }
 
-    public function insertRegisterEnvio($idusuario,$setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs){
+    public function insertRegisterEnvio($tipoenvio,$status,$idusuario,$setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs){
         $comando = ("INSERT INTO
          registroencomendaenviocorreio 
-         (idusuarioNewRegistro,idstatusentrega,setorRemetente,idtipoencomenda,Nomefuncionario,cep,Endereco,numero,cidade,bairro,estado,complementarend,observacaoenvio) 
+         (idtipoEnvio,idusuarioNewRegistro,idstatusentrega,setorRemetente,idtipoencomenda,Nomefuncionario,cep,Endereco,numero,cidade,bairro,estado,complementarend,observacaoenvio) 
          VALUES 
-        (".$idusuario.",2,".$setor.",".$encomenda.",'".$func."','".$cep."','".$rua."','".$num."','".$cidade."','".$bairro."','".$uf."','".$complementar."','".$obs."')"); 
+        (".$tipoenvio.",".$idusuario.",$status,".$setor.",".$encomenda.",'".$func."','".$cep."','".$rua."','".$num."','".$cidade."','".$bairro."','".$uf."','".$complementar."','".$obs."')"); 
         $this->sql->query($comando);
     }
     public function listDateQueryRegistroenvio($datestart,$dateend){
@@ -330,7 +330,6 @@ class registroEnvio
             "SetorRementente"=>$this->getsetorRemetente(),
             "Encomenda"=>$this->getencomenda(),
             "funcionario"=>$this->getfuncinario(),
-            
             "cep"=>$this->getcep(),
             "rua"=>$this->getendereco(),
             "numero"=>$this->getnum(),
@@ -344,4 +343,15 @@ class registroEnvio
             "UsuarioQueRealizouAPostagem"=>$this->getidusuariocodigo()
         );
     }
+    public function AtualizaCodigoRementeEncomendaData($id,$status,$codigo,$data,$obs){
+        $comando = ("UPDATE registroencomendaenviocorreio SET 
+        idstatusentrega = '$status',
+        codigopostagem = '$codigo',
+        datapostagem = '$data',
+        observacaoenvio = '$obs'
+        WHERE idRegistroEncomendaEnvioCorreio = $id"); 
+       $this->sql->query($comando);
+   }
+
 }
+

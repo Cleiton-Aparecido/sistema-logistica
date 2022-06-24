@@ -4,7 +4,19 @@ $interaction = new interaction();
 $interactionview = new interaction_view();
 
 if ($_POST) {
-    echo 'PASSOU';
+
+    if($_GET['type'] = 's'){
+        $dados = array(
+            "id"=>$_GET['cod'],
+            "Status"=>$_POST['status'],
+            "codigo"=>$_POST['codigo'],
+            "datapostagem"=>$_POST['datapostagem'],
+            "obs"=>$_POST['obs']
+        );
+        var_dump($dados);   
+        $interaction->SalvaRegistroEnvio($_GET['cod'],$_POST['status'],$_POST['codigo'],$_POST['datapostagem'],$_POST['obs']);
+        // header('Location: index_envio.php');
+    }
 }
 
 
@@ -70,13 +82,14 @@ if ($_POST) {
             <article class="">
                 <h3>Dados do Registro</h3>
                 <form id="container_inf2" method="POST">
+                    
                     <?php
 
                     if ($_GET) {
                         if ($_GET['type'] == 's') {
                             $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
                         } elseif ($_GET['type'] == 'e') {
-                            # code...
+                            $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
                         } elseif ($_GET['type'] == 'ee') {
                             # code...
                         }
@@ -95,7 +108,7 @@ if ($_POST) {
                 <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
             </article>
             <article class="buttons">
-                <a href="index_envio.php" id="voltar" class="btn btn-primary buttons">Voltar</a>
+                <a href="index.php" id="voltar" class="btn btn-primary buttons">Voltar</a>
             </article>
         </div>
     </div>

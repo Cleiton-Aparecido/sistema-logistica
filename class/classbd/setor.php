@@ -22,6 +22,15 @@ class setor{
     public function setdessetor($value){
         $this->iddessetor = $value;
     }
+    public function listSectordesc(){
+        $resultado = $this->sql->select("SELECT * FROM setor");
+        $list = array();
+        foreach ($resultado as $row) {
+            array_push($list,$row['descsetor']);
+        }
+
+        return $list;
+    }
 
     public function listSector(){
         $resultado = $this->sql->select("SELECT * FROM setor");

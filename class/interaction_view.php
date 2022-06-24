@@ -5,41 +5,68 @@ class interaction_view  extends interaction
     private $objectSector = array();
     private $objectUser = array();
     private $objectRegister = array();
-    private $group = array();
     private $encomenda = array();
     private $statusentrega = array();
     private $RegistroEnvioEncomenda = array();
-    private $disabled_save;
-    private $disabled_endereco;
+    private $disabled_inf_registro;
     private $disabled_atualizacao_registro;
 
     public function __construct()
     {
-
         $this->objectSector = new setor();
         $this->objectUser = new usuario();
         $this->objectRegister = new registro();
-        $this->group = new grupo();
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
+        $this->disabled_inf_registro = 'disabled';
+        $this->disabled_atualizacao_registro = 'disabled';
     }
-    private function AccessToEdit()
+    public function AccessToEditButton()
     {
         $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
-        if ($level == 1 || $level == 2) {
+        if ($level == 1 || $level == 2 || $level == 3 ) {
             return true;
         } else {
             return false;
         }
     }
+    public function ControleDeAcesso(){
+        $nivel = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
+
+        if($nivel == 1){
+            $this->disabled_inf_registro = '';
+            $this->disabled_atualizacao_registro = '';
+        }
+        if($nivel == 2){
+            $this->disabled_inf_registro = '';
+            $this->disabled_atualizacao_registro = '';
+        }
+        if($nivel == 3){
+        $this->disabled_atualizacao_registro = 'disabled';
+        }
+        if($nivel == 4){
+            $this->disabled_atualizacao_registro = '';
+        }
+        if($nivel == 5){
+            $this->disabled_atualizacao_registro = '';
+        }
+        if($nivel == 6){
+            $this->disabled_atualizacao_registro = '';
+        }
+        if($nivel == 7){
+            
+        }
+
+    }
+   
     public function dadosViewEntrada($id)
     {
         $x = $this->objectRegister->queryRegistro($id);
         echo '<script>document.getElementById("voltar").</script>';
         foreach ($x as $key => $value) {
             if ($key == 'Status') {
-                $value = $this->group->searchstatusid($value);
+               
                 if ($value == 'Pendente') {
                     echo '<p><strong> ' . $key . ': </strong><span class="badge badge-danger status">' .  $value . '</span></p>';
                 } else if ($value == 'Entregue') {
@@ -62,36 +89,31 @@ class interaction_view  extends interaction
                     $value = $date->format('d/m/Y H:i:s');
                     echo '<p><strong> ' . $key . ':</strong> ' . $value . '</p>';
                 }
-            } else if ($key == 'Setor') {
-                $value = $this->objectSector->searchsectorid($value);
-                echo '<p><strong> ' . $key . ':</strong> ' . $value . '</p>';
-            } else {
+            }  else {
                 echo '<p><strong> ' . $key . ':</strong> ' . $value . '</p>';
             }
         }
     }
     public function dadosViewEnvio($id, $tipo)
     {
+        
         if ($tipo == 's') {
             echo "<script> document.getElementById('title').innerHTML='Registro do Envio' </script>";
             echo "<script> document.getElementById('titulocabecalho').innerHTML='Registro do Envio' </script>";
-            echo "<script> document.getElementById('voltar').href = '/index_envio.php'</script>";
             $date =  $this->RegistroEnvioEncomenda->queryregisterenvio($id);
             $this->viewandconfiguration($date,$tipo);
         }
         if ($tipo == 'e') {
-            echo " <script> document.getElementById('title').innerHTML='Registro de entrada' </script>";
-            echo " <script> document.getElementById('titulocabecalho').innerHTML='Registro de entrada' </script>";
+            echo "<script> document.getElementById('title').innerHTML='Registro de entrada' </script>";
+            echo "<script> document.getElementById('titulocabecalho').innerHTML='Registro de entrada' </script>";
+            $date = $this->objectRegister->queryRegistro($id);
+            $this->viewandconfiguration($date,$tipo);
         }
     }
     
 
     private function viewandconfiguration($date,$type)
     {
-
-        // var_dump($status);
-        
-
         if(!isset($date['id'])){
             echo '<div class="container_view">
                    <h1> Não encontrado na base de dados </h1>   
@@ -102,104 +124,202 @@ class interaction_view  extends interaction
         }
         else {
             
+            $this->ControleDeAcesso();
             
     
-    
-            $disabled = '';
-            
-    
-    
-            echo '<div class="container_view">
-                    <label for="idregistro">ID Registro:</label>
-                    <input type="text" id="idregistro" name="idregistro" class="form-control" value="' . $date['id'] . '"disabled>
-    
-                    <label for="dataregistro">Data do Registro:</label>
-                    <input type="text" id="dataregistro" name="dataregistro" class="form-control" value="' . $date['DataRegistro'] . '" disabled>
-    
-                    <label for="Ipusuario">IP Computador:</label>
-                    <input type="text" id="Ipusuario" name="Ipusuario" class="form-control" value="' . $date['Ipusuario'] . '" disabled>
-    
-                    <label for="status">Status De Envio:</label>
-                                      
-                    <select id="status" name="status" class="form-control" ' . $disabled . '>
-                        <option value="'.$date['status'].'">'.$date['status'].'</option>';
+            if($type == 's'){
+                echo '<div class="container_view">';
+               
+                echo '
+                        
+                        <label for="idregistro">ID Registro:</label>
+                        <input type="text" id="idregistro" name="idregistro" class="form-control" value="' . $date['id'] . '"disabled>
+        
+                        
+        
+                        <label for="Ipusuario">IP Computador:</label>
+                        <input type="text" id="Ipusuario" name="Ipusuario" class="form-control" value="' . $date['Ipusuario'] . '" disabled>
 
-                    #imprimir lista de status utilizando objeito da class interaction
-                    $this->impressoption( $this->statusentrega->listcstatusentrega());
-                    echo '</select>
+                        <label for="funcionario">Funcionário que Solicitou:</label>
+                        <input type="text" id="funcionario" name="funcionario" class="form-control" value="' . $date['funcionario'] . '" disabled>
+    
 
-                    <label for="codigo">Codigo de Postagem:</label>
-                    <input type="text" id="codigo" name="codigo" class="form-control" value="' . $date['codigo'] . '" ' . $disabled . '>
+                        <label for="setor">Setor Que Solicitou:</label>
+                        <input type="text" id="setor" name="setor" class="form-control" value="' . $date['SetorRementente'] . '" disabled>
+                    ';
+                echo '
+                        <label for="encomenda">Encomenda:</label>
+                        <select id="encomenda" name="encomenda" class="form-control" ' . $this->disabled_atualizacao_registro . ' disabled>
+                            <option value="'.$date['Encomenda'].'">'.$date['Encomenda'].'</option>
+                     ';
 
-                    <label for="datapostagem">Data de Postagem:</label>
-                    <input type="date" id="datapostagem" name="datapostagem" class="form-control" value="' . $date['codigo'] . '" ' . $disabled . '>
+                     
+                     $this->impressoption( $this->encomenda->listcencomenda());
+                echo '
+                        </select>
+                        <label for="status">Status De Envio:</label>
+                                          
+                        <select id="status" name="status" class="form-control" ' . $this->disabled_atualizacao_registro . '>
+                            <option value="'.$date['status'].'">'.$date['status'].'</option>';
+    
+                        #imprimir lista de status utilizando objeito da class interaction
+                        $this->impressoption( $this->statusentrega->listcstatusentrega());
+                        echo '</select>
+    
+                        <label for="codigo">Codigo de Postagem:</label>
+                        <input type="text" id="codigo" name="codigo" class="form-control" value="' . $date['CodigoPostagen'] . '" ' . $this->disabled_atualizacao_registro . '>
+    
+                        <label for="datapostagem">Data de Postagem:</label>
+                        <input type="date" id="datapostagem" name="datapostagem" class="form-control" value="' . $date['DataPostagem'] . '" ' . $this->disabled_atualizacao_registro . '>
 
-                    <label for="obs">Observação:</label>
-                    <textarea id="obs" name="obs" class="form-control" ' . $disabled . '>' . $date['Observacao'] . '</textarea>
+                      
+                        <label for="obs">Observação:</label>
+                        <textarea id="obs" name="obs" class="form-control" ' . $this->disabled_atualizacao_registro . '>' . $date['Observacao'] . '</textarea>
+    
+                        ';
+        
+        
+                echo '</div>';
+        
+                echo '<div class="container_view">
+
+                <label for="dataregistro">Data do Registro:</label>
+                <input type="text" id="dataregistro" name="dataregistro" class="form-control" value="' . $date['DataRegistro'] . '" disabled>
+
+
+
+                        <label for="rua">Endereço:</label>
+                    <input type="text" id="rua" name="rua" class="form-control" value="' . $date['rua'] . '"' . $this->disabled_inf_registro.'>
+        
+                        <label for="Numero">Número:</label>
+                        <input type="text" id="Numero" name="Numero" class="form-control" value="' . $date['numero'] . '"' . $this->disabled_inf_registro. '>
+        
+                        <label for="bairro">Bairro:</label>
+                        <input type="text" id="bairro" name="bairro" class="form-control" value="' . $date['bairro'] . '"' . $this->disabled_inf_registro . '>
+        
+                        <label for="uf">Estado:</label>
+                        <select class="form-control" name="uf" id="uf" '. $this->disabled_inf_registro .'>
+                                <option value="'.$date['estado'].'">'.$date['estado'].'</option>
+                                <option value="AC">AC</option>
+                                <option value="AL">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MS">MS</option>
+                                <option value="MT">MT</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
+                        </select>
+        
+                        <label for="cidade">Cidade:</label>
+                        <input type="text" id="cidade" name="cidade" class="form-control" value="' . $date['cidade'] . '"' . $this->disabled_inf_registro . '>
+    
+                        <label for="cep">Cep:</label>
+                        <input type="text" id="cep"  name="cep" class="form-control" value="' . $date['cep'] . '"' . $this->disabled_inf_registro . '>
+    
+                        <label for="complementar">Informações Complementares Endereço:</label>
+                        <input type="text" id="complementar"  name="complementar" class="form-control" value="' . $date['complementar'] . '"' . $this->disabled_inf_registro . '>
+    
+                        
+    
+                    ';
+                    echo '</div>';
+            }
+
+            if($type == 'e'){
+                echo '<div class="container_view">';
+                
+                echo '
+                        
+                <label for="idregistro">ID Registro:</label>
+                <input type="text" id="idregistro" name="idregistro" class="form-control" value="' . $date['id'] . '"disabled>
+
+                <label for="dataregistro">Data de registro:</label>
+                <input type="text" id="dataregistro" name="dataregistro" class="form-control" value="' . $date['Data Registro'] . '" disabled>
+
+                <label for="datacoleta">Data coleta:</label>
+                <input type="text" id="datacoleta" name="datacoleta" class="form-control" value="' . $date['Data Coleta'] . '" ' . $this->disabled_inf_registro.'>
+
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status" class="form-control" value="' . $date['Status'] . '" disabled>
+                
+
+                <label for="Ipusuario">IP de registro:</label>
+                <input type="text" id="Ipusuario" name="Ipusuario" class="form-control" value="' . $date['ipcomputador'] . '" disabled>
+
+                <label for="funcionario">Funcionário que Eegistrou:</label>
+                <input type="text" id="funcionario" name="funcionario" class="form-control" value="' . $date['Usuario Registro'] . '" disabled>
+
+
+            ';
+                echo '</div>';
+
+                echo '<div class="container_view">';
+                
+                    echo '
+                            
+                    <label for="Codigo">Codigo de Rastreio:</label>
+                    <input type="text" id="Codigo" name="Codigo" class="form-control" value="' . $date['Codigo'] . '"' . $this->disabled_inf_registro.'>
+
+                    <label for="codigo">Codigo de Rastreio:</label>
+                    <input type="text" id="codigo" name="codigo" class="form-control" value="' . $date['Remetente'] . '"' . $this->disabled_inf_registro.'>
 
                     ';
-    
-    
-            echo '</div>';
-    
-            echo '<div class="container_view">
-                    <label for="rua">Endereço:</label>
-                    <input type="text" id="rua" name="rua" class="form-control" value="' . $date['rua'] . '"' . $disabled . '>
-    
-                    <label for="Numero">Número:</label>
-                    <input type="text" id="Numero" name="Numero" class="form-control" value="' . $date['numero'] . '"' . $disabled . '>
-    
-                    <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" class="form-control" value="' . $date['bairro'] . '"' . $disabled . '>
-    
-                    <label for="uf">Estado:</label>
-                    <select class="form-control" name="uf" id="uf" '. $disabled .'>
-                            <option value="'.$date['estado'].'">'.$date['estado'].'</option>
-                            <option value="AC">AC</option>
-                            <option value="AL">AL</option>
-                            <option value="AP">AP</option>
-                            <option value="AM">AM</option>
-                            <option value="BA">BA</option>
-                            <option value="CE">CE</option>
-                            <option value="DF">DF</option>
-                            <option value="ES">ES</option>
-                            <option value="GO">GO</option>
-                            <option value="MA">MA</option>
-                            <option value="MS">MS</option>
-                            <option value="MT">MT</option>
-                            <option value="MG">MG</option>
-                            <option value="PA">PA</option>
-                            <option value="PB">PB</option>
-                            <option value="PR">PR</option>
-                            <option value="PE">PE</option>
-                            <option value="PI">PI</option>
-                            <option value="RJ">RJ</option>
-                            <option value="RN">RN</option>
-                            <option value="RS">RS</option>
-                            <option value="RO">RO</option>
-                            <option value="RR">RR</option>
-                            <option value="SC">SC</option>
-                            <option value="SP">SP</option>
-                            <option value="SE">SE</option>
-                            <option value="TO">TO</option>
-                    </select>
-    
-                    <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" class="form-control" value="' . $date['cidade'] . '"' . $disabled . '>
+                    echo '
+                        <label for="encomenda">Encomenda:</label>
+                        <select id="encomenda" name="encomenda" class="form-control" ' . $this->disabled_inf_registro.'  >
+                            <option value="'.$date['Tipo da Encomenda'].'">'.$date['Tipo da Encomenda'].'</option>
+                            
+                        ';
+                        $this->impressoption( $this->encomenda->listcencomenda());
 
-                    <label for="cep">Cep:</label>
-                    <input type="text" id="cep"  name="cep" class="form-control" value="' . $date['cep'] . '"' . $disabled . '>
+                        echo '</select>';
 
-                    <label for="complementar">Informações Complementares Endereço:</label>
-                    <input type="text" id="complementar"  name="complementar" class="form-control" value="' . $date['complementar'] . '"' . $disabled . '>
+                
+                
+                    echo '
+                        <label for="setor">Setor destinatário:</label>
+                        <select id="setor" name="setor" class="form-control" '. $this->disabled_inf_registro.'>
+                            <option value="'.$date['Setor'].'">'.$date['Setor'].'</option>
+                        ';
 
-                    
+                        $this->impressoption( $this->objectSector->listSectordesc());
 
+                         echo '</select>';   
+                echo '
+                    <label for="DataEntrega">Data Entrega Setor:</label>
+                    <input type="text" id="DataEntrega" name="DataEntrega" class="form-control" value="' . $date['Data Entrega Setor'] . '"' . $this->disabled_inf_registro.'>
+
+                    <label for="obs">Observação do registro:</label>
+                    <textarea  id="obs" name="obs" class="form-control" ' . $this->disabled_inf_registro.'>' . $date['Observação do registro'] . '</textarea>
+
+                
                 ';
+
+            echo '</div>';
+
+            }
     
-                echo '</div>';
-                if ($this->AccessToEdit()) {
-                    echo '<input type="button" value="Salvar" class="btn btn-success">';
+                if ($this->AccessToEditButton()) {
+                    echo '<input type="submit" value="Salvar" class="btn btn-success">';
                 }
         }
     }

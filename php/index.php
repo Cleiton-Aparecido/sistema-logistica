@@ -109,7 +109,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                 <article class="buttons">
                     <a href="index_newRegister.php" class="btn btn-success buttons">Novo Registro</a>
                     <a href="index_entrega.php" class="btn btn-primary buttons">Entregas</a>
-                    <a href="index_envio.php" class="btn btn-primary buttons">Enviadas</a>
+                    <a href="index_envio.php" class="btn btn-secondary buttons">Enviadas</a>
                     <?php
                     $interaction->buttonadmin();
                     ?>
@@ -122,12 +122,13 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                 <thead class="thead-dark">
                     <tr class="table_title">
                         <th style="border-top-left-radius: 10px;" class="align-text-bottom">ID</th>
+                        <th class="align-text-bottom">Registro</th>
                         <th class="align-text-bottom">Usuario</th>
                         <th class="align-text-bottom">Codigo</th>
                         <th class="align-text-bottom">Remetente</th>
-                        <th class="align-text-bottom">Registro</th>
-                        <th class="align-text-bottom">Grupo</th>
+                        <th class="align-text-bottom">DataColeta</th>
                         <th class="align-text-bottom">Status</th>
+                        <th class="align-text-bottom">Item</th>
                         <th class="align-text-bottom">Data entrega</th>
                         <th class="align-text-bottom">Setor</th>
                         <th style="border-top-right-radius: 10px;" class="align-text-bottom">View</th>

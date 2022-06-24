@@ -108,7 +108,6 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
                 <article class="buttons">
                     <a href="index_newRegister.php" class="btn btn-success buttons">Novo Registro</a>
-                    <!-- <a href="index_entrega.php" class="btn btn-primary buttons">Entregas</a> -->
                     <a href="index.php" class="btn btn-primary buttons">Entrada</a>
                     <?php
                     $interaction->buttonadmin();
