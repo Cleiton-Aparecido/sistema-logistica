@@ -34,7 +34,6 @@ header#cabecalho_master div#cabecalho {
 
 /* #style container master */
 
-#container_master {}
 
 #container_menu_usuario {
     display: flex;
@@ -87,30 +86,9 @@ header#cabecalho_master div#cabecalho {
 .buttons{
     display: block;
     width: 150px;
+    max-width: 100px;
     margin: 10px auto;
 }
-
-#container_table {
-    margin: auto auto;
-    width: 95%;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-#table_master{
-    border: 1px solid rgb(0, 0, 0);
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.614);
-}
-#table_master .table_title{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.614);
-}
-
 
 /* estilização de novo registro */
 .form_new{
@@ -138,10 +116,13 @@ header#cabecalho_master div#cabecalho {
     justify-content: space-around;
     padding: 10px;
 }
+
+
+/* estilização dos container com coteudo de configuração */
 #container_inf{
     border: 1px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
-    width: 70%;
+    width: 75%;
     min-width: 400px;
     margin: auto auto;
     margin-top: 10px;
@@ -150,18 +131,31 @@ header#cabecalho_master div#cabecalho {
     justify-content: space-around;
     flex-wrap: wrap;
 }
-#container_inf h3{
+#container_inf h4{
     text-align: center;
     /* text-decoration:underline; */
 }
 .container_item{
     border: 1px solid rgb(0, 0, 0);
     border-radius: 10px;
-    width: 40%;
+    width: 45%;
     min-width: 300px;
     margin: 10px;
     padding: 5px;
 }
 .container_item:hover{
-   background-color: rgba(232, 208, 208, 0.094);
+   background-color: rgba(215, 169, 243, 0.094);
+}
+.container_item_interno{
+    
+    padding: 5px;
+}
+.container_item_interno p{
+    border-bottom: 1px solid rgb(0, 0, 0);
+}
+.item{
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    justify-content: space-between;
 }

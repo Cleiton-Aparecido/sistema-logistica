@@ -22,7 +22,7 @@ if ($_POST) {
         $tipoenvio = $_POST['tipoenvio'];
         $func = $_POST['func'];
         $rua = $_POST['endereco'];
-        $cep = $_POST['cep'];
+        $cep = $_POST['cepenvio'];
         $num = $_POST['num'];
         $bairro = $_POST['bairro'];
         $cidade = $_POST['cidade'];

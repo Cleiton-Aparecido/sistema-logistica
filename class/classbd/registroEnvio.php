@@ -202,7 +202,9 @@ class registroEnvio
          (idtipoEnvio,idusuarioNewRegistro,idstatusentrega,setorRemetente,idtipoencomenda,Nomefuncionario,cep,Endereco,numero,cidade,bairro,estado,complementarend,observacaoenvio) 
          VALUES 
         (".$tipoenvio.",".$idusuario.",$status,".$setor.",".$encomenda.",'".$func."','".$cep."','".$rua."','".$num."','".$cidade."','".$bairro."','".$uf."','".$complementar."','".$obs."')"); 
+        var_dump($comando);
         $this->sql->query($comando);
+       
     }
     public function listDateQueryRegistroenvio($datestart,$dateend){
         $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,

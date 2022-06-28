@@ -3,6 +3,7 @@
 class setor{
     private $idsetor;
     private $dessetor;
+    private $listasetore;
     private $sql = array();
 
     public function __construct()
@@ -22,6 +23,18 @@ class setor{
     public function setdessetor($value){
         $this->iddessetor = $value;
     }
+    
+    private function listSectorG(){
+        $resultado = $this->sql->select("SELECT * FROM setor");
+
+    }
+
+
+    public function statusSector($setor){
+        $resultado = $this->sql->select("SELECT * FROM setor WHERE descsetor = '$setor'");
+        return $resultado[0]['statusAtivo'];
+    }
+
     public function listSectordesc(){
         $resultado = $this->sql->select("SELECT * FROM setor");
         $list = array();
@@ -52,6 +65,11 @@ class setor{
             $resultado = $resultado[0]['descsetor'];
         }
         return $resultado;
+    }
+    public function alterarStatus($setor,$status){
+        echo $status;
+        echo $status;
+        $this->sql->query("UPDATE FROM setor set statusAtivo = $status  WHERE descsetor = $setor");
     }
 }
 

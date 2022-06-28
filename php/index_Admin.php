@@ -1,7 +1,9 @@
 <?php
 require_once("config.php");
 $interaction = new interaction();
+$interactionAdmin = new interaction_admin();
 
+$interaction->acessos('admin');
 
 ?>
 <!DOCTYPE html>
@@ -21,7 +23,6 @@ $interaction = new interaction();
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-    <!-- <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script> -->
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
@@ -30,6 +31,10 @@ $interaction = new interaction();
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
+
+
 
 
     <style type="text/css">
@@ -45,6 +50,11 @@ $interaction = new interaction();
                 ]
             });
         });
+    </script>
+    <script>
+        <?php include('../js/javascriptsAdmin.js');   ?>
+
+        	
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -72,19 +82,27 @@ $interaction = new interaction();
         <section id="container_inf">
             
             <article class="container_item">
-                <h3>Setores</h3>
+                <h4>Setores</h4>
+                <?php 
+                    $interactionAdmin->setor();
+                ?>
+                <Form action="" method="post" id='form_new_setor'>
+                    <label for="setornew">Adicionar novo Setor</label>
+                    <input type="text" class="form-control" id="setornew"  name="setornew">
+                    <input type="hidden" name="type" id="type" value="setor">
+                    <input type="button" value="Salvar" id="salvarSetor" class="btn btn-primary buttons">
+                </Form>
+                <div id="resultSector" style="color: green; font-size:20px;">
                     
+                </div>
             </article>
             <article class="container_item">
-                <h3>Usuario</h3>
+                <h4>Usuario</h4>
      
             </article>
+          
             <article class="container_item">
-                <h3>Registro</h3>
-     
-            </article>
-            <article class="container_item">
-                <h3>Grupo</h3>
+                <h4>Tipo de Envio</h4>
      
             </article>
         </section>

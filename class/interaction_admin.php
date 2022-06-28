@@ -2,14 +2,7 @@
 require_once("config.php");
 class interaction_admin  extends interaction
 {
-    private $objectSector = array();
-    private $objectUser = array();
-    private $objectRegister = array();
-    private $encomenda = array();
-    private $statusentrega = array();
-    private $RegistroEnvioEncomenda = array();
-    private $disabled_inf_registro;
-    private $disabled_atualizacao_registro;
+
 
     public function __construct()
     {
@@ -19,8 +12,43 @@ class interaction_admin  extends interaction
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
-        $this->disabled_inf_registro = 'disabled';
-        $this->disabled_atualizacao_registro = 'disabled';
+    }
+
+    
+    private function impressList($conteudo,$tipoatt){
+        if($tipoatt == 'setor'){     
+            foreach($conteudo as $key => $value){
+                if($value['statusAtivo'] == 0){
+                    $value['statusAtivo'] = 'Desativo';
+                }else if ($value['statusAtivo'] == 1){
+                    $value['statusAtivo'] = 'Ativo';
+                }
+                  
+                $iddescsetor = str_replace(' ','', $value['descsetor']);
+
+                echo "<p class = 'item'> <span class='item_conteudo' >".$value['idsetor']."  - ".$value['descsetor']."</span> 
+                <button class = 'btn btn-primary status_item' name='setor'  
+                value='".$value['descsetor']."' id='".$iddescsetor."'  onclick='statusSetor(this.value,this.id);' > ".$value['statusAtivo']."</button> </p>";
+               
+            }
+        }
+    }
+    public function setor(){
+        $listSetores = $this->objectSector->listSector();
+        echo "<div id='FormSetor' class = 'container_item_interno'>";
+        $this->impressList($listSetores,"setor");   
+    }
+    //configuração de status setor
+    public function alteracaoDeStatus($Setor){
+        $statusSetor = $this->objectSector->statusSector($Setor);
+        if($statusSetor){
+            $this->objectSector->alterarStatus($Setor,'0');
+            echo 'Desativado';
+            
+        }
+        if(!$statusSetor){
+            echo 'ativa';
+        }
     }
     
 }

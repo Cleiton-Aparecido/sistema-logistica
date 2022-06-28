@@ -93,7 +93,7 @@ function pesquisacep(valor) {
 
         //Valida o formato do CEP.
         if (validacep.test(cep)) {
-
+            alertainputclear('cepenvio');
             //Preenche os campos com "..." enquanto consulta webservice.
             document.getElementById('endereco').value = "Aguarde...";
             document.getElementById('bairro').value = "Aguarde...";
@@ -138,21 +138,7 @@ function submitformentrega(){
 
 
 function submitnewenvio(){
-    if(document.getElementById("cepenvio").value == ""){
-        alertainput("cepenvio");
-        console.log('passou');
-    }
-    else if(document.getElementById("endereco").value == ""){
-        alertainput("endereco");
-        console.log('passou');
-    }
-    else if(document.getElementById("num").value == ""){
-        alertainput("num");
-    }
-    else if(document.getElementById("bairro").value == ""){
-        alertainput("bairro");
-    }
-    else if(document.getElementById("setor").value == "null"){
+    if(document.getElementById("setor").value == "null"){
         alertainput("setor");
     }
     else if(document.getElementById("encomenda").value == "null"){
@@ -164,6 +150,18 @@ function submitnewenvio(){
     else if(document.getElementById("func").value == ""){
         alertainput("func");
     }
+    else if(document.getElementById("cepenvio").value == ""){
+        alertainput("cepenvio");
+    }
+    else if(document.getElementById("endereco").value == ""){
+        alertainput("endereco");
+    }
+    else if(document.getElementById("num").value == ""){
+        alertainput("num");
+    }
+    else if(document.getElementById("bairro").value == ""){
+        alertainput("bairro");
+    }
     else if(document.getElementById("cidade").value == ""){
         alertainput("cidade");
     }
@@ -171,8 +169,8 @@ function submitnewenvio(){
         alertainput("uf");
     }
     else{
-        // document.getElementById("FormEntrega").submit();
-        alert("asdasdasd");
+        document.getElementById("FormEntrega").submit();
+        // alert("enviar");
     }
 };
 
@@ -186,3 +184,6 @@ function alertainputclear(opcao){
     document.getElementById(opcao).style.borderColor = ""
     document.getElementById(opcao).style.borderWidth = "1px"
 };
+function statusadmin(){
+    console.log('teste');
+}

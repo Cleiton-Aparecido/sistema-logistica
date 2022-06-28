@@ -13,9 +13,8 @@ if ($_POST) {
             "datapostagem"=>$_POST['datapostagem'],
             "obs"=>$_POST['obs']
         );
-        var_dump($dados);   
         $interaction->SalvaRegistroEnvio($_GET['cod'],$_POST['status'],$_POST['codigo'],$_POST['datapostagem'],$_POST['obs']);
-        // header('Location: index_envio.php');
+        header('Location: index_envio.php');
     }
 }
 

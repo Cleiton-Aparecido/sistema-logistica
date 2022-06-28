@@ -21,10 +21,25 @@ class interaction
         $this->RegistroEnvioEncomenda = new registroEnvio();
         $this->nivelusuario = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
     }
+    private function acessoAdmin(){
+        if($this->nivelusuario == 1){
+            
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public function acessos($typeAcess){
+        if($typeAcess == 'admin'){
+            if(!$this->acessoAdmin()){
+                echo $this->nivelusuario;
+                header('Location: index.php');
+            }
+        }  
+    }
   
-
-    public function insertEntrada($setor, $encomenda, $code, $remetente, $datacoleta, $obs)
-    {
+    public function insertEntrada($setor, $encomenda, $code, $remetente, $datacoleta, $obs){
 
         $salva = false;
 
@@ -46,20 +61,19 @@ class interaction
     }
 
     #dados que estão entrando na empresa
-    public function insertEnvio($setor, $encomenda,$tipoenvio, $func, $cep, $rua, $num, $bairro, $cidade, $uf, $complementar, $obs)
-    {
+    public function insertEnvio($setor, $encomenda,$tipoenvio, $func, $cep, $rua, $num, $bairro, $cidade, $uf, $complementar, $obs){
         $salva = false;
 
         if (strlen($rua) == 0 || strlen($cidade) == 0 || strlen($bairro) == 0 || strlen($num) == 0 || strlen($func) == 0 || strlen($cep) == 0 || $setor == 'null' || $encomenda == 'null' || $uf == 'null' || $tipoenvio == 'null') {
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
         } else {
+            echo 'teste';
             $idusuario = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
             $idencomenda = $this->encomenda->Searchcencomenda($encomenda);
             $idsetor = $this->objectSector->SearchSector($setor);
             $status = $this->statusentrega->Searchcstatusentrega("Pendente");
             $tipoenvio = $this->objectEnvio->Searchctipoenvio($tipoenvio);
-            //$idusuario,$setor,$encomenda,$func,$cep,$num,$bairro,$cidade,$uf,$complementar,$obs
             $this->RegistroEnvioEncomenda->insertRegisterEnvio($tipoenvio,$status,$idusuario['idusuario'], $idsetor, $idencomenda, $func, $cep, $rua, $num, $bairro, $cidade, $uf, $complementar, $obs);
             $salva = true;
         }
@@ -78,7 +92,6 @@ class interaction
             echo '<strong> Setor:</strong> ' . $this->objectSector->searchsectorid($x['setor']);
         }
     }
-
     #print a listga de setores na tag option
     public function listasetoropcoes(){
         $x = $this->objectSector->listSectordesc();
@@ -111,7 +124,7 @@ class interaction
         if (count($x) == 0) {
             echo '<tr>
             
-            <td colspan="11" style="text-align:center;">Sem informação</td>
+            <td colspan="12" style="text-align:center;">Sem informação</td>
             </tr>';
         } else {
 
@@ -247,10 +260,13 @@ class interaction
             echo '<script>alert("Parametros Invalidoa")</script>';
         }
         // $_SERVER['REMOTE_ADDR']
-        else if($this->nivelusuario == 1 || $this->nivelusuario == 2 || $this->nivelusuario == 3){
+        else if( $this->nivelusuario == 2 || $this->nivelusuario == 3){
             echo '<script>alert("Sem Autorização")</script>';
         }
         else{
+            var_dump($dataentrega);
+            var_dump($status);
+            var_dump($idregistro);
             
             foreach ($idregistro as $value) {
                 echo '<br>'.$value;
