@@ -3,6 +3,9 @@
 class encomenda{
     private $idencomenda;
     private $descencomenda;
+    private $status;
+    private $listaGEralEncomenda;
+
     private $sql = array();
 
     public function __construct()
@@ -20,18 +23,32 @@ class encomenda{
         return $this->descencomenda;
     }
     public function setdescencomenda($value){
-        $this->iddescencomenda = $value;
+        $this->descencomenda = $value;
     }
 
-    public function listcencomenda(){
-        $list = array();
+    public function getlistaGEralEncomenda(){
+        return $this->listaGEralEncomenda;
+    }
+    public function setlistaGEralEncomenda($value){
+        $this->listaGEralEncomenda = $value;
+    }
+    // listar todas opções de encomenda
+    private function SelectGeral(){
         $resultado = $this->sql->select("SELECT desctipoencomenda FROM tipoencomenda");
-        foreach ($resultado as $row) {
-            array_push($list,$row['desctipoencomenda']);
+        $list = array();
+        if (count($resultado)>0) {
+            foreach ($resultado as $row) {
+                array_push($list,$row['desctipoencomenda']);
+            }
         }
-
-        return $list;
+        $this->setlistaGEralEncomenda($list);
     }
+    // retornar lista de opções de encomendas
+    public function listcencomenda(){
+        $this->SelectGeral();
+        return $this->getlistaGEralEncomenda();
+    }
+
     public function Searchcencomenda($cencomenda){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda
         where desctipoencomenda= '".$cencomenda."'");

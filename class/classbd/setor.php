@@ -99,7 +99,16 @@ class setor{
     public function listSectordesc(){ 
         $list = array();
         foreach ($this->getlistasetores() as $row) {
-            array_push($list,$row['Nome']);
+                array_push($list,$row['Nome']);
+        }
+        return $list;
+    }
+    public function listSectordescAtivo(){ 
+        $list = array();
+        foreach ($this->getlistasetores() as $row) {
+            if($row['status'] == 'Ativo'){
+                array_push($list,$row['Nome']);
+            }
         }
         return $list;
     }
@@ -112,18 +121,6 @@ class setor{
     public function SearchSector($sector){
         $this->setorSeach($sector);
         return $this->getidsetor();
-    }
-    // buscando descrição do
-    public function searchsectorid($id){
-        $resultado = $this->sql->select("SELECT * FROM setor
-        where idsetor = ".$id."");
-        if(!isset($resultado[0]['descsetor'])){
-            $resultado = 'Sem Setor';
-        }
-        else{
-            $resultado = $resultado[0]['descsetor'];
-        }
-        return $resultado;
     }
     
     

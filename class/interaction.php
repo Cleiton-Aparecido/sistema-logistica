@@ -50,7 +50,6 @@ class interaction
             // $idgrupo = $this->group->sectorAndDateSearchid($setor,$datacoleta);
             $idsetor = $this->objectSector->SearchSector($setor);
             $idusuario = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-            $idusuario['idusuario'];
             $idencomenda = $this->encomenda->Searchcencomenda($encomenda);
             $idstatus =  $this->statusentrega->Searchcstatusentrega('Pendente');
 
@@ -89,12 +88,16 @@ class interaction
         } else {
             echo '<strong> Usuario:</strong> ' . $x['nome'] . '<br>';
             echo '<strong> IP:</strong> ' . $x['ipcomputador'] . '<br>';
-            echo '<strong> Setor:</strong> ' . $this->objectSector->searchsectorid($x['setor']);
+            echo '<strong> Setor:</strong> ' .  $x['setor'];
         }
     }
     #print a listga de setores na tag option
-    public function listasetoropcoes(){
-        $x = $this->objectSector->listSectordesc();
+    public function listasetoropcoes($type){
+        if($type == 'ativo'){
+            $x = $this->objectSector->listSectordescAtivo();
+        }else if($type == 'Geral'){
+            $x = $this->objectSector->listSectordesc();
+        }
         $this->impressoption($x);
     }
     public function listatipodeenvio(){

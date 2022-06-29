@@ -110,6 +110,21 @@ class registro
     {
         return $this->tabelaRegistro;
     }
+    private function inserirNovoRegistro($dados = array()){
+        // $this->sql->query("INSERT INTO registroencomenda 
+        // (codigo,remetente,idtipoencomenda,idusuario,datacoleta,idstatusentrega,idsetor,registroObservacao)
+        // VALUES ('$code','$remetente',$idencomenda,$idusuario,'$datacoleta',$idstatus,$idsetor,'$obs' );");
+        $this->sql->query("INSERT INTO registroencomenda SET
+                            codigo = '',
+                            remetente = '' ,
+                            idtipoencomenda =  (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = ''), 
+                            idusuario = (SELECT idusuario FROM usuario WHERE ipcomputador = '' ) , 
+                            registroObservacao = '', 
+                            datacoleta ='',
+                            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
+                            idsetor = (SELECT idsetor FROM setor WHERE descsetor = '');");
+    }
+
     public function queryRegistro($id)
     {
         $resultado = $this->sql->select("SELECT *, 
@@ -145,8 +160,6 @@ class registro
 
         return $resultado;
     }
-
-
     public function listDateQueryRegistro($datestart, $dateend)
     {
 
@@ -194,6 +207,9 @@ class registro
         WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado'");
         return $resultado;
     }
+
+
+
     public function insertregistro($code, $remetente, $idencomenda, $idusuario, $idsetor, $idstatus, $obs,$datacoleta)
     {
         // echo $code;

@@ -1,6 +1,7 @@
 <?php
 
-class usuario{
+class usuario
+{
     private $idusuario;
     private $nome;
     private $ipcomputador;
@@ -12,91 +13,101 @@ class usuario{
     {
         $this->sql = new sql();
     }
-    public function getidusuario(){
+    private function getidusuario()
+    {
         return $this->idusuario;
     }
 
-    public function setidusuario($value){
+    private function setidusuario($value)
+    {
         $this->idusuario = $value;
     }
 
-    public function getnome(){
+    private function getnome()
+    {
         return $this->nome;
     }
-    public function setnome($value){
+    private function setnome($value)
+    {
         $this->nome = $value;
     }
 
-    public function getipcomputador(){
+    private function getipcomputador()
+    {
         return $this->ipcomputador;
     }
-    public function setipcomputador($value){
+    private function setipcomputador($value)
+    {
         $this->ipcomputador = $value;
     }
 
-    public function getipnivel(){
+    private function getipnivel()
+    {
         return $this->ipnivel;
     }
-    public function setipnivel($value){
+    private function setipnivel($value)
+    {
         $this->ipnivel = $value;
     }
 
-    public function getsetoruser(){
+    private function getsetoruser()
+    {
         return $this->setoruser;
     }
-    public function setsetoruser($value){
+    private function setsetoruser($value)
+    {
         $this->setoruser = $value;
     }
 
-    private function insertIpNew($ip){
+    private function insertIpNew($ip)
+    {
         $this->sql->query("INSERT INTO usuario (nome,ipcomputador,nivel) 
-        VALUES ('".$ip."','".$ip."',3);");
+        VALUES ('" . $ip . "','" . $ip . "',3);");
     }
-    private function searchIp($ip){
+    private function searchIp($ip)
+    {
 
         $resultado = $this->sql->select("SELECT * FROM usuario 
-        WHERE ipcomputador = :ID",array(
-            ":ID"=>$ip
+        LEFT JOIN setor ON setor.idsetor = usuario.idsetor
+        WHERE usuario.ipcomputador = :ID", array(
+            ":ID" => $ip
         ));
         return $resultado;
     }
-    
-    public function loadByIdUsuario($id){
-       
-        $resultado = $this->searchIp($id);
-        // var_dump($resultado);
-        if(count($resultado)>0){
-            $row = $resultado[0];
-            $this->setidusuario($row['idusuario']);
-            $this->setnome( $row['nome']);
-            $this->setipcomputador( $row['ipcomputador']);
-            $this->setipnivel($row['nivel']);
-            $this->setsetoruser($row['idsetor']);
+
+    public function loadByIdUsuario($ip)
+    {
+        $resultado = $this->searchIp($ip);
+
+
+
+        if (count($resultado) == 0) {
+            $this->insertIpNew($ip);
+            $resultado = $this->searchIp($ip);
         }
-        else{
-            $this->insertIpNew($id);
-            $resultado = $this->searchIp($id);
-            $row = $resultado[0];
-            $this->setidusuario($row['idusuario']);
-            $this->setnome( $row['nome']);
-            $this->setipcomputador( $row['ipcomputador']);
-            $this->setipnivel($row['nivel']);
-            $this->setsetoruser($row['idsetor']);
+
+        $row = $resultado[0];
+        $this->setidusuario($row['idusuario']);
+        $this->setnome($row['nome']);
+        $this->setipcomputador($row['ipcomputador']);
+        $this->setipnivel($row['nivel']);
+        if(!isset($row['descsetor'])){
+            $this->setsetoruser('Sem Setor');
+        }else{
+            $this->setsetoruser($row['descsetor']);
         }
-        
+      
         return array(
-            "idusuario"=>$this->getidusuario(),
-            "nome"=>$this->getnome(),
-            "ipcomputador"=>$this->getipcomputador(),
-            "nivel"=>$this->getipnivel(),
-            "setor"=>$this->getsetoruser()
+            "idusuario" => $this->getidusuario(),
+            "nome" => $this->getnome(),
+            "ipcomputador" => $this->getipcomputador(),
+            "nivel" => $this->getipnivel(),
+            "setor" => $this->getsetoruser()
         );
     }
-    public function level($ip){
-       $dados = $this->loadByIdUsuario($ip);
-       return $dados['nivel'];
-
+    public function level($ip)
+    {
+        $dados = $this->loadByIdUsuario($ip);
+        return $dados['nivel'];
     }
 }
-
-?>

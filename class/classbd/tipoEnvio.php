@@ -3,6 +3,7 @@
 class tipoEnvio{
     private $idtipoEnvio;
     private $desctipoEnvio;
+    private $status;
     private $sql = array();
 
     public function __construct()
@@ -22,6 +23,14 @@ class tipoEnvio{
     public function setdesctipoEnvio($value){
         $this->iddesctipoEnvio = $value;
     }
+    public function getstatus(){
+        return $this->status;
+    }
+    public function setstatus($value){
+        $this->idstatus = $value;
+    }
+
+
 
     public function listctipoenvio(){
         $list = array();

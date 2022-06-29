@@ -15,7 +15,7 @@ $interaction = new interaction();
     <span id="setoralerta"></span>
     <select class="form-control input_style" name="setor" id="setor" onblur="alertainputclear(this.name)">
         <option value="null">Escolha </option>
-        <?php $interaction->listasetoropcoes(); ?>
+        <?php $interaction->listasetoropcoes('ativo'); ?>
     </select>
 </div>
 <div class="container_from ">
