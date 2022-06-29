@@ -83,9 +83,9 @@ $interaction->acessos('admin');
             
             <article class="container_item">
                 <h4>Setores</h4>
-                <?php 
-                    $interactionAdmin->setor();
-                ?>
+                <div id='formsetor' class = 'container_item_interno'>
+        
+                </div>
                 <Form action="" method="post" id='form_new_setor'>
                     <label for="setornew">Adicionar novo Setor</label>
                     <input type="text" class="form-control" id="setornew"  name="setornew">

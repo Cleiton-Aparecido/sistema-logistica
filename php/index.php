@@ -14,6 +14,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
     $setor = 'all';
     $busca = '';
 }
+
 ?>
 
 <!DOCTYPE html>

@@ -3,12 +3,14 @@
 class setor{
     private $idsetor;
     private $dessetor;
-    private $listasetore;
+    private $statusAtivacao;
+    private $listasetores = array();
     private $sql = array();
 
     public function __construct()
     {
         $this->sql = new sql();
+        $this->listSectorG();
     }
 
     public function getidsetor(){
@@ -21,40 +23,97 @@ class setor{
         return $this->dessetor;
     }
     public function setdessetor($value){
-        $this->iddessetor = $value;
+        $this->dessetor = $value;
     }
-    
+    public function getstatusAtivacao(){
+        return $this->statusAtivacao;
+    }
+    public function setstatusAtivacao($value){
+        $this->statusAtivacao = $value;
+    }
+
+
+    public function getlistasetores(){
+        return $this->listasetores;
+    }
+    public function setlistasetores($value){
+        $this->listasetores = $value;
+    }
+     // Alterar status de um setor
+    public function alterarStatus($setor,$status){
+        $comando = "UPDATE setor SET statusAtivo =  (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = '$status')  WHERE descsetor = '$setor';";
+        $this->sql->query($comando);
+    }
+    public function inserirNOvoSetor($setor){
+        $comando = "INSERT INTO setor SET descsetor = '$setor', statusAtivo = (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo')";
+        $this->sql->query($comando);
+    }
+    // Lista de todos setores
     private function listSectorG(){
-        $resultado = $this->sql->select("SELECT * FROM setor");
-
-    }
-
-
-    public function statusSector($setor){
-        $resultado = $this->sql->select("SELECT * FROM setor WHERE descsetor = '$setor'");
-        return $resultado[0]['statusAtivo'];
-    }
-
-    public function listSectordesc(){
-        $resultado = $this->sql->select("SELECT * FROM setor");
-        $list = array();
+        $resultado = $this->sql->select("SELECT * FROM setor
+        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = setor.statusAtivo");
+        $dados = array();
+        
         foreach ($resultado as $row) {
-            array_push($list,$row['descsetor']);
+           array_push($dados,array(
+                "id"=>$row['idsetor'],
+                "Nome"=>$row['descsetor'],
+                "status"=>$row['descStatus']
+           ));
+        }
+        $this->setlistasetores($dados);
+    }
+
+    // fazer busca do setor
+    private function setorSeach($setor){
+        $resultado = $this->sql->select("SELECT * FROM setor 
+        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = setor.statusAtivo
+        WHERE descsetor = '$setor'");
+
+
+        if(count($resultado)>0){
+            $row = $resultado[0];
+            $this->setidsetor($row['idsetor']);
+            $this->setdessetor($row['descsetor']);
+            $this->setstatusAtivacao($row['descStatus']);
         }
 
+    }
+    // Buscar status de um um setor especifico
+    public function statusSector($setor){
+        $this->setorSeach($setor);
+        return $this->getstatusAtivacao();
+    }
+   
+    // Verificar se o setor que será adionado já existe
+    public function VerificarSetorExistente($setor){
+        $this->setorSeach($setor);
+       if ($this->getdessetor() == ''){
+            return false;
+       }else{
+            return true;
+       }
+        
+    }
+    // Lista de setores
+    public function listSectordesc(){ 
+        $list = array();
+        foreach ($this->getlistasetores() as $row) {
+            array_push($list,$row['Nome']);
+        }
         return $list;
     }
 
+    //Lista com dados dos setores
     public function listSector(){
-        $resultado = $this->sql->select("SELECT * FROM setor");
-        return $resultado;
+        return $this->getlistasetores();
     }
+    //Buscar id do setor
     public function SearchSector($sector){
-        $resultado = $this->sql->select("SELECT * FROM setor
-        where descsetor= '".$sector."'");
-        $x = $resultado[0]['idsetor'];
-        return $x;
+        $this->setorSeach($sector);
+        return $this->getidsetor();
     }
+    // buscando descrição do
     public function searchsectorid($id){
         $resultado = $this->sql->select("SELECT * FROM setor
         where idsetor = ".$id."");
@@ -66,11 +125,8 @@ class setor{
         }
         return $resultado;
     }
-    public function alterarStatus($setor,$status){
-        echo $status;
-        echo $status;
-        $this->sql->query("UPDATE FROM setor set statusAtivo = $status  WHERE descsetor = $setor");
-    }
+    
+    
 }
 
 ?>

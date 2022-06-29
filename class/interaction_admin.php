@@ -13,42 +13,64 @@ class interaction_admin  extends interaction
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
     }
+    private function StyleStatus($status){
+        if($status == 'Ativo'){
+            return 'btn-primary';
+        }
+        else if($status == 'Desativo'){
+            return 'btn-danger';
+        }
+    }
+    private function inserirnovosetor(){
 
+    }
     
+    // Imprimir lista menu
     private function impressList($conteudo,$tipoatt){
         if($tipoatt == 'setor'){     
             foreach($conteudo as $key => $value){
-                if($value['statusAtivo'] == 0){
-                    $value['statusAtivo'] = 'Desativo';
-                }else if ($value['statusAtivo'] == 1){
-                    $value['statusAtivo'] = 'Ativo';
-                }
-                  
-                $iddescsetor = str_replace(' ','', $value['descsetor']);
-
-                echo "<p class = 'item'> <span class='item_conteudo' >".$value['idsetor']."  - ".$value['descsetor']."</span> 
-                <button class = 'btn btn-primary status_item' name='setor'  
-                value='".$value['descsetor']."' id='".$iddescsetor."'  onclick='statusSetor(this.value,this.id);' > ".$value['statusAtivo']."</button> </p>";
-               
-            }
+                $iddescsetor = str_replace(' ','', $value['Nome']);
+                echo "<p class = 'item'>
+                        <span class='item_conteudo' >".$value['id']."  - ".$value['Nome']."</span> 
+                        <button class = 'btn ".$this->StyleStatus($value['status'])." status_item' name='setor'  
+                        value='".$value['Nome']."' id='".$iddescsetor."'  onclick='statusSetor(this.value,this.id);' > ".$value['status']."</button> 
+                    </p>";
+            }   
         }
     }
+    //REquisita informação no banco e manda imprimir no metodos impressList
     public function setor(){
         $listSetores = $this->objectSector->listSector();
-        echo "<div id='FormSetor' class = 'container_item_interno'>";
         $this->impressList($listSetores,"setor");   
     }
     //configuração de status setor
     public function alteracaoDeStatus($Setor){
         $statusSetor = $this->objectSector->statusSector($Setor);
-        if($statusSetor){
-            $this->objectSector->alterarStatus($Setor,'0');
-            echo 'Desativado';
+        if($statusSetor == 'Ativo'){
+            $this->objectSector->alterarStatus($Setor,'Desativo');
+            echo $this->objectSector->statusSector($Setor);
             
         }
-        if(!$statusSetor){
-            echo 'ativa';
+        if($statusSetor == 'Desativo'){
+            $this->objectSector->alterarStatus($Setor,'Ativo');
+            echo $this->objectSector->statusSector($Setor);
         }
+    }
+    public function VerificarParaInserir($setor){
+        if($setor == '' ||  $setor == ' '){
+            echo 'Campa Vazioooo!';
+        }
+        else{
+            if($this->objectSector->VerificarSetorExistente($setor)){
+                echo 'Setor já Existente';
+            }
+            else{
+                $this->objectSector->inserirNOvoSetor($setor);
+               echo 'Salvo com sucesso';
+            }
+        }
+        
+        
     }
     
 }
