@@ -1,4 +1,4 @@
-function loading(){
+function loadingsetor(){
     if(!document.getElementById('loading')) {
         let imgLoading = document.createElement('img')
         imgLoading.id = 'loading';
@@ -47,7 +47,7 @@ function loadtable() {
             document.getElementById('salvarSetor').disabled = false 
         }
     });
-    loading();
+    loadingsetor();
     
 }
 

@@ -84,7 +84,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                         <label for="setor">Setor</label>
                         <select class="form-control" name="setor" id="setor">
                             <option value="all">Todos</option>
-                            <?php $interaction->listasetoropcoes() ?>
+                            <?php $interaction->listasetoropcoes('Geral') ?>
                         </select>
                         <label for="buscar">Buscar Codigo:</label>
                         <input name="busca" type="text" id="buscar" class="form-control" placeholder=" <?php echo $busca; ?>">

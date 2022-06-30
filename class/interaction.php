@@ -39,22 +39,23 @@ class interaction
         }  
     }
   
-    public function insertEntrada($setor, $encomenda, $code, $remetente, $datacoleta, $obs){
+    public function insertEntrada($dados){
 
         $salva = false;
-
-        if (strlen($code) == 0 || strlen($remetente) == 0 || $setor == 'null' || $encomenda == 'null') {
+        
+        if ( strlen($dados['codigo']) == 0 || strlen($dados['remetente']) == 0 || $dados['setor'] == 'null' || $dados['encomenda'] == 'null') {
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
-        } else {
-            // $idgrupo = $this->group->sectorAndDateSearchid($setor,$datacoleta);
-            $idsetor = $this->objectSector->SearchSector($setor);
-            $idusuario = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-            $idencomenda = $this->encomenda->Searchcencomenda($encomenda);
-            $idstatus =  $this->statusentrega->Searchcstatusentrega('Pendente');
-
-            $this->objectRegister->insertregistro($code, $remetente, $idencomenda, $idusuario['idusuario'], $idsetor, $idstatus, $obs, $datacoleta);
+        } 
+        else if($this->nivelusuario == 1  || $this->nivelusuario == 2 || $this->nivelusuario == 3 || $this->nivelusuario == 5){
+            echo 'passou acesso';
+            var_dump($dados);
+            $this->objectRegister->insertregistro($dados);
             $salva = true;
+        }
+        else {
+            echo '<script>alert("Acesso Negado") </script>';
+            $salva = false;
         }
         return $salva;
     }
@@ -197,9 +198,11 @@ class interaction
             }
         }
     }
-    #Faz a busca no banco
+    #consultar lista de coleta de item
     public function SearchRelatorio($sector, $busca, $DateStart, $DateEnd)
     {
+    
+        
         #Busca para todos setores e com codigo expecifico
         if (($sector == 'all') && (strlen($busca) > 0)) {
             $x = $this->objectRegister->listDateCodeQuery($busca, $DateStart, $DateEnd);
@@ -211,13 +214,16 @@ class interaction
         #busca somente de setores e data
         else if (($sector != 'all') && (strlen($busca) == 0)) {
             $x = $this->objectRegister->listDateSectorQuery($sector, $DateStart, $DateEnd);
-        } else if (($sector != 'all') && (strlen($busca) != 0)) {
+        } 
+        else if (($sector != 'all') && (strlen($busca) != 0)) {
             $x = $this->objectRegister->listDateSectorSearchQuery($sector, $busca, $DateStart, $DateEnd);
         }
         $this->impress($x, 'e');
     }
-
+    #consultar lista de envio
     public function SearchRelatorioEnvio($sector, $busca, $DateStart, $DateEnd){
+    
+
         if (($sector == 'all') && (strlen($busca) > 0)) {
             $x = $this->RegistroEnvioEncomenda->listDateCodeQueryEnvio($busca, $DateStart, $DateEnd);
         }
@@ -249,10 +255,10 @@ class interaction
     public function alterarstatusentrega($dados){
         $idregistro = array();
 
-
+        // Organizando informações em variaveis
         foreach ($dados as $key => $value) {
             if ($key == 'status') {
-                $status = $this->statusentrega->Searchcstatusentrega($value);
+                $status = $value;
             } elseif ($key == 'dataentrega') {
                 $dataentrega = $value;
             } else {
@@ -267,13 +273,14 @@ class interaction
             echo '<script>alert("Sem Autorização")</script>';
         }
         else{
-            var_dump($dataentrega);
-            var_dump($status);
-            var_dump($idregistro);
-            
+                       
             foreach ($idregistro as $value) {
-                echo '<br>'.$value;
-                $this->objectRegister->updateregistro($status,$dataentrega,$value);
+                $dados = array(
+                    "dataentrega"=>$dataentrega,
+                    "status"=>$status,
+                    "id"=>$value
+                );
+                $this->objectRegister->updateregistro($dados);
             }
         }
 

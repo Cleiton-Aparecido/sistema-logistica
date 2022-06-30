@@ -11,8 +11,19 @@ if ($_POST) {
         $remetente = $_POST['remetente'];
         $observacao = $_POST['obs'];
         $datacoleta = $_POST['datacoleta'];
-        $x = $interaction->insertEntrada($setor, $encomenda, $codigo, $remetente, $datacoleta,$observacao);
-        if ($x) {
+
+        $dados = array(
+            "setor"=>$_POST['setor'],
+            "encomenda"=>$_POST['encomenda'],
+            "codigo"=>$_POST['codigo'],
+            "remetente"=>$_POST['remetente'],
+            "observacao"=>$_POST['obs'],
+            "dcoleta"=>$_POST['datacoleta'],
+            "ipcomputador"=>$_SERVER['REMOTE_ADDR']
+        );
+        
+        $autorizacaoMudarTela = $interaction->insertEntrada($dados);
+        if ($autorizacaoMudarTela) {
             header('Location: index.php');
         }
     }

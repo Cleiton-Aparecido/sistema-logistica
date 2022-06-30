@@ -110,23 +110,37 @@ class registro
     {
         return $this->tabelaRegistro;
     }
-    private function inserirNovoRegistro($dados = array()){
-        // $this->sql->query("INSERT INTO registroencomenda 
-        // (codigo,remetente,idtipoencomenda,idusuario,datacoleta,idstatusentrega,idsetor,registroObservacao)
-        // VALUES ('$code','$remetente',$idencomenda,$idusuario,'$datacoleta',$idstatus,$idsetor,'$obs' );");
+    private function inserirNovoRegistro($dados){
         $this->sql->query("INSERT INTO registroencomenda SET
-                            codigo = '',
-                            remetente = '' ,
-                            idtipoencomenda =  (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = ''), 
-                            idusuario = (SELECT idusuario FROM usuario WHERE ipcomputador = '' ) , 
-                            registroObservacao = '', 
-                            datacoleta ='',
-                            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
-                            idsetor = (SELECT idsetor FROM setor WHERE descsetor = '');");
+        codigo = '".$dados['codigo']."',
+        remetente = '".$dados['remetente']."' ,
+        idtipoencomenda =  (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'), 
+        idusuario = (SELECT idusuario FROM usuario WHERE ipcomputador = '".$dados['ipcomputador']."' ) , 
+        registroObservacao = '".$dados['observacao']."', 
+        datacoleta ='".$dados['dcoleta']."',
+        idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
+        idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."');");
+    }
+    private function updateentrega($dados){
+        $this->sql->query("UPDATE registroencomenda SET 
+        dataentregasetor = '".$dados['dataentrega']."',
+        idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."')
+        WHERE idregistroenc = '".$dados['id']."';");
+    }
+    public function updateregistro($dados){
+        $this->updateentrega($dados);
     }
 
-    public function queryRegistro($id)
-    {
+    public function listGroupPendente(){
+        $resultado = $this->sql->select($this->getinfbanco()."
+        WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado'");
+        return $resultado;
+    }
+    public function insertregistro($dados){
+        $this->inserirNovoRegistro($dados);
+    }
+
+    public function queryRegistro($id){
         $resultado = $this->sql->select("SELECT *, 
         registroencomenda.idregistroenc AS id
         FROM registroencomenda
@@ -134,13 +148,11 @@ class registro
         INNER JOIN setor ON registroencomenda.idsetor=setor.idsetor
         INNER JOIN usuario ON registroencomenda.idusuario=usuario.idusuario
         INNER JOIN tipoencomenda ON registroencomenda.idtipoencomenda=tipoencomenda.idtipoencomenda
-        
         WHERE idregistroenc = " . $id . "");
 
         if (count($resultado) > 0) {
             $row = $resultado[0];
            
-
             $resultado = array(
                 "id" => $row['id'],
                 "ipcomputador"=>$row['ipcomputador'],
@@ -200,41 +212,7 @@ class registro
         AND registroencomenda.codigo = '" . $search . "'");
         return $resultado;
     }
-    public function listGroupPendente()
-    {
-
-        $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado'");
-        return $resultado;
-    }
-
-
-
-    public function insertregistro($code, $remetente, $idencomenda, $idusuario, $idsetor, $idstatus, $obs,$datacoleta)
-    {
-        // echo $code;
-        // echo '<br>';
-        // echo $remetente;
-        // echo '<br>';
-        // echo $idencomenda;
-        // echo '<br>';
-        // echo $idusuario;
-        // echo '<br>';
-        // echo $idsetor;
-        // echo '<br>';
-        // echo $idstatus;
-        // echo '<br>';
-        // echo $obs;
-        // echo '<br>';
-        // echo $datacoleta;
-        
-        $this->sql->query("INSERT INTO registroencomenda 
-        (codigo,remetente,idtipoencomenda,idusuario,datacoleta,idstatusentrega,idsetor,registroObservacao)
-        VALUES ('$code','$remetente',$idencomenda,$idusuario,'$datacoleta',$idstatus,$idsetor,'$obs' );");
-    }
-    public function updateregistro($status,$dataentrega,$id){
-        $this->sql->query("UPDATE registroencomenda SET dataentregasetor = '$dataentrega', idstatusentrega = $status
-        WHERE idregistroenc = $id;");
-    }
+    
+    
 
 }

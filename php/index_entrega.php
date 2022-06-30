@@ -6,7 +6,7 @@ if (!isset($_POST['dataentrega'])) {
     // echo '<script>alert("Paramentros inválidos")</script>';
     echo '';
 } else if (isset($_POST['dataentrega'])) {
-        // $interaction->alterarStatus($_POST['dataentrega'], $_POST['listagrupo'], $_POST['status']);
+
         $dados = filter_input_array(INPUT_POST,FILTER_DEFAULT);
         $interaction->alterarstatusentrega($dados);
         header('Location: index.php');

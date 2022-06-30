@@ -22,9 +22,6 @@ var callbackErro = function () {
     document.getElementById('form_new_js').innerHTML = 'A requisição realizada não foi encontrada no servidor. <br> <strong> Erro: 404'
 }
 
-
-
-
 function limpa_formulário_cep() {
     //Limpa valores do formulário de cep.
     document.getElementById('endereco').value = ("");
@@ -184,6 +181,80 @@ function alertainputclear(opcao){
     document.getElementById(opcao).style.borderColor = ""
     document.getElementById(opcao).style.borderWidth = "1px"
 };
-function statusadmin(){
-    console.log('teste');
+function loadingtble(){
+    
+
+    if(!document.getElementById('loading')) {
+        let imgLoading = document.createElement('img')
+        imgLoading.id = 'loading';
+        imgLoading.src = '../img/loading.gif';
+        imgLoading.className = 'rounded mx-auto d-block'
+        imgLoading.style.columnSpan = '10'
+        imgLoading.style.width= '70px';
+        document.getElementById('tabledados').appendChild(imgLoading)
+        document.getElementById('setor').disabled = true 
+        document.getElementById('buscar').disabled = true 
+        document.getElementById('datainicio').disabled = true 
+        document.getElementById('datafinal').disabled = true 
+        
+    }
 }
+function formantacaojquery() {
+    
+}
+
+function buscaBando(){
+    var setor = document.getElementById('setor').value
+    var buscar = document.getElementById('buscar').value
+    var datainicio = document.getElementById('datainicio').value
+    var datafinal = document.getElementById('datafinal').value
+
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { tipo: 'loadtable',setor:setor, buscar:buscar, datainicio:datainicio, datafinal:datafinal},
+        success: function (result) {
+            
+            $('#tabledados').html(result);
+            document.getElementById('setor').disabled = false 
+            document.getElementById('buscar').disabled = false 
+            document.getElementById('datainicio').disabled = false 
+            document.getElementById('datafinal').disabled = false 
+
+
+            $('#table_master').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+
+       
+            
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+            document.getElementById('setor').disabled = false 
+            document.getElementById('buscar').disabled = false 
+            document.getElementById('datainicio').disabled = false 
+            document.getElementById('datafinal').disabled = false 
+        }
+        
+
+    });
+    loadingtble();
+    
+
+}
+
+$(document).ready(function () {
+
+    $('#table_master').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+   
+
+}); 
