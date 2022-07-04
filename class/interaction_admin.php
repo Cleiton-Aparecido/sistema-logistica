@@ -21,30 +21,34 @@ class interaction_admin  extends interaction
             return 'btn-danger';
         }
     }
-    private function inserirnovosetor(){
-
-    }
+  
     
     // Imprimir lista menu
     private function impressList($conteudo,$tipoatt){
-        if($tipoatt == 'setor'){     
+        if($tipoatt == 'setor' || $tipoatt == 'encomenda'){     
             foreach($conteudo as $key => $value){
-                $iddescsetor = str_replace(' ','', $value['Nome']);
+                $iddescconteudo = str_replace(' ','', $value['nome']);
                 echo "<p class = 'item'>
-                        <span class='item_conteudo' >".$value['id']."  - ".$value['Nome']."</span> 
-                        <button class = 'btn ".$this->StyleStatus($value['status'])." status_item' name='setor'  
-                        value='".$value['Nome']."' id='".$iddescsetor."'  onclick='statusSetor(this.value,this.id);' > ".$value['status']."</button> 
+                        <span class='item_conteudo' >".$value['id']."  - ".$value['nome']."</span> 
+                        <button class = 'btn ".$this->StyleStatus($value['status'])." status_item' name='$tipoatt'  
+                        value='".$value['nome']."' id='".$iddescconteudo."'  onclick='status(this.value,this.id,this.name);' > ".$value['status']."</button> 
                     </p>";
             }   
         }
     }
+
     //REquisita informação no banco e manda imprimir no metodos impressList
-    public function setor(){
+    public function setorimprimir(){
         $listSetores = $this->objectSector->listSector();
         $this->impressList($listSetores,"setor");   
     }
+    public function encomendaimprimir(){
+        $listSetores = $this->encomenda->listatotal();
+        $this->impressList($listSetores,"encomenda");   
+    }
     //configuração de status setor
-    public function alteracaoDeStatus($Setor){
+    public function alteracaoDeStatusSetor($Setor){
+
         $statusSetor = $this->objectSector->statusSector($Setor);
         if($statusSetor == 'Ativo'){
             $this->objectSector->alterarStatus($Setor,'Desativo');
@@ -56,21 +60,54 @@ class interaction_admin  extends interaction
             echo $this->objectSector->statusSector($Setor);
         }
     }
-    public function VerificarParaInserir($setor){
-        if($setor == '' ||  $setor == ' '){
+
+    //configuração de status encomenda
+    public function alteracaoDeStatusEncomenda($encomenda){
+        $statusencomenda = $this->encomenda->statusencomenda($encomenda);
+        if($statusencomenda == 'Ativo'){
+            $this->encomenda->alterarStatusEncomenda($encomenda,'Desativo');
+            echo $this->encomenda->statusencomenda($encomenda);
+            
+        }
+        if($statusencomenda == 'Desativo'){
+            $this->encomenda->alterarStatusEncomenda($encomenda,'Ativo');
+            echo $this->encomenda->statusencomenda($encomenda);
+        }
+    }
+
+    public function VerificarParaInserir($conteudo,$item){
+        if($conteudo == '' ||  $conteudo == ' '){
             echo 'Campa Vazioooo!';
         }
         else{
-            if($this->objectSector->VerificarSetorExistente($setor)){
-                echo 'Setor já Existente';
+            $conteudo = strtoupper($conteudo);
+            if($item == 'setor'){
+                if($this->objectSector->VerificarSetorExistente($conteudo)){
+                    echo 'Setor já Existente';
+                }
+                else{
+                    $this->objectSector->inserirNOvoSetor($conteudo);
+                   echo 'Salvo com sucesso';           
+                }
             }
-            else{
-                $this->objectSector->inserirNOvoSetor($setor);
-               echo 'Salvo com sucesso';
+
+            if($item == 'encomenda'){
+                if($this->encomenda->verificarEncomendaExiste($conteudo)){
+                    echo 'Setor já Existente';
+                }
+                else{
+                    $this->encomenda->inserirNovaEncomenda($conteudo);
+                   echo 'Salvo com sucesso';           
+                }
             }
+
         }
         
         
     }
+
+    
+
+    
     
 }

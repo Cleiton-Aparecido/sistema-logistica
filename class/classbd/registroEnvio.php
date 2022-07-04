@@ -196,12 +196,41 @@ class registroEnvio
          $this->idusuariocodigo = $value;
      }
 
-    public function insertRegisterEnvio($tipoenvio,$status,$idusuario,$setor,$encomenda,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs){
+    public function insertRegisterEnvio($dados){
+  
         $comando = ("INSERT INTO
-         registroencomendaenviocorreio 
-         (idtipoEnvio,idusuarioNewRegistro,idstatusentrega,setorRemetente,idtipoencomenda,Nomefuncionario,cep,Endereco,numero,cidade,bairro,estado,complementarend,observacaoenvio) 
-         VALUES 
-        (".$tipoenvio.",".$idusuario.",$status,".$setor.",".$encomenda.",'".$func."','".$cep."','".$rua."','".$num."','".$cidade."','".$bairro."','".$uf."','".$complementar."','".$obs."')"); 
+        registroencomendaenviocorreio 
+        (idtipoEnvio,
+        idusuarioNewRegistro,
+        idstatusentrega,
+        setorRemetente,
+        idtipoencomenda,
+        Nomefuncionario,
+        cep,
+        Endereco,
+        numero,
+        cidade,
+        bairro,
+        estado,
+        complementarend,
+        observacaoenvio) 
+        VALUES 
+        ((SELECT idtipoEnvio FROM tipoenvio WHERE desctipoEnvio = '".$dados['tipoenvio']."'),
+        (SELECT idusuario FROM usuario WHERE ipcomputador = '".$dados['ipcomputador']."'),
+        (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
+        (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."'),
+        (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'),
+        '".$dados['funcionario']."',
+        '".$dados['cep']."',
+        '".$dados['endereco']."',
+        '".$dados['num']."',
+        '".$dados['cidade']."',
+        '".$dados['bairro']."',
+        '".$dados['uf']."',
+        '".$dados['complementar']."',
+        '".$dados['obs']."'
+        )");
+
         var_dump($comando);
         $this->sql->query($comando);
        
@@ -345,13 +374,22 @@ class registroEnvio
             "UsuarioQueRealizouAPostagem"=>$this->getidusuariocodigo()
         );
     }
-    public function AtualizaCodigoRementeEncomendaData($id,$status,$codigo,$data,$obs){
+    public function AtualizaCodigoRementeEncomendaData($dados){
+        var_dump($dados);
+        if($dados['datapostagem'] == ""){
         $comando = ("UPDATE registroencomendaenviocorreio SET 
-        idstatusentrega = '$status',
-        codigopostagem = '$codigo',
-        datapostagem = '$data',
-        observacaoenvio = '$obs'
-        WHERE idRegistroEncomendaEnvioCorreio = $id"); 
+        idstatusentrega = '(SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' )',
+        codigopostagem = '".$dados['codigo']."',
+        observacaoenvio = '".$dados['obs']."'
+        WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].""); 
+        }else{
+            $comando = ("UPDATE registroencomendaenviocorreio SET 
+            idstatusentrega = '(SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' )',
+            codigopostagem = '".$dados['codigo']."',
+            datapostagem = '".$dados['datapostagem']."',
+            observacaoenvio = '".$dados['obs']."'
+            WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].""); 
+        }
        $this->sql->query($comando);
    }
 

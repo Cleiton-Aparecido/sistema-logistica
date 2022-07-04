@@ -121,16 +121,15 @@ class registro
         idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
         idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."');");
     }
-    private function updateentrega($dados){
+    private function updatestatusentrega($dados){
         $this->sql->query("UPDATE registroencomenda SET 
         dataentregasetor = '".$dados['dataentrega']."',
         idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."')
         WHERE idregistroenc = '".$dados['id']."';");
     }
     public function updateregistro($dados){
-        $this->updateentrega($dados);
+        $this->updatestatusentrega($dados);
     }
-
     public function listGroupPendente(){
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado'");
@@ -172,8 +171,7 @@ class registro
 
         return $resultado;
     }
-    public function listDateQueryRegistro($datestart, $dateend)
-    {
+    public function listDateQueryRegistro($datestart, $dateend){
 
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE registroencomenda.dataregistro 

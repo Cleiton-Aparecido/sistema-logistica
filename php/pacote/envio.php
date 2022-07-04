@@ -10,12 +10,13 @@ $interaction = new interaction();
 <div class="container_from">
     <h3 class="titulo_menu" style="text-align: center;">Envio de Encomenda</h3>
 </div>
+
 <div class="container_from ">
     <label for="setor">Setor:</label>
     <span id="setoralerta"></span>
     <select class="form-control input_style" name="setor" id="setor" onblur="alertainputclear(this.name)">
         <option value="null">Escolha </option>
-        < ?php $interaction->listasetoropcoes('ativo'); ?>
+        <?php $interaction->listasetoropcoes('ativo'); ?>
     </select>
 </div>
 <div class="container_from ">

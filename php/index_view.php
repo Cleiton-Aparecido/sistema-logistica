@@ -8,13 +8,14 @@ if ($_POST) {
     if($_GET['type'] = 's'){
         $dados = array(
             "id"=>$_GET['cod'],
-            "Status"=>$_POST['status'],
+            "status"=>$_POST['status'],
             "codigo"=>$_POST['codigo'],
             "datapostagem"=>$_POST['datapostagem'],
             "obs"=>$_POST['obs']
         );
-        $interaction->SalvaRegistroEnvio($_GET['cod'],$_POST['status'],$_POST['codigo'],$_POST['datapostagem'],$_POST['obs']);
-        header('Location: index_envio.php');
+        
+        $interaction->SalvaRegistroEnvio($dados);
+        // header('Location: index_envio.php');
     }
 }
 

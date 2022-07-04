@@ -82,27 +82,42 @@ $interaction->acessos('admin');
             <article class="container_item">
                 <h4>Setores</h4>
                 <div id='formsetor' class = 'container_item_interno'>
-        
                 </div>
                 <Form action="" method="post" id='form_new_setor'>
                     <label for="setornew">Adicionar novo Setor</label>
                     <input type="text" class="form-control" id="setornew"  name="setornew">
                     <input type="hidden" name="type" id="type" value="setor">
-                    <input type="button" value="Salvar" id="salvarSetor" class="btn btn-primary buttons">
+                    <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons">
                 </Form>
                 <div id="resultSector" style="color: green; font-size:20px;">
                     
                 </div>
             </article>
             <article class="container_item">
+                <h4>Tipo Encomenda</h4>
+                <div id='formencomenda' class = 'container_item_interno'>
+        
+                </div>
+                <Form action="" method="post" id='form_new_encomenda'>
+                    <label for="encomendanew">Adicionar novo Tipo de Encomenda</label>
+                    <input type="text" class="form-control" id="encomendanew"  name="encomendanew">
+                    <input type="hidden" name="type" id="type" value="encomenda">
+                    <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons">
+                </Form>
+
+                <div id="resultencomenda" style="color: green; font-size:20px;">
+                </div>
+            </article>
+            <article class="container_item">
                 <h4>Usuario</h4>
      
             </article>
-          
             <article class="container_item">
                 <h4>Tipo de Envio</h4>
      
             </article>
+            
+            
         </section>
        
         

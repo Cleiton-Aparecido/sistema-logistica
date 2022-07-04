@@ -46,20 +46,9 @@ if (!isset($_POST['dataentrega'])) {
         <?php include('../css/style.css');   ?>
     </style>
     <script>
-        <?php include('../js/javascripts.js');   ?>
-
-        	
+        <?php include('../js/javascripts.js');   ?> 	
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#table_master').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
-    </script>
+   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 

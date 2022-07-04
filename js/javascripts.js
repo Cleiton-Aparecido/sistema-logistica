@@ -215,21 +215,13 @@ function buscaBando(){
         data: { tipo: 'loadtable',setor:setor, buscar:buscar, datainicio:datainicio, datafinal:datafinal},
         success: function (result) {
             
+           
             $('#tabledados').html(result);
             document.getElementById('setor').disabled = false 
             document.getElementById('buscar').disabled = false 
             document.getElementById('datainicio').disabled = false 
             document.getElementById('datafinal').disabled = false 
-
-
-            $('#table_master').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-
-       
+                  
             
         },
         error: function () {
@@ -250,11 +242,13 @@ function buscaBando(){
 $(document).ready(function () {
 
     $('#table_master').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+    
+    
+    });
    
 
 }); 

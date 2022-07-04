@@ -5,14 +5,8 @@ $interaction = new interaction();
 $x = false; 
 if ($_POST) {
     if($_POST['tiporegistro'] == 'entrada'){
-        $setor = $_POST['setor'];
-        $encomenda = $_POST['encomenda'];
-        $codigo = $_POST['codigo'];
-        $remetente = $_POST['remetente'];
-        $observacao = $_POST['obs'];
-        $datacoleta = $_POST['datacoleta'];
-
-        $dados = array(
+      
+        $dadosentrada = array(
             "setor"=>$_POST['setor'],
             "encomenda"=>$_POST['encomenda'],
             "codigo"=>$_POST['codigo'],
@@ -22,25 +16,30 @@ if ($_POST) {
             "ipcomputador"=>$_SERVER['REMOTE_ADDR']
         );
         
-        $autorizacaoMudarTela = $interaction->insertEntrada($dados);
+        $autorizacaoMudarTela = $interaction->insertEntrada($dadosentrada);
         if ($autorizacaoMudarTela) {
             header('Location: index.php');
         }
     }
     if($_POST['tiporegistro'] == 'envio'){
-        $setor = $_POST['setor'];
-        $encomenda = $_POST['encomenda'];
-        $tipoenvio = $_POST['tipoenvio'];
-        $func = $_POST['func'];
-        $rua = $_POST['endereco'];
-        $cep = $_POST['cepenvio'];
-        $num = $_POST['num'];
-        $bairro = $_POST['bairro'];
-        $cidade = $_POST['cidade'];
-        $uf = $_POST['uf'];
-        $complementar = $_POST['complementar'];
-        $obs = $_POST['obs'];
-        $x = $interaction->insertEnvio($setor,$encomenda,$tipoenvio,$func,$cep,$rua,$num,$bairro,$cidade,$uf,$complementar,$obs);
+       
+        $dadosenvio = array(
+            "setor"=>$_POST['setor'],
+            "encomenda"=>$_POST['encomenda'],
+            "tipoenvio"=>$_POST['tipoenvio'],
+            "funcionario"=>$_POST['func'],
+            "ipcomputador"=>$_SERVER['REMOTE_ADDR'],
+            "endereco"=>$_POST['endereco'],
+            "cep"=>$_POST['cepenvio'],
+            "num"=>$_POST['num'],
+            "bairro"=>$_POST['bairro'],
+            "cidade"=> $_POST['cidade'],
+            "uf"=>$_POST['uf'],
+            "complementar"=>$_POST['complementar'],
+            "obs"=>$_POST['obs']
+        );
+
+        $x = $interaction->insertEnvio($dadosenvio);
         if ($x) {
             header('Location: index_envio.php');
         }

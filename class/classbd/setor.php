@@ -57,7 +57,7 @@ class setor{
         foreach ($resultado as $row) {
            array_push($dados,array(
                 "id"=>$row['idsetor'],
-                "Nome"=>$row['descsetor'],
+                "nome"=>$row['descsetor'],
                 "status"=>$row['descStatus']
            ));
         }
@@ -104,10 +104,12 @@ class setor{
         return $list;
     }
     public function listSectordescAtivo(){ 
+        $this->listSectorG();
+
         $list = array();
         foreach ($this->getlistasetores() as $row) {
             if($row['status'] == 'Ativo'){
-                array_push($list,$row['Nome']);
+                array_push($list,$row['nome']);
             }
         }
         return $list;

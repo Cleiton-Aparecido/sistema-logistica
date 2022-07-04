@@ -1,63 +1,72 @@
-function loadingsetor(){
-    if(!document.getElementById('loading')) {
+function loading(typetable) {
+    if (!document.getElementById('loading')) {
         let imgLoading = document.createElement('img')
         imgLoading.id = 'loading';
         imgLoading.src = '../img/loading.gif';
         imgLoading.className = 'rounded mx-auto d-block'
-        imgLoading.style.width= '70px';
-        document.getElementById('formsetor').appendChild(imgLoading)
-        document.getElementById('setornew').disabled = true 
-        document.getElementById('salvarSetor').disabled = true 
-        
+        imgLoading.style.width = '70px';
+        document.getElementById('form' + typetable).appendChild(imgLoading);
+        document.getElementById(typetable + 'new').disabled = true;
+        document.getElementById('salvar' + typetable).disabled = true;
     }
 }
 
-function statusSetor(setor, idsetor) {
+
+function loadtable(typetable) {
+
+    let imgLoading = document.createElement('img')
+    imgLoading.id = 'loading';
+    imgLoading.src = '../img/loading.gif';
+    imgLoading.className = 'rounded mx-auto d-block'
+    imgLoading.style.width = '70px';
+    document.getElementById('form' + typetable).appendChild(imgLoading);
     $.ajax({
         type: "POST",
         url: "AdminSetting.php",
-        data: { setor: setor, tipo: 'statusSetor' },
+        data: { tipo: 'atttable' + typetable },
         success: function (result) {
-            $('#' + idsetor).html(result);
-            loadtable();
-
+            $('#form' + typetable).html(result);
+            document.getElementById(typetable + 'new').disabled = false
+            document.getElementById('salvar' + typetable).disabled = false
         },
         error: function () {
             console.log('Erro ao Atualizar');
-        }
-
-    });
-
-
-}
-
-function loadtable() {
-    $.ajax({
-        type: "POST",
-        url: "AdminSetting.php",
-        data: { tipo: 'atttablesetor' },
-        success: function (result) {
-            $('#formsetor').html(result);
-            document.getElementById('setornew').disabled = false 
-            document.getElementById('salvarSetor').disabled = false 
+            document.getElementById(typetable + 'new').disabled = false
+            document.getElementById('salvar' + typetable).disabled = false
         },
-        error: function () {
-            console.log('Erro ao Atualizar');
-            document.getElementById('setornew').disabled = false 
-            document.getElementById('salvarSetor').disabled = false 
-        }
     });
-    loadingsetor();
     
 }
 
+function status(value, id,type) {
+    var item = "status" + type;
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { value: value, tipo: item },
+        success: function (result) {
+            $('#' + id).html(result);
+            loadtable(type);
+
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+        }
+    });
+}
+
+
+
 $(document).ready(function () {
-    loadtable();
-    $("#salvarSetor").on("click", function () {
+    loadtable('encomenda');
+    loadtable('setor');
+
+    // Adicionar novo setor
+    $("#salvarsetor").on("click", function () {
         var NewSetor = $('#setornew').val();
         var type = 'setornovo';
         if (NewSetor == '' || NewSetor == ' ') {
-            $("#resultSector").html('Campo Vazio');
+            $("#resultSector").html('Campo Vazioo');
             setTimeout(function () {
                 $("#resultSector").html('');
             }, 3000);
@@ -71,7 +80,7 @@ $(document).ready(function () {
                 success: function (result) {
                     $("#resultSector").html(result);
                     $('#form_new_setor').trigger("reset");
-                    loadtable();
+                    loadtable('setor');
                     setTimeout(function () {
                         $("#resultSector").html('');
 
@@ -79,6 +88,39 @@ $(document).ready(function () {
                 },
                 error: function () {
                     $("#resultSector").html('Deu ruim');
+
+                }
+            });
+        }
+
+    });
+
+    // Adicionar nova encomenda
+    $("#salvarencomenda").on("click", function () {
+        var Newencomenda = $('#encomendanew').val();
+        var type = 'encomendanovo';
+        if (Newencomenda == '' || Newencomenda == ' ') {
+            $("#resultencomenda").html('Campo Vazio');
+            setTimeout(function () {
+                $("#resultencomenda").html('');
+            }, 3000);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "AdminSetting.php",
+                data: { Newencomenda: Newencomenda, tipo: type },
+                success: function (result) {
+                    $("#resultencomenda").html(result);
+                    $('#form_new_encomenda').trigger("reset");
+                    loadtable('encomenda');
+                    setTimeout(function () {
+                        $("#resultencomenda").html('');
+
+                    }, 4000);
+                },
+                error: function () {
+                    $("#resultencomenda").html('Deu ruim');
 
                 }
             });

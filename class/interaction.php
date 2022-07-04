@@ -61,20 +61,14 @@ class interaction
     }
 
     #dados que estão entrando na empresa
-    public function insertEnvio($setor, $encomenda,$tipoenvio, $func, $cep, $rua, $num, $bairro, $cidade, $uf, $complementar, $obs){
+    public function insertEnvio($dados){
         $salva = false;
 
-        if (strlen($rua) == 0 || strlen($cidade) == 0 || strlen($bairro) == 0 || strlen($num) == 0 || strlen($func) == 0 || strlen($cep) == 0 || $setor == 'null' || $encomenda == 'null' || $uf == 'null' || $tipoenvio == 'null') {
+        if (strlen($dados['endereco']) == 0 || strlen($dados['cidade']) == 0 || strlen($dados['bairro']) == 0 || strlen($dados['num']) == 0 || strlen($dados['funcionario']) == 0 || strlen($dados['cep']) == 0 || $dados['setor'] == 'null' || $dados['encomenda'] == 'null' || $dados['uf'] == 'null' || $dados['tipoenvio'] == 'null') {
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
-        } else {
-            echo 'teste';
-            $idusuario = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-            $idencomenda = $this->encomenda->Searchcencomenda($encomenda);
-            $idsetor = $this->objectSector->SearchSector($setor);
-            $status = $this->statusentrega->Searchcstatusentrega("Pendente");
-            $tipoenvio = $this->objectEnvio->Searchctipoenvio($tipoenvio);
-            $this->RegistroEnvioEncomenda->insertRegisterEnvio($tipoenvio,$status,$idusuario['idusuario'], $idsetor, $idencomenda, $func, $cep, $rua, $num, $bairro, $cidade, $uf, $complementar, $obs);
+        } else {            
+            $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
             $salva = true;
         }
         return $salva;
@@ -163,10 +157,13 @@ class interaction
                         }
                     } else if ($key == 'descstatusentrega') {
                         if ($value == 'Pendente') {
-                            echo '<td ><span class="badge badge-danger status">' .  $value . '</span></td>';
+                            echo '<td ><span class="badge badge-info status">' .  $value . '</span></td>';
                         } else if ($value == 'Entregue') {
                             echo '<td ><span class="badge badge-success status">' . $value . '</span></td>';
                         } else if ($value == 'Negado') {
+                            echo '<td ><span class="badge badge-danger status">' . $value . '</span></td>';
+                        }
+                        else{
                             echo '<td ><span class="badge badge-warning status">' . $value . '</span></td>';
                         }
                     } else {
@@ -201,8 +198,7 @@ class interaction
     #consultar lista de coleta de item
     public function SearchRelatorio($sector, $busca, $DateStart, $DateEnd)
     {
-    
-        
+       
         #Busca para todos setores e com codigo expecifico
         if (($sector == 'all') && (strlen($busca) > 0)) {
             $x = $this->objectRegister->listDateCodeQuery($busca, $DateStart, $DateEnd);
@@ -287,8 +283,8 @@ class interaction
       
     }
 
-    public function SalvaRegistroEnvio($id,$status,$codigo,$data,$obs){
-        $status = $this->statusentrega->Searchcstatusentrega($status);
+    public function SalvaRegistroEnvio($dados){
+        // $status = $this->statusentrega->Searchcstatusentrega($status);
         // echo $id . '<br>';
         // echo $status . '<br>';
         // echo $codigo . '<br>';
@@ -297,7 +293,7 @@ class interaction
         // echo $obs . '<br>';
 
         if($this->nivelusuario == 1 || $this->nivelusuario == 2  || $this->nivelusuario == 3 ){
-            $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($id,$status,$codigo,$data,$obs);
+            $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($dados);
 
         }
         else{
