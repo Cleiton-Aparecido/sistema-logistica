@@ -83,8 +83,7 @@ class setor{
     public function statusSector($setor){
         $this->setorSeach($setor);
         return $this->getstatusAtivacao();
-    }
-   
+    } 
     // Verificar se o setor que será adionado já existe
     public function VerificarSetorExistente($setor){
         $this->setorSeach($setor);
@@ -99,7 +98,7 @@ class setor{
     public function listSectordesc(){ 
         $list = array();
         foreach ($this->getlistasetores() as $row) {
-                array_push($list,$row['Nome']);
+                array_push($list,$row['nome']);
         }
         return $list;
     }

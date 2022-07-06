@@ -115,6 +115,7 @@ header#cabecalho_master div#cabecalho {
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 
@@ -126,6 +127,7 @@ header#cabecalho_master div#cabecalho {
     min-width: 400px;
     margin: auto auto;
     margin-top: 10px;
+    margin-bottom: 20px;
     padding: 10px;
     display: flex;
     justify-content: space-around;
@@ -143,6 +145,15 @@ header#cabecalho_master div#cabecalho {
     margin: 10px;
     padding: 5px;
 }
+.container_item_usuario{
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    width: 90%;
+    min-width: 300px;
+    margin: 10px;
+    padding: 5px;
+}
+
 .container_item:hover{
    background-color: rgba(215, 169, 243, 0.094);
 }
@@ -150,7 +161,7 @@ header#cabecalho_master div#cabecalho {
     
     padding: 5px;
 }
-.container_item_interno p{
+.container_item_interno .item{
     border-bottom: 1px solid rgb(0, 0, 0);
 }
 .item{
@@ -159,3 +170,39 @@ header#cabecalho_master div#cabecalho {
     padding: 2px;
     justify-content: space-between;
 }
+.titulo_menu_input{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.titulo_container{
+    font-size: 1.6em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+}
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 1em;
+    text-align: center;
+    border-width: 0px 1px ;
+    border-color: black;
+    border-style: solid;
+    padding: 5px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.cabecalho-grid{
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+
+}
+

@@ -29,7 +29,6 @@ class interaction
             return false;
         }
     }
-    
     public function acessos($typeAcess){
         if($typeAcess == 'admin'){
             if(!$this->acessoAdmin()){
@@ -38,7 +37,6 @@ class interaction
             }
         }  
     }
-  
     public function insertEntrada($dados){
 
         $salva = false;
@@ -59,7 +57,6 @@ class interaction
         }
         return $salva;
     }
-
     #dados que estão entrando na empresa
     public function insertEnvio($dados){
         $salva = false;
@@ -73,10 +70,8 @@ class interaction
         }
         return $salva;
     }
-
     #Toda vez que um usuario novo loga no sistema, o ip fica salvo
-    public function IpSearch()
-    {
+    public function IpSearch(){
         $x = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
         if ($x['nome'] == '') {
             echo 'Não encontrado';
@@ -95,8 +90,15 @@ class interaction
         }
         $this->impressoption($x);
     }
-    public function listatipodeenvio(){
-        $x = $this->objectEnvio->listctipoenvio();
+    public function listatipodeenvio($status){
+
+        if($status == 'ativo'){
+            $x = $this->objectEnvio->listctipoenvioAtivo();
+        }else if($status == 'Geral'){
+            $x = $this->objectEnvio->listctipoenvio();
+        }
+        
+
         $this->impressoption($x);
     }
     public function grupopendente(){
@@ -107,18 +109,24 @@ class interaction
         $lista = $this->statusentrega->listcstatusentrega();
         $this->impressoption($lista);
     }
-    public function listaencomenda(){
-        $lista = $this->encomenda->listcencomenda();
+    public function listaencomenda($type){
+        if ($type == 'ativo') {
+            $lista = $this->encomenda->listcencomendaAtivo();
+        }
+        else if($type == "Geral"){
+            $lista = $this->encomenda->listcencomenda();
+        
+        }
+        
         $this->impressoption($lista);
     }
     public function impressoption($x){
-        foreach ($x as $row) {
+        foreach ($x as $row){
             echo '<option value="' . $row . '">' . $row . '</option>';
         }
     }
     #imprime a lista de registros
-    public function impress($x, $s)
-    {
+    public function impress($x, $s){
         if (count($x) == 0) {
             echo '<tr>
             
@@ -196,8 +204,7 @@ class interaction
         }
     }
     #consultar lista de coleta de item
-    public function SearchRelatorio($sector, $busca, $DateStart, $DateEnd)
-    {
+    public function SearchRelatorio($sector, $busca, $DateStart, $DateEnd){
        
         #Busca para todos setores e com codigo expecifico
         if (($sector == 'all') && (strlen($busca) > 0)) {
@@ -235,9 +242,7 @@ class interaction
         }
         $this->impress($x, 's');
     }
-
-    public function listagrupopendente()
-    {
+    public function listagrupopendente(){
         $listaPendente = $this->objectRegister->listGroupPendente();
         $this->impress($listaPendente, 'ee');
     }
@@ -247,7 +252,7 @@ class interaction
             echo '<a href="index_Admin.php" class="btn btn-light buttons">Administrador</a>';
         }
     }
-   
+    // Alterar status de POS que chegou do ROSARIO para os Setores
     public function alterarstatusentrega($dados){
         $idregistro = array();
 
@@ -282,17 +287,9 @@ class interaction
 
       
     }
-
+    //Alterar informações do registro das encomendas que foi enviada para setor de correios para realizar o envio
     public function SalvaRegistroEnvio($dados){
-        // $status = $this->statusentrega->Searchcstatusentrega($status);
-        // echo $id . '<br>';
-        // echo $status . '<br>';
-        // echo $codigo . '<br>';
-        // echo $data . '<br>';
-        // echo $encomenda . '<br>';
-        // echo $obs . '<br>';
-
-        if($this->nivelusuario == 1 || $this->nivelusuario == 2  || $this->nivelusuario == 3 ){
+            if($this->nivelusuario == 1 || $this->nivelusuario == 2  || $this->nivelusuario == 3 ){
             $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($dados);
 
         }

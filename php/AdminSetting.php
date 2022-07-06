@@ -13,11 +13,18 @@ use function PHPSTORM_META\type;
             $interactionadmin->VerificarParaInserir($_POST['Newencomenda'],'encomenda');   
             
         }
+        else if( $_POST['tipo'] == 'transportenovo'){
+           $interactionadmin->VerificarParaInserir($_POST['Newtransporte'],'transporte');  
+            
+        }
         else if($_POST['tipo'] == 'statussetor'){
             $interactionadmin->alteracaoDeStatusSetor($_POST['value']);
         }
         else if($_POST['tipo'] == 'statusencomenda'){
            $interactionadmin->alteracaoDeStatusEncomenda($_POST['value']);
+        }
+        else if($_POST['tipo'] == 'statustransporte'){
+            $interactionadmin->alteracaoDeStatustransporte($_POST['value']);
         }
         else if($_POST['tipo'] == 'atttablesetor'){
             $interactionadmin->setorimprimir();
@@ -25,10 +32,15 @@ use function PHPSTORM_META\type;
         else if($_POST['tipo'] == 'atttableencomenda'){
             $interactionadmin->encomendaimprimir();
         }
-        else if( $_POST['tipo'] == 'loadtable'){
-            echo $interaction->SearchRelatorio($_POST['setor'], $_POST['buscar'],  $_POST['datainicio'], $_POST['datafinal']);
+        else if($_POST['tipo'] == 'atttabletransporte'){
+           $interactionadmin->tipoenvioimprimir();
         }
-       
+        else if($_POST['tipo'] == 'atttableusuario'){
+            $interactionadmin->tabelausuario();
+         }
+        // else if( $_POST['tipo'] == 'loadtable'){
+            // echo $interaction->SearchRelatorio($_POST['setor'], $_POST['buscar'],  $_POST['datainicio'], $_POST['datafinal']);
+        // }
        
     }
     else{

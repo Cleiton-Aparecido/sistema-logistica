@@ -11,7 +11,6 @@ function loading(typetable) {
     }
 }
 
-
 function loadtable(typetable) {
 
     let imgLoading = document.createElement('img')
@@ -20,6 +19,7 @@ function loadtable(typetable) {
     imgLoading.className = 'rounded mx-auto d-block'
     imgLoading.style.width = '70px';
     document.getElementById('form' + typetable).appendChild(imgLoading);
+    
     $.ajax({
         type: "POST",
         url: "AdminSetting.php",
@@ -33,6 +33,31 @@ function loadtable(typetable) {
             console.log('Erro ao Atualizar');
             document.getElementById(typetable + 'new').disabled = false
             document.getElementById('salvar' + typetable).disabled = false
+        },
+    });
+    
+}
+
+function loadtableUsuario(typetable) {
+
+    let imgLoading = document.createElement('img')
+    imgLoading.id = 'loading';
+    imgLoading.src = '../img/loading.gif';
+    imgLoading.className = 'rounded mx-auto d-block'
+    imgLoading.style.width = '70px';
+    document.getElementById('form' + typetable).appendChild(imgLoading);
+    
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { tipo: 'atttable' + typetable },
+        success: function (result) {
+            $('#form' + typetable).html(result);
+            
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+    
         },
     });
     
@@ -55,11 +80,11 @@ function status(value, id,type) {
     });
 }
 
-
-
 $(document).ready(function () {
     loadtable('encomenda');
     loadtable('setor');
+    loadtable('transporte');
+    loadtableUsuario('usuario');
 
     // Adicionar novo setor
     $("#salvarsetor").on("click", function () {
@@ -121,6 +146,39 @@ $(document).ready(function () {
                 },
                 error: function () {
                     $("#resultencomenda").html('Deu ruim');
+
+                }
+            });
+        }
+    });
+
+     // Adicionar nova transporte
+     $("#salvartransporte").on("click", function () {
+        var Newtransporte = $('#transportenew').val();
+        var type = 'transportenovo';
+        console.log(Newtransporte,'/n',type)
+        if (Newtransporte == '' || Newtransporte == ' ') {
+            $("#resulttransporte").html('Campo Vazio');
+            setTimeout(function () {
+                $("#resulttransporte").html('');
+            }, 3000);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "AdminSetting.php",
+                data: { Newtransporte: Newtransporte, tipo: type },
+                success: function (result) {
+                    $("#resulttransporte").html(result);
+                    $('#form_new_transporte').trigger("reset");
+                    loadtable('transporte');
+                    setTimeout(function () {
+                        $("#resulttransporte").html('');
+
+                    }, 40000);
+                },
+                error: function () {
+                    $("#resulttransporte").html('Deu ruim');
 
                 }
             });

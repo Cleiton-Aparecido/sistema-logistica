@@ -4,7 +4,7 @@ class encomenda{
     private $idencomenda;
     private $descencomenda;
     private $status;
-    private $listaGEralEncomenda;
+    private $listaGEralEncomenda = array();
 
     private $sql = array();
 
@@ -41,16 +41,30 @@ class encomenda{
     public function setlistaGEralEncomenda($value){
         $this->listaGEralEncomenda = $value;
     }
+
+    private function encomendasAtivas(){
+        $resultado = $this->sql->select("SELECT * FROM tipoencomenda
+        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = tipoencomenda.statusAtivo
+        where descStatus = 'Ativo'");
+        $list = array();
+        if (count($resultado)>0) {
+            foreach ($resultado as $row) {
+                array_push($list,array("id"=>$row['idtipoencomenda'],
+                                        "nome"=>$row['desctipoencomenda'],
+                                        "status"=>$row['descStatus']
+                                        ));
+            }
+        }
+        $this->setlistaGEralEncomenda($list);
+    }
     public function inserirNovaEncomenda($encomenda){
         $comando = "INSERT INTO tipoencomenda SET desctipoencomenda = '$encomenda', statusAtivo = (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo')";
         $this->sql->query($comando);
     }
-
     public function alterarStatusEncomenda($encomenda,$status){
         $comando = "UPDATE tipoencomenda SET statusAtivo =  (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = '$status')  WHERE desctipoencomenda = '$encomenda';";
         $this->sql->query($comando);
     }
-
     private function searchencomenda($descricao){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda 
         INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = tipoencomenda.statusAtivo
@@ -64,7 +78,6 @@ class encomenda{
         }
 
     }
-
     public function statusencomenda($encomenda){
         $this->searchencomenda($encomenda);
         return $this->getstatus();
@@ -101,6 +114,19 @@ class encomenda{
         $this->SelectGeralnome();
         return $this->getlistaGEralEncomenda();
     }
+    //retorna lista de opções de encomendas que estão somente ativo
+    public function listcencomendaAtivo(){
+        $this->encomendasAtivas();
+        $list = array();
+        foreach ($this->getlistaGEralEncomenda() as $row) {
+            if($row['status'] == 'Ativo'){
+                array_push($list,$row['nome']);
+            }
+        }
+
+        return $list;
+    }
+
     // bucar o id de um encomenda atravez do nome
     public function idencomenda($cencomenda){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda

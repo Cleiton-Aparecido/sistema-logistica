@@ -15,7 +15,7 @@ if ($_POST) {
         );
         
         $interaction->SalvaRegistroEnvio($dados);
-        // header('Location: index_envio.php');
+        header('Location: index.php');
     }
 }
 

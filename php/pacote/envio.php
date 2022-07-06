@@ -2,6 +2,7 @@
 require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
 $interaction = new interaction();
+
 ?>
 <script>
     <?php include('../js/javascripts.js');   ?>
@@ -24,7 +25,7 @@ $interaction = new interaction();
     <span id="encomendaalerta"></span>
     <select class="form-control input_style" name="encomenda" id="encomenda" onblur="alertainputclear(this.name)">
         <option value="null">Escolha </option>
-        <?php $interaction->listaencomenda(); ?>
+        <?php $interaction->listaencomenda('ativo'); ?>
     </select>
 </div>
 <div class="container_from ">
@@ -32,7 +33,7 @@ $interaction = new interaction();
     <span id="tipoenvioalerta"></span>
     <select class="form-control input_style" name="tipoenvio" id="tipoenvio" onblur="alertainputclear(this.name)">
         <option value="null">Escolha </option>
-        <?php $interaction->listatipodeenvio(); ?>
+        <?php $interaction->listatipodeenvio('ativo'); ?>
     </select>
 </div>
 <div class="container_from">

@@ -375,20 +375,20 @@ class registroEnvio
         );
     }
     public function AtualizaCodigoRementeEncomendaData($dados){
-        var_dump($dados);
         if($dados['datapostagem'] == ""){
+        
         $comando = ("UPDATE registroencomendaenviocorreio SET 
-        idstatusentrega = '(SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' )',
+        idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' ),
         codigopostagem = '".$dados['codigo']."',
         observacaoenvio = '".$dados['obs']."'
-        WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].""); 
+        WHERE idRegistroEncomendaEnvioCorreio = '".$dados['id']."';"); 
         }else{
             $comando = ("UPDATE registroencomendaenviocorreio SET 
-            idstatusentrega = '(SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' )',
+            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."'),
             codigopostagem = '".$dados['codigo']."',
             datapostagem = '".$dados['datapostagem']."',
             observacaoenvio = '".$dados['obs']."'
-            WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].""); 
+            WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].";"); 
         }
        $this->sql->query($comando);
    }

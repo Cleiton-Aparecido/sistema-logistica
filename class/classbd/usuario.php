@@ -2,6 +2,7 @@
 
 class usuario
 {
+    private $listausuario = array();
     private $idusuario;
     private $nome;
     private $ipcomputador;
@@ -13,11 +14,19 @@ class usuario
     {
         $this->sql = new sql();
     }
+    private function getlistausuario()
+    {
+        return $this->listausuario;
+    }
+    private function setlistausuario($value)
+    {
+        $this->listausuario = $value;
+    }
+
     private function getidusuario()
     {
         return $this->idusuario;
     }
-
     private function setidusuario($value)
     {
         $this->idusuario = $value;
@@ -59,13 +68,11 @@ class usuario
         $this->setoruser = $value;
     }
 
-    private function insertIpNew($ip)
-    {
+    private function insertIpNew($ip){
         $this->sql->query("INSERT INTO usuario (nome,ipcomputador,nivel) 
-        VALUES ('" . $ip . "','" . $ip . "',3);");
+        VALUES ('" . $ip . "','" . $ip . "',1);");
     }
-    private function searchIp($ip)
-    {
+    private function searchIp($ip){
 
         $resultado = $this->sql->select("SELECT * FROM usuario 
         LEFT JOIN setor ON setor.idsetor = usuario.idsetor
@@ -75,11 +82,8 @@ class usuario
         return $resultado;
     }
 
-    public function loadByIdUsuario($ip)
-    {
+    public function loadByIdUsuario($ip){
         $resultado = $this->searchIp($ip);
-
-
 
         if (count($resultado) == 0) {
             $this->insertIpNew($ip);
@@ -105,9 +109,34 @@ class usuario
             "setor" => $this->getsetoruser()
         );
     }
-    public function level($ip)
-    {
+    public function level($ip){
         $dados = $this->loadByIdUsuario($ip);
         return $dados['nivel'];
+    }
+
+    private function listatodosusuarios(){
+        $lista = array();
+        $resultado = $this->sql->select("SELECT * FROM usuario 
+        LEFT JOIN setor ON setor.idsetor = usuario.idsetor");
+
+        foreach ($resultado as $row) {
+            if(!isset($row['descsetor'])){
+                $row['descsetor'] = 'sem setor';
+            }else{
+                $this->setsetoruser($row['descsetor']);
+            }
+            array_push($lista,array("id"=>$row['idusuario'],
+                                    "nome" => $row['nome'],
+                                    "ipcomputador" => $row['ipcomputador'],
+                                    "nivel" =>  $row['nivel'],
+                                    "setor" =>  $row['descsetor']
+                                    ));
+        }
+       $this->setlistausuario($lista);
+    }
+
+    public function listausuarios(){
+        $this->listatodosusuarios();
+        return $this->getlistausuario();
     }
 }

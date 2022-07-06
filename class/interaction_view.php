@@ -319,7 +319,9 @@ class interaction_view  extends interaction
             }
     
                 if ($this->AccessToEditButton()) {
+                    echo "<div style = 'width:100%; text-align:center;' >";
                     echo '<input type="submit" value="Salvar" class="btn btn-success">';
+                    echo "</div>";
                 }
         }
     }
