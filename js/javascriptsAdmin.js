@@ -11,6 +11,36 @@ function loading(typetable) {
     }
 }
 
+function salvaralteracaousuario(id){
+    var nome = document.getElementById("nome:"+id).value;
+    var ipcomputador = document.getElementById("ipcomputador:"+id).value;
+    var nivel = document.getElementById("nivel:"+id).value;
+    var setor = document.getElementById("setor:"+id).value;
+    
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { tipo: 'atualizarusuario',id:id,nome:nome,ipcomputador:ipcomputador,nivel:nivel,setor:setor },
+        success: function (result) {
+            $('#RetornoSalvarUsuario').html(result);
+            loadtableUsuario('usuario');
+            setTimeout(function () {
+                $("#RetornoSalvarUsuario").html('');
+            }, 40000);
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+            setTimeout(function () {
+                $("#RetornoSalvarUsuario").html('erro inseperado');
+            }, 40000);
+           
+        },
+    });
+    
+
+
+}
+
 function loadtable(typetable) {
 
     let imgLoading = document.createElement('img')
@@ -78,7 +108,7 @@ function status(value, id,type) {
             console.log('Erro ao Atualizar');
         }
     });
-}
+};
 
 $(document).ready(function () {
     loadtable('encomenda');

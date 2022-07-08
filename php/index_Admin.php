@@ -5,6 +5,7 @@ $interactionAdmin = new interaction_admin();
 
 $interaction->acessos('admin');
 
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -19,7 +20,7 @@ $interaction->acessos('admin');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="icon" href="../img/correios-logo.png">
 
-    <script src="../js/javascripts.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
@@ -87,6 +88,7 @@ $interaction->acessos('admin');
                 </span>
                     <div id='formusuario' class='container_item_interno'>
                 </div>
+                <div id='RetornoSalvarUsuario'></div>
             </article>
 
             <article class="container_item">
@@ -141,6 +143,7 @@ $interaction->acessos('admin');
 
 
     </div>
+    <footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca Versão 1.0</footer>
 </body>
 
 </html>

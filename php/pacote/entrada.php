@@ -19,7 +19,7 @@ $interaction = new interaction();
     <label for="encomenda">Tipo de encomenda:</label>
     <select class="form-control input_style" name="encomenda" id="encomenda">
         <option value="null">Escolha </option>
-        <?php $interaction->listaencomenda('Geral'); ?>
+        <?php $interaction->listaencomenda('ativo'); ?>
     </select>
 </div>
 <div class="container_from">

@@ -71,7 +71,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
     <header id="cabecalho_master">
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
-            <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Envio Encomenda</span>
+            <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Envio de Encomenda</span>
         </div>
 
     </header>
@@ -151,5 +151,5 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 
 </body>
-
+<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca Versão 1.0</footer>
 </html>

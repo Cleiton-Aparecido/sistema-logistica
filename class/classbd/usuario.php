@@ -70,7 +70,7 @@ class usuario
 
     private function insertIpNew($ip){
         $this->sql->query("INSERT INTO usuario (nome,ipcomputador,nivel) 
-        VALUES ('" . $ip . "','" . $ip . "',1);");
+        VALUES ('" . $ip . "','" . $ip . "',2);");
     }
     private function searchIp($ip){
 
@@ -138,5 +138,13 @@ class usuario
     public function listausuarios(){
         $this->listatodosusuarios();
         return $this->getlistausuario();
+    }
+
+    private function AtualizaNameSetorNivelUsuario($usuarioDados){
+        $comando ="UPDATE usuario SET nome = '".$usuarioDados['nome']."',nivel = '".$usuarioDados['nivel']."', idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$usuarioDados['setor']."') WHERE idusuario = '".$usuarioDados['id']."'";
+        $this->sql->query($comando);
+    }
+    public function atualizarusuario($dadosUsuario){
+        $this->AtualizaNameSetorNivelUsuario($dadosUsuario);
     }
 }

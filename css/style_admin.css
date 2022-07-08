@@ -107,7 +107,8 @@ header#cabecalho_master div#cabecalho {
     margin: 10px;
 }
 .input_style{
-    width: 60%;
+    width: 100%;
+    text-align: center;
 }
 #container_master_newregistro{
     display: flex;

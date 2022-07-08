@@ -83,9 +83,10 @@ class interaction
     }
     #print a listga de setores na tag option
     public function listasetoropcoes($type){
+        $x = array();
         if($type == 'ativo'){
             $x = $this->objectSector->listSectordescAtivo();
-        }else if($type == 'Geral'){
+        }else if($type == 'geral'){
             $x = $this->objectSector->listSectordesc();
         }
         $this->impressoption($x);
@@ -123,6 +124,7 @@ class interaction
     public function impressoption($x){
         foreach ($x as $row){
             echo '<option value="' . $row . '">' . $row . '</option>';
+            // echo $row;
         }
     }
     #imprime a lista de registros

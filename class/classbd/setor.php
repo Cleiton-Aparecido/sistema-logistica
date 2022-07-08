@@ -96,6 +96,7 @@ class setor{
     }
     // Lista de setores
     public function listSectordesc(){ 
+        $this->listSectorG();
         $list = array();
         foreach ($this->getlistasetores() as $row) {
                 array_push($list,$row['nome']);

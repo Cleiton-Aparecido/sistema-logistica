@@ -37,11 +37,38 @@ use function PHPSTORM_META\type;
         }
         else if($_POST['tipo'] == 'atttableusuario'){
             $interactionadmin->tabelausuario();
-         }
-        // else if( $_POST['tipo'] == 'loadtable'){
-            // echo $interaction->SearchRelatorio($_POST['setor'], $_POST['buscar'],  $_POST['datainicio'], $_POST['datafinal']);
-        // }
-       
+        }
+        else if($_POST['tipo'] == 'atualizarusuario'){
+            $verificacao = 0;
+           
+
+            foreach ($_POST as $key => $value) {
+         
+                $value = str_replace(' ','',$value);
+
+                if (strlen($value) == 0) {
+                    $verificacao ++;
+                }
+                
+            }
+  
+            if ($verificacao == 0) {
+                $dadosusuario = array(
+                    "id"=>$_POST['id'],
+                    "nome"=>$_POST['nome'],
+                    "ipcomputador"=>$_POST['ipcomputador'],
+                    "nivel"=>$_POST['nivel'],
+                    "setor"=>$_POST['setor']
+                );  
+                if($dadosusuario['nivel'] != 0 && $dadosusuario['id'] != 0 && $dadosusuario['nome'] != ''){
+                    $interactionadmin->atualizardadosusuario($dadosusuario);
+                }
+
+            }else{
+                echo 'Campos Vazios';
+            }
+        
+        }
     }
     else{
         echo "Sem post encaminhado";

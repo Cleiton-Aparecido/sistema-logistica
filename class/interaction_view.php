@@ -25,7 +25,7 @@ class interaction_view  extends interaction
     public function AccessToEditButton()
     {
         $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
-        if ($level == 1 || $level == 2 || $level == 3 ) {
+        if ($level == 1 || $level == 2  ) {
             return true;
         } else {
             return false;

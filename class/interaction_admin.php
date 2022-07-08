@@ -2,7 +2,7 @@
 require_once("config.php");
 class interaction_admin  extends interaction
 {
-
+    
 
     public function __construct()
     {
@@ -139,6 +139,7 @@ class interaction_admin  extends interaction
         $this->impressUsuario($lista);
     }
 
+
     private function impressUsuario($dados){
 
         echo "<div class='grid-container'>";
@@ -152,20 +153,51 @@ class interaction_admin  extends interaction
                 echo "<div class='grid-item cabecalho-grid' >Salvar</div>";
             
         foreach ($dados as $value) {
-            $iddescconteudo = str_replace(' ','', $value['nome']);
-                echo "<div class='grid-item'>".$value['id']."</div> ";
-                echo "<div class='grid-item'><input class='form-control' value='".$value['nome']."'> </div> ";
-                echo "<div class='grid-item'>".$value['ipcomputador']."</div>";
-                echo "<div class='grid-item'><input class='form-control'  value='".$value['nivel']."'></div>";
+            $id = $value['nome'].$value['ipcomputador'];
+            $iddescconteudo = str_replace(' ','',$id);
+                echo "<div class='grid-item' id='id:".$value['id']."' value='".$value['id']."' >".$value['id']."</div> ";
+
+                echo "<div class='grid-item' >";
+                    echo "<input class='form-control' id='nome:".$value['id']."' value='".$value['nome']."'>";
+                echo "</div> ";
+
+                echo "<div class='grid-item' >";
+                    echo "<input class='form-control input_style' id='ipcomputador:".$value['id']."' value='".$value['ipcomputador']."' disabled>";
+                echo "</div> ";
+
+
+                echo "<div class='grid-item'>";
+                    echo "<input class='form-control input_style' id='nivel:".$value['id']."'  value='".$value['nivel']."'>";
+                echo "</div>";
                 
-                echo "<div class='grid-item'>".$value['setor']."</div>";
-                echo "<div class='grid-item'><button class = 'btn btn-success'>Salvar</button></div>";
+                echo "<div class='grid-item'  >";
+                    echo "<select class='form-control' id='setor:".$value['id']."'>";
+                        echo "<option value='".$value['setor']."'>".$value['setor']."</option>";
+                        $x = $this->objectSector->listSectordesc();
+                        $this->impressoption($x);
+                    echo "</select>";
+                echo "</div>";
+                
+                echo "<div class='grid-item'>";
+                    echo " <button class = 'btn btn-success' id='salvar:".$value['id']."' value='".$value['id']."' onclick='salvaralteracaousuario(this.value);'>Salvar</button>";
+                echo "</div>";
             
         }
         echo "</div>";
+
     }
     
-
+    public function atualizardadosusuario($dadosUsuarios){
+        
+        if($this->objectUser->level($_SERVER['REMOTE_ADDR']) == 1){
+        $this->objectUser->atualizarusuario($dadosUsuarios);
+         echo 'Salvo com Sucesso';
+            
+        }
+        else{
+            echo "sem permissão";
+        }
+    }
     
     
 }
