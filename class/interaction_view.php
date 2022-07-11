@@ -242,6 +242,7 @@ class interaction_view  extends interaction
     
                     ';
                     echo '</div>';
+                    
             }
 
             if($type == 'e'){
@@ -317,12 +318,16 @@ class interaction_view  extends interaction
             echo '</div>';
 
             }
-    
+                echo "<div style = 'width:100%; text-align:center;' >";
                 if ($this->AccessToEditButton()) {
-                    echo "<div style = 'width:100%; text-align:center;' >";
+                    
                     echo '<input type="submit" value="Salvar" class="btn btn-success">';
-                    echo "</div>";
+                    
                 }
+                if($type == 's'){
+                    echo "<a class='btn btn-primary' style='margin-left:5px;' href='index_comprovante.php?&id=".$date['id']."'>Imprimir</a>";
+                }
+                echo "</div>";
         }
     }
 }

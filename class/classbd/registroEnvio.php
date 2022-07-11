@@ -197,7 +197,7 @@ class registroEnvio
      }
 
     public function insertRegisterEnvio($dados){
-  
+        $idsalvo = array("id");
         $comando = ("INSERT INTO
         registroencomendaenviocorreio 
         (idtipoEnvio,
@@ -231,8 +231,18 @@ class registroEnvio
         '".$dados['obs']."'
         )");
 
-        var_dump($comando);
         $this->sql->query($comando);
+        
+        $idresultado = $this->sql->select("SELECT LAST_INSERT_ID();");
+
+        if(count($idresultado)>0){
+            $row = $idresultado[0];
+            $idsalvo = $row["LAST_INSERT_ID()"];
+
+        }
+
+
+        return $idsalvo;
        
     }
     public function listDateQueryRegistroenvio($datestart,$dateend){

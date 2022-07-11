@@ -40,9 +40,9 @@ if ($_POST) {
         );
 
         $x = $interaction->insertEnvio($dadosenvio);
-        if ($x) {
-            header('Location: index_envio.php');
-        }
+
+        header("Location: index_comprovante.php?&id=$x");
+        
     }
 }
 

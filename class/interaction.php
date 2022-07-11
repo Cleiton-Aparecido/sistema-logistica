@@ -65,10 +65,10 @@ class interaction
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
         } else {            
-            $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
+            $idsalvo = $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
             $salva = true;
         }
-        return $salva;
+        return $idsalvo;
     }
     #Toda vez que um usuario novo loga no sistema, o ip fica salvo
     public function IpSearch(){
@@ -298,5 +298,9 @@ class interaction
         else{
             echo 'sem autorização';
         }
+    }
+
+    public function comprovante($id){
+       return  $this->RegistroEnvioEncomenda->queryregisterenvio($id);
     }
 }
