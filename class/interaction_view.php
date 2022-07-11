@@ -35,11 +35,11 @@ class interaction_view  extends interaction
         $nivel = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
 
         if($nivel == 1){
-            $this->disabled_inf_registro = '';
+            $this->disabled_inf_registro = 'disabled';
             $this->disabled_atualizacao_registro = '';
         }
         if($nivel == 2){
-            $this->disabled_inf_registro = '';
+            $this->disabled_inf_registro = 'disabled';
             $this->disabled_atualizacao_registro = '';
         }
         if($nivel == 3){
@@ -149,7 +149,7 @@ class interaction_view  extends interaction
                     ';
                 echo '
                         <label for="encomenda">Encomenda:</label>
-                        <select id="encomenda" name="encomenda" class="form-control" ' . $this->disabled_atualizacao_registro . ' disabled>
+                        <select id="encomenda" name="encomenda" class="form-control"  disabled>
                             <option value="'.$date['Encomenda'].'">'.$date['Encomenda'].'</option>
                      ';
 
