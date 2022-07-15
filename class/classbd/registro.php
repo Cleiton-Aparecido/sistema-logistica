@@ -149,7 +149,8 @@ class registro
         
         $dadosantigo = $this->queryRegistro($Registro['id']);
 
-        
+        // teste
+
         $dadosantigo['Data Entrega Setor'] = new DateTime($dadosantigo['Data Entrega Setor']);
         $dadosantigo['Data Entrega Setor'] = $dadosantigo['Data Entrega Setor']->format('d/m/Y H:i:s');
 
