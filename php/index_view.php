@@ -36,7 +36,7 @@ if ($_POST) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="icon" href="../img/correios-logo.png">
 
-    <script src="../js/javascripts.js"></script>
+    
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
@@ -53,24 +53,18 @@ if ($_POST) {
     <style type="text/css">
         <?php include('../css/style.css');   ?>
     </style>
-    <script>
-        $(document).ready(function() {
-            $('#table_master').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
+    <script >
+        <?php include("../js/javascripts_view.js") ?>
     </script>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    
 </head>
 
 <body>
 
     <header id="cabecalho_master">
+    <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png">
             <span class="titulo_cabecalho" id="titulocabecalho"></span>
@@ -86,32 +80,23 @@ if ($_POST) {
                     <?php
 
                     if ($_GET) {
-                        if ($_GET['type'] == 's') {
+                        if ($_GET['type'] == 's' || $_GET['type'] == 'e' || $_GET['type'] == 'ee') {
                             $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
-                        } elseif ($_GET['type'] == 'e') {
-                            $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
-                        } elseif ($_GET['type'] == 'ee') {
-                            # code...
-                        }
+                        } 
                     }
 
 
                     ?>
+                    
                 </form>
+               
             </article>
 
 
         </section>
-        <div id="Menu_lateral">
-            <article id="container_user">
-                <img src="../img/user.png">
-                <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-            </article>
-            <article class="buttons">
-                <a href="index.php" id="voltar" class="btn btn-primary buttons">Voltar</a>
-            </article>
-        </div>
+       
     </div>
+    <?php $interactionview->direito(); ?>
 </body>
 
 </html>

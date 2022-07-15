@@ -21,6 +21,7 @@ class registroEnvio
     private $datapostagem;
     private $idusuariocodigo;
     private $sql = array();
+    private $historicoregistro = array();
     private $objectSector = array();
 
     public function __construct()
@@ -28,8 +29,14 @@ class registroEnvio
         $this->sql = new sql();
         $this->objectSector = new setor();
     }
-    
-     #-------- Id registro ---------------
+
+    public function gethistoricoregistro(){
+        return $this->historicoregistro;
+    }
+    public function sethistoricoregistro($value){
+        $this->historicoregistro =  $value;
+    }
+    #-------- Id registro ---------------
     public function getidregistro()
     {
         return $this->idregistro;
@@ -39,7 +46,7 @@ class registroEnvio
     {
         $this->idregistro = $value;
     }
-     #-------- Data cadastro ---------------
+    #-------- Data cadastro ---------------
     public function getdatacadastro()
     {
         return $this->datacadastro;
@@ -51,7 +58,7 @@ class registroEnvio
         $value = $date->format('d/m/Y H:i:s');
         $this->datacadastro = $value;
     }
-     #-------- Id usuario ---------------
+    #-------- Id usuario ---------------
     public function getIdusuario()
     {
         return $this->Idusuario;
@@ -186,17 +193,26 @@ class registroEnvio
     {
         $this->datapostagem = $value;
     }
-     #-------- idusuariocodigo ---------------
-     public function getidusuariocodigo()
-     {
-         return $this->idusuariocodigo;
-     }
-     public function setidusuariocodigo($value)
-     {
-         $this->idusuariocodigo = $value;
-     }
+    #-------- idusuariocodigo ---------------
+    public function getidusuariocodigo()
+    {
+        return $this->idusuariocodigo;
+    }
+    public function setidusuariocodigo($value)
+    {
+        $this->idusuariocodigo = $value;
+    }
 
-    public function insertRegisterEnvio($dados){
+
+
+    public function requisitarhistorico($id)
+    {
+        $this->backlogEnvio($id);
+        return $this->gethistoricoregistro();
+    }
+
+    public function insertRegisterEnvio($dados)
+    {
         $idsalvo = array("id");
         $comando = ("INSERT INTO
         registroencomendaenviocorreio 
@@ -215,37 +231,61 @@ class registroEnvio
         complementarend,
         observacaoenvio) 
         VALUES 
-        ((SELECT idtipoEnvio FROM tipoenvio WHERE desctipoEnvio = '".$dados['tipoenvio']."'),
-        (SELECT idusuario FROM usuario WHERE ipcomputador = '".$dados['ipcomputador']."'),
+        ((SELECT idtipoEnvio FROM tipoenvio WHERE desctipoEnvio = '" . $dados['tipoenvio'] . "'),
+        (SELECT idusuario FROM usuario WHERE ipcomputador = '" . $dados['ipcomputador'] . "'),
         (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
-        (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."'),
-        (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'),
-        '".$dados['funcionario']."',
-        '".$dados['cep']."',
-        '".$dados['endereco']."',
-        '".$dados['num']."',
-        '".$dados['cidade']."',
-        '".$dados['bairro']."',
-        '".$dados['uf']."',
-        '".$dados['complementar']."',
-        '".$dados['obs']."'
+        (SELECT idsetor FROM setor WHERE descsetor = '" . $dados['setor'] . "'),
+        (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '" . $dados['encomenda'] . "'),
+        '" . $dados['funcionario'] . "',
+        '" . $dados['cep'] . "',
+        '" . $dados['endereco'] . "',
+        '" . $dados['num'] . "',
+        '" . $dados['cidade'] . "',
+        '" . $dados['bairro'] . "',
+        '" . $dados['uf'] . "',
+        '" . $dados['complementar'] . "',
+        '" . $dados['obs'] . "'
         )");
 
         $this->sql->query($comando);
-        
+
         $idresultado = $this->sql->select("SELECT LAST_INSERT_ID();");
 
-        if(count($idresultado)>0){
+        if (count($idresultado) > 0) {
             $row = $idresultado[0];
             $idsalvo = $row["LAST_INSERT_ID()"];
-
         }
 
 
         return $idsalvo;
-       
     }
-    public function listDateQueryRegistroenvio($datestart,$dateend){
+
+    private function backlogEnvio($id)
+    {
+        $resultado = $this->sql->select("SELECT * FROM backlogregisenvio
+        WHERE idRegistroEnvio = '$id'
+        ORDER BY `data`;");
+
+        $historico = array();
+
+        if (count($resultado) > 0) {
+            foreach ($resultado as $row) {
+                $row['data'] = new DateTime($row['data']);
+                $row['data'] = $row['data']->format('d/m/Y H:i:s');
+
+                array_push($historico, array(
+                    "Datahora" => $row['data'],
+                    "campo" => $row['campo'],
+                    "dadosantigo" => $row['dados_antigo'],
+                    "dadosnovo" => $row['dados_novo']
+                ));
+            }
+        }
+        $this->sethistoricoregistro($historico);
+    }
+
+    public function listDateQueryRegistroenvio($datestart, $dateend)
+    {
         $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
         registroencomendaenviocorreio.dataregistro,
         registroencomendaenviocorreio.Nomefuncionario,
@@ -260,11 +300,12 @@ class registroEnvio
         INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE registroencomendaenviocorreio.dataregistro 
-        BETWEEN '".$datestart." 00:00:00' and '".$dateend." 23:59:59'");
+        BETWEEN '" . $datestart . " 00:00:00' and '" . $dateend . " 23:59:59'");
         return $resultado;
     }
-    public function listDateCodeQueryEnvio($search,$datestart,$dateend){
-        
+    public function listDateCodeQueryEnvio($search, $datestart, $dateend)
+    {
+
         $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
         registroencomendaenviocorreio.dataregistro,
         registroencomendaenviocorreio.Nomefuncionario,
@@ -279,13 +320,14 @@ class registroEnvio
         INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE (registroencomendaenviocorreio.dataregistro 
-        BETWEEN '".$datestart." 00:00:00' 
-        AND  '".$dateend." 23:59:59')
-        AND registroencomendaenviocorreio.codigopostagem ='".$search."'");
+        BETWEEN '" . $datestart . " 00:00:00' 
+        AND  '" . $dateend . " 23:59:59')
+        AND registroencomendaenviocorreio.codigopostagem ='" . $search . "'");
 
         return $resultado;
     }
-    public function listDateSectorQueryEnvio($sector,$datestart,$dateend){
+    public function listDateSectorQueryEnvio($sector, $datestart, $dateend)
+    {
         $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
         registroencomendaenviocorreio.dataregistro,
         registroencomendaenviocorreio.Nomefuncionario,
@@ -300,14 +342,15 @@ class registroEnvio
         INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE (registroencomendaenviocorreio.dataregistro 
-        BETWEEN '".$datestart." 00:00:00' 
-        AND  '".$dateend." 23:59:59')
-        AND setor.descsetor = '".$sector."'");
-       
+        BETWEEN '" . $datestart . " 00:00:00' 
+        AND  '" . $dateend . " 23:59:59')
+        AND setor.descsetor = '" . $sector . "'");
+
 
         return $resultado;
     }
-    public function listDateSectorSearchQueryEnvio($sector,$search,$datestart,$dateend){
+    public function listDateSectorSearchQueryEnvio($sector, $search, $datestart, $dateend)
+    {
         $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
         registroencomendaenviocorreio.dataregistro,
         registroencomendaenviocorreio.Nomefuncionario,
@@ -322,25 +365,26 @@ class registroEnvio
         INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE (registroencomendaenviocorreio.dataregistro 
-        BETWEEN '".$datestart." 00:00:00' 
-        AND  '".$dateend." 23:59:59')
-        AND setor.descsetor = '".$sector."'
-        AND registroencomendaenviocorreio.codigopostagem = '".$search."'");
-       
+        BETWEEN '" . $datestart . " 00:00:00' 
+        AND  '" . $dateend . " 23:59:59')
+        AND setor.descsetor = '" . $sector . "'
+        AND registroencomendaenviocorreio.codigopostagem = '" . $search . "'");
+
 
         return $resultado;
     }
-    public function queryregisterenvio($id){    
+    public function queryregisterenvio($id)
+    {
         $resultado = $this->sql->select("SELECT *
         FROM registroencomendaenviocorreio
         INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
         INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
         INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente          
-        WHERE idRegistroEncomendaEnvioCorreio = ".$id."");
+        WHERE idRegistroEncomendaEnvioCorreio = " . $id . "");
 
-        if(count($resultado)>0){
-            
+        if (count($resultado) > 0) {
+
             $row = $resultado[0];
             $this->setidregistro($row['idRegistroEncomendaEnvioCorreio']);
             $this->setdatacadastro($row['dataregistro']);
@@ -364,44 +408,71 @@ class registroEnvio
 
 
         return array(
-            "id"=>$this->getidregistro(),
-            "DataRegistro"=>$this->getdatacadastro(),
-            "Ipusuario"=>$this->getIdusuario(),
-            "status"=>$this->getstatus(),
-            "SetorRementente"=>$this->getsetorRemetente(),
-            "Encomenda"=>$this->getencomenda(),
-            "funcionario"=>$this->getfuncinario(),
-            "cep"=>$this->getcep(),
-            "rua"=>$this->getendereco(),
-            "numero"=>$this->getnum(),
-            "cidade"=>$this->getcidade(),
-            "bairro"=>$this->getbairro(),
-            "estado"=>$this->getuf(),
-            "complementar"=>$this->getcomplementar(),
-            "Observacao"=>$this->getobs(),
-            "CodigoPostagen"=>$this->getcodigo(),
-            "DataPostagem"=>$this->getdatapostagem(),
-            "UsuarioQueRealizouAPostagem"=>$this->getidusuariocodigo()
+            "id" => $this->getidregistro(),
+            "DataRegistro" => $this->getdatacadastro(),
+            "Ipusuario" => $this->getIdusuario(),
+            "status" => $this->getstatus(),
+            "SetorRementente" => $this->getsetorRemetente(),
+            "Encomenda" => $this->getencomenda(),
+            "funcionario" => $this->getfuncinario(),
+            "cep" => $this->getcep(),
+            "rua" => $this->getendereco(),
+            "numero" => $this->getnum(),
+            "cidade" => $this->getcidade(),
+            "bairro" => $this->getbairro(),
+            "estado" => $this->getuf(),
+            "complementar" => $this->getcomplementar(),
+            "Observacao" => $this->getobs(),
+            "CodigoPostagen" => $this->getcodigo(),
+            "DataPostagem" => $this->getdatapostagem(),
+            "UsuarioQueRealizouAPostagem" => $this->getidusuariocodigo()
         );
     }
-    public function AtualizaCodigoRementeEncomendaData($dados){
-        if($dados['datapostagem'] == ""){
-        
-        $comando = ("UPDATE registroencomendaenviocorreio SET 
-        idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."' ),
-        codigopostagem = '".$dados['codigo']."',
-        observacaoenvio = '".$dados['obs']."'
-        WHERE idRegistroEncomendaEnvioCorreio = '".$dados['id']."';"); 
-        }else{
+    private function backlogEnvioRegistrarSemDataEntrega($dadosnovos){
+        $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
+
+        $comando = "INSERT INTO backlogregisenvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES (".$dadosnovos['id'].",
+        'Status | Codigo | Observacao',
+        '".$dadosantigo['status']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
+        '".$dadosnovos['status']." | ".$dadosnovos['codigo']." | ".$dadosnovos['obs']."');";
+
+        $this->sql->query($comando);   
+
+    }
+    private function backlogEnvioRegistrarComDataEntrega($dadosnovos){
+        $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
+
+        $comando = "INSERT INTO backlogregisenvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES (".$dadosnovos['id'].",
+        'Status | data | Codigo | Observacao',
+        '".$dadosantigo['status']."| ".$dadosantigo['DataPostagem']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
+        '".$dadosnovos['status']."| ".$dadosnovos['datapostagem']."  | ".$dadosnovos['codigo']." | ".$dadosnovos['obs']."');";
+
+        $this->sql->query($comando);   
+
+    }
+    public function AtualizaCodigoRementeEncomendaData($dados)
+    {
+        if ($dados['datapostagem'] == "") {
+
+            $this->backlogEnvioRegistrarSemDataEntrega($dados);
             $comando = ("UPDATE registroencomendaenviocorreio SET 
-            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."'),
-            codigopostagem = '".$dados['codigo']."',
-            datapostagem = '".$dados['datapostagem']."',
-            observacaoenvio = '".$dados['obs']."'
-            WHERE idRegistroEncomendaEnvioCorreio = ".$dados['id'].";"); 
+            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "' ),
+            codigopostagem = '" . $dados['codigo'] . "',
+            observacaoenvio = '" . $dados['obs'] . "'
+            WHERE idRegistroEncomendaEnvioCorreio = '" . $dados['id'] . "';");
+
+        } else {
+
+            $this->backlogEnvioRegistrarComDataEntrega($dados);
+            $comando = ("UPDATE registroencomendaenviocorreio SET 
+            idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "'),
+            codigopostagem = '" . $dados['codigo'] . "',
+            datapostagem = '" . $dados['datapostagem'] . "',
+            observacaoenvio = '" . $dados['obs'] . "'
+            WHERE idRegistroEncomendaEnvioCorreio = " . $dados['id'] . ";");
         }
-       $this->sql->query($comando);
-   }
-
+        $this->sql->query($comando);
+    }
 }
-

@@ -102,7 +102,7 @@ $dados = $interaction->comprovante($_GET['id']);
 
 <body>
 <button class="btn btn-success" onclick="window.print();">imprimir</button>
-        <a class="btn btn-primary" href="index.php">Sair</a>
+        <a class="btn btn-primary" href="index_envio.php">Sair</a>
     <header>
         <h1 id="titulo_cabecalho">
             Comprovante para Envio

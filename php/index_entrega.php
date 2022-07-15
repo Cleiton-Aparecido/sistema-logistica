@@ -46,7 +46,7 @@ if (!isset($_POST['dataentrega'])) {
         <?php include('../css/style.css');   ?>
     </style>
     <script>
-        <?php include('../js/javascripts.js');   ?> 	
+        <?php include('../js/javascripts_entrega.js');   ?> 	
     </script>
    
 
@@ -56,6 +56,7 @@ if (!isset($_POST['dataentrega'])) {
 
 <body>
     <header id="cabecalho_master">
+    <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
             <span class="titulo_cabecalho">Entrega de Encomenda</span>
@@ -78,17 +79,6 @@ if (!isset($_POST['dataentrega'])) {
                     </section>
 
                 </article>
-
-                <div id="Menu_lateral">
-                    <article id="container_user">
-                        <img src="../img/user.png">
-                        <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-                    </article>
-
-                    <article class="buttons">
-                        <a href="index.php" class="btn btn-primary buttons">Voltar</a>
-                    </article>
-                </div>
             </article>
             <article id="container_table">
                 <table id="table_master" class="table display" style="width:100%">
@@ -118,6 +108,7 @@ if (!isset($_POST['dataentrega'])) {
             </article>
         </form>
     </section>
+    <?php $interaction->direito(); ?>
 </body>
 
 </html>
