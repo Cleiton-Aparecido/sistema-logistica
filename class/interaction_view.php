@@ -305,8 +305,7 @@ class interaction_view  extends interaction
                     <label for="Ipusuario">IP de registro:</label>
                     <input type="text" id="Ipusuario" name="Ipusuario" class="form-control input_view" value="' . $date['ipcomputador'] . '" disabled>
 
-                    <label for="funcionario">Funcionário que Eegistrou:</label>
-                    <input type="text" id="funcionario" name="funcionario" class="form-control input_view" value="' . $date['Usuario Registro'] . '" disabled>';
+                    ';
                 
                 echo '</div>';
 
