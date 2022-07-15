@@ -149,12 +149,9 @@ class registro
         
         $dadosantigo = $this->queryRegistro($Registro['id']);
 
-        
-        $dadosantigo['Data Entrega Setor'] = new DateTime($dadosantigo['Data Entrega Setor']);
-        $dadosantigo['Data Entrega Setor'] = $dadosantigo['Data Entrega Setor']->format('d/m/Y H:i:s');
 
-        $Registro['dataentrega'] = new DateTime($Registro['dataentrega']);
-        $Registro['dataentrega'] = $Registro['dataentrega']->format('d/m/Y H:i:s');
+
+        $Registro['dataentrega'] = $this->formatDateHora($Registro['dataentrega']);
 
         $Registro['dataentrega'] = str_replace('T',' ', $Registro['dataentrega']);
 
@@ -166,7 +163,7 @@ class registro
         ");
     }
     public function updateregistro($dados){
-        // $this->backlogEntrada($dados);
+        $this->backlogEntrada($dados);
         $this->updatestatusentrega($dados);
 
     }
