@@ -28,10 +28,10 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
+
     <link rel="icon" href="../img/correios-logo.png">
-   
-    
+
+
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
@@ -43,31 +43,37 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js"></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/jquery-form/form@4.3.0/dist/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
+
     <style type="text/css">
         <?php include('../css/style.css');   ?>
     </style>
-     <script>
+    <script>
         <?php include('../js/javascripts.js');   ?>
     </script>
-  
 
 
-    
+
+
 </head>
 
 <body>
+
+
+
     <header id="cabecalho_master">
+        <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
-            <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Logística Reversa</span>
+            <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Entrada de Encomenda</span>
         </div>
 
     </header>
+
+
     <section id="container_master">
         <article id="container_menu_usuario">
             <article id="container_primary">
@@ -85,7 +91,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                         <input name="datainicio" type="date" id="datainicio" class="form-control" value="<?php echo $datainicial; ?>">
                         <label for="datafinal">Data Final:</label>
                         <input name="datafinal" type="date" id="datafinal" class="form-control" value="<?php echo $datafinal; ?>">
-                        <input class="btn btn-primary" type="submit"  value="Buscar">
+                        <input class="btn btn-primary" type="submit" value="Buscar">
                         <!-- <input class="btn btn-primary" type="button" onclick="buscaBando();" value="Buscar"> -->
                     </form>
                 </section>
@@ -93,22 +99,8 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
             </article>
 
-            <div id="Menu_lateral" >
-                <article id="container_user">
-                    <img src="../img/user.png">
-                    <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-                </article>
-
-                <article class="buttons">
-                    <a href="index_newRegister.php" class="btn btn-success buttons">Novo Registro</a>
-                    <a href="index_entrega.php" class="btn btn-primary buttons">Entregas</a>
-                    <a href="index_envio.php" class="btn btn-secondary buttons">Enviadas</a>
-                    <?php
-                    $interaction->buttonadmin();
-                    ?>
-                </article>
-            </div>
             
+
         </article>
         <article id="container_table">
             <table id="table_master" class="table display" style="width:100%">
@@ -128,10 +120,10 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                     </tr>
                 </thead>
                 <tbody id="tabledados">
-                    
-                   <?php
-                        echo  $interaction->SearchRelatorio($setor, $busca, $datainicial, $datafinal);
-                    ?> 
+
+                    <?php
+                    echo  $interaction->SearchRelatorio($setor, $busca, $datainicial, $datafinal);
+                    ?>
 
                 </tbody>
             </table>
@@ -145,5 +137,6 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 </body>
 
-<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca Versão 1.0</footer>
+<?php $interaction->direito(); ?>
+
 </html>

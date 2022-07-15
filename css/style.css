@@ -13,7 +13,7 @@ header {
     background: linear-gradient(90deg, rgba(1, 75, 136, 1) 2%, rgba(1, 75, 136, 1) 9%, rgba(5, 81, 139, 1) 37%, rgba(90, 195, 190, 1) 92%, rgba(90, 195, 190, 1) 100%);
     color: white;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
 }
 
 header#cabecalho_master div#cabecalho .imglogo {
@@ -27,13 +27,15 @@ header#cabecalho_master div#cabecalho span.titulo_cabecalho {
 }
 
 header#cabecalho_master div#cabecalho {
-    margin: 15px;
+    /* margin: 15px; */
+    margin: 10px auto;
+    
 }
 
 
 /* #style container master */
 
-#container_master {}
+
 
 #container_menu_usuario {
     display: flex;
@@ -61,7 +63,8 @@ header#cabecalho_master div#cabecalho {
 .container_menu input {
     margin: 2px 0;
 }
-#Menu_lateral{
+
+#Menu_lateral {
     margin-right: 2%;
     border: 1px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
@@ -71,22 +74,9 @@ header#cabecalho_master div#cabecalho {
     padding: 1px;
 }
 
-#container_user {
-    display: flex;
-    justify-content: flex-start;
-    
-}
 
-#container_user img {
-    width: 50%;
-    max-width: 50px;
-    display: inline;
-}
-.buttons{
-    display: block;
-    width: 150px;
-    margin: 10px auto;
-}
+
+
 
 #container_table {
     margin: auto auto;
@@ -97,13 +87,15 @@ header#cabecalho_master div#cabecalho {
     padding: 10px;
     margin-bottom: 20px;
 }
-#table_master{
+
+#table_master {
     border: 1px solid rgb(0, 0, 0);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: rgba(0, 0, 0, 0.614);
 }
-#table_master .table_title{
+
+#table_master .table_title {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     background-color: rgba(0, 0, 0, 0.614);
@@ -111,62 +103,61 @@ header#cabecalho_master div#cabecalho {
 
 
 /* estilização de novo registro */
-.form_new{
+.form_new {
     border: 2px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
     width: 70%;
     max-width: 1200px;
-    display: flex ;
+    display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
-#form_new_js{
-    display: flex ;
+
+#form_new_js {
+    display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
-.container_from{
+
+.container_from {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin: 10px;
 }
-.MenuLogistica{
+
+.MenuLogistica {
     border: 1px solid rgba(129, 12, 12, 0.055);
     background-color: rgba(129, 12, 12, 0.055);
     border-radius: 10px;
     width: 100%;
     display: flex;
     justify-content: space-around;
-    align-items:center;
+    align-items: center;
     margin: 10px;
 }
-.input_style{
+
+.input_style {
     width: 60%;
 }
-#container_master_newregistro{
+
+#container_master_newregistro {
     display: flex;
     justify-content: space-around;
     padding: 10px;
 }
-.status{
+
+.status {
     font-size: 3vh;
 }
-#container_inf{
-    border: 1px solid rgba(148, 127, 127, 0.32);
-    border-radius: 10px;
-    width: 80%;
-    margin: auto auto;
-    margin: 10px;
-    padding: 10px;
-    
-}
-#container_inf h3{
-    text-align: center;
-    text-decoration:underline;
-}
+
+
+
+
 /* Formatação do view  */
-#container_inf2{
+#container_inf2 {
+    min-width: 1200px;
+    /* width: 100%; */
     border: 1px solid rgba(0, 0, 0, 0.296);
     border-radius: 5px;
     display: flex;
@@ -174,16 +165,123 @@ header#cabecalho_master div#cabecalho {
     justify-content: space-around;
     padding: 5px;
 }
-.container_view{
+
+.container_view {
     width: 45%;
     margin: 10px;
 }
+
+
 /* Formatação checkbox na tela de entrega */
 
-  .input_checkbox{
-  
+.input_checkbox {
+
     margin: auto auto;
     cursor: pointer;
     height: 30px;
     width: 30px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    
+}
+
+.cabecalho-grid{
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: bold;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+   
+    
+}
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 1em;
+    text-align: center;
+    border-width: 0px 1px ;
+    border-color: black;
+    border-style: solid;
+    padding: 5px;
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/* navegador vertical */
+.sidenav {
+    color: #000000;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
   }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 1em;
+    color: #000000;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidenav a:hover {
+    color: #8000ff;
+    background-color: #cec3ff;
+  }
+  
+  
+  .sidenav .closebtn {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+
+.opcaomenulateral{
+    padding: 5px;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 100%;
+    font-size:1.3em;
+    cursor:pointer;
+    float: left;
+}
+.opcaomenulateral:hover{
+    background-color: #0000006c;
+}
+
+#container_user {
+    margin: 5px;
+    padding:5px;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid rgba(0, 0, 255, 0.197);
+    border-radius: 10px;
+}
+.titulo_menulateral{
+    text-align: center;
+    text-decoration:underline;
+}
+.buttons {
+    font-size: 1em;
+}
+.buttons img{
+    margin-right: 5px;
+    width: 20px;
+}
+  /* fim menu verticalc */

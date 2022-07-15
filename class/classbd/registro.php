@@ -10,7 +10,7 @@ class registro
     private $datacadastro;
     private $sql = array();
     private $objectSector = array();
-    private $infbanco;
+    private $historicoregistro = array();
 
     public function __construct()
     {
@@ -36,6 +36,13 @@ class registro
     }
     public function getinfbanco(){
         return $this->infbancogeral;
+    }
+
+    public function gethistoricoregistro(){
+        return $this->historicoregistro;
+    }
+    public function sethistoricoregistro($value){
+        $this->historicoregistro =  $value;
     }
 
 
@@ -110,6 +117,16 @@ class registro
     {
         return $this->tabelaRegistro;
     }
+    private function formatDateHora($data){
+        $data = new DateTime($data);
+        return $data = $data->format('d/m/Y H:i:s');
+    }
+    private function formatDate($data){
+        $data = new DateTime($data);
+        return $data = $data->format('d/m/Y');
+    }
+
+
     private function inserirNovoRegistro($dados){
         $this->sql->query("INSERT INTO registroencomenda SET
         codigo = '".$dados['codigo']."',
@@ -126,9 +143,32 @@ class registro
         dataentregasetor = '".$dados['dataentrega']."',
         idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."')
         WHERE idregistroenc = '".$dados['id']."';");
+        
+    }
+    private function backlogEntrada($Registro){
+        
+        $dadosantigo = $this->queryRegistro($Registro['id']);
+
+        
+        $dadosantigo['Data Entrega Setor'] = new DateTime($dadosantigo['Data Entrega Setor']);
+        $dadosantigo['Data Entrega Setor'] = $dadosantigo['Data Entrega Setor']->format('d/m/Y H:i:s');
+
+        $Registro['dataentrega'] = new DateTime($Registro['dataentrega']);
+        $Registro['dataentrega'] = $Registro['dataentrega']->format('d/m/Y H:i:s');
+
+        $Registro['dataentrega'] = str_replace('T',' ', $Registro['dataentrega']);
+
+        $this->sql->query("INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES (".$Registro['id'].",
+        'Status | Data Entrega',
+        '".$dadosantigo['Status']." | ".$dadosantigo['Data Entrega Setor']."',
+        '".$Registro['status']." | ".$Registro['dataentrega']."')
+        ");
     }
     public function updateregistro($dados){
+        $this->backlogEntrada($dados);
         $this->updatestatusentrega($dados);
+
     }
     public function listGroupPendente(){
         $resultado = $this->sql->select($this->getinfbanco()."
@@ -136,7 +176,8 @@ class registro
         return $resultado;
     }
     public function insertregistro($dados){
-        $this->inserirNovoRegistro($dados);
+       $this->inserirNovoRegistro($dados);
+       
     }
 
     public function queryRegistro($id){
@@ -149,9 +190,12 @@ class registro
         INNER JOIN tipoencomenda ON registroencomenda.idtipoencomenda=tipoencomenda.idtipoencomenda
         WHERE idregistroenc = " . $id . "");
 
+        
+
         if (count($resultado) > 0) {
             $row = $resultado[0];
            
+            
             $resultado = array(
                 "id" => $row['id'],
                 "ipcomputador"=>$row['ipcomputador'],
@@ -159,11 +203,11 @@ class registro
                 "Codigo" => $row['codigo'],
                 "Remetente" => $row['remetente'],
                 "Tipo da Encomenda" => $row['desctipoencomenda'],
-                "Data Registro" => $row['dataregistro'],
-                "Data Coleta" => $row['datacoleta'],
+                "Data Registro" => $this->formatDateHora($row['dataregistro']),
+                "Data Coleta" => $this->formatDate( $row['datacoleta']),
                 "Status" => $row['descstatusentrega'],
                 "Setor" => $row['descsetor'],
-                "Data Entrega Setor" => $row['dataentregasetor'],
+                "Data Entrega Setor" => $this->formatDateHora( $row['dataentregasetor']),
                 "Observação do registro" => $row['registroObservacao'],
                 "Ip que realizou ultima alteração" =>$row['Idusuarioaltera']
             );
@@ -210,7 +254,31 @@ class registro
         AND registroencomenda.codigo = '" . $search . "'");
         return $resultado;
     }
-    
-    
+    private function historicoRegistroEntrada($id){
+        $resultado = $this->sql->select("SELECT * FROM backlogregisentrada
+        WHERE idRegistroEnvio = $id
+        ORDER BY `data`;");
 
+        
+
+        $historico = array();
+        
+        if(count($resultado)>0){
+            foreach ($resultado as $row) {
+                $row['data'] = new DateTime($row['data']);
+                $row['data'] = $row['data']->format('d/m/Y H:i:s');
+
+                array_push($historico,array("Datahora"=>$row['data'],
+                                            "campo"=>$row['campo'],
+                                            "dadosantigo"=>$row['dados_antigo'],
+                                            "dadosnovo"=>$row['dados_novo']));
+            }
+        }
+        $this->sethistoricoregistro($historico);
+    }
+
+    public function requisitarhistorico($id){
+        $this->historicoRegistroEntrada($id);
+        return $this->gethistoricoregistro();
+    }
 }

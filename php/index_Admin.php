@@ -63,6 +63,7 @@ $interaction->acessos('admin');
 <body>
 
     <header id="cabecalho_master">
+        
         <div id="cabecalho">
             <span class="titulo_cabecalho">Configurações</span>
         </div>
@@ -75,7 +76,7 @@ $interaction->acessos('admin');
                 <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
             </article>
             <article class="buttons">
-                <a href="index.php" class="btn btn-primary buttons">Voltar</a>
+                <a href="index.php" class="btn btn-primary buttons">Sair</a>
             </article>
         </div>
 

@@ -69,12 +69,16 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 <body>
     <header id="cabecalho_master">
+        <?php 
+            $interaction->menulateral(); 
+        ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
             <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Envio de Encomenda</span>
         </div>
 
     </header>
+
     <section id="container_master">
         <article id="container_menu_usuario">
             <article id="container_primary">
@@ -99,21 +103,6 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 
             </article>
-
-            <div id="Menu_lateral" >
-                <article id="container_user">
-                    <img src="../img/user.png">
-                    <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-                </article>
-
-                <article class="buttons">
-                    <a href="index_newRegister.php" class="btn btn-success buttons">Novo Registro</a>
-                    <a href="index.php" class="btn btn-primary buttons">Entrada</a>
-                    <?php
-                    $interaction->buttonadmin();
-                    ?>
-                </article>
-            </div>
             
         </article>
         <article id="container_table">

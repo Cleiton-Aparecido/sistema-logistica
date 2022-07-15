@@ -59,9 +59,48 @@ class interaction_view  extends interaction
         }
 
     }
-   
-    public function dadosViewEntrada($id)
-    {
+
+    private function impresshistorico($historico){
+        echo "<span class='grid-item cabecalho-grid' style='border-left-radius: 10px;'>";
+        echo "Data e Hora Alteração";
+        echo "</span>";
+        echo "<span class='grid-item cabecalho-grid'>";
+            echo "Campos de Alterações";
+        echo "</span>";
+        echo "<span class='grid-item cabecalho-grid'>";
+            echo "Dados Antigos";
+        echo "</span>";
+        echo "<span class='grid-item cabecalho-grid'>";
+            echo "Dados Salvos";
+        echo "</span>";
+        foreach ($historico as $key => $value) {
+            
+            echo "<span class='grid-item'>";
+                echo  $value['Datahora'];
+            echo "</span>";
+            echo "<span class='grid-item'>";
+                echo $value['campo'];
+            echo "</span>";
+            echo "<span class='grid-item'>";
+                echo $value['dadosantigo'];
+            echo "</span>";
+            echo "<span class='grid-item'>";
+                echo $value['dadosnovo'];
+            echo "</span>";
+            
+        }
+    }
+
+    public function historicoentrada($id){
+    $historico =  $this->objectRegister->requisitarhistorico($id);
+    $this->impresshistorico($historico);
+    }    
+    public function historicoenvio($id){
+    $historico =  $this->RegistroEnvioEncomenda->requisitarhistorico($id);
+    $this->impresshistorico($historico);
+    }    
+    
+    public function dadosViewEntrada($id){
         $x = $this->objectRegister->queryRegistro($id);
         echo '<script>document.getElementById("voltar").</script>';
         foreach ($x as $key => $value) {
@@ -133,23 +172,23 @@ class interaction_view  extends interaction
                 echo '
                         
                         <label for="idregistro">ID Registro:</label>
-                        <input type="text" id="idregistro" name="idregistro" class="form-control" value="' . $date['id'] . '"disabled>
+                        <input type="text" id="idregistro" name="idregistro" class="form-control input_view" value="' . $date['id'] . '"disabled>
         
                         
         
                         <label for="Ipusuario">IP Computador:</label>
-                        <input type="text" id="Ipusuario" name="Ipusuario" class="form-control" value="' . $date['Ipusuario'] . '" disabled>
+                        <input type="text" id="Ipusuario" name="Ipusuario" class="form-control input_view" value="' . $date['Ipusuario'] . '" disabled>
 
                         <label for="funcionario">Funcionário que Solicitou:</label>
-                        <input type="text" id="funcionario" name="funcionario" class="form-control" value="' . $date['funcionario'] . '" disabled>
+                        <input type="text" id="funcionario" name="funcionario" class="form-control input_view" value="' . $date['funcionario'] . '" disabled>
     
 
                         <label for="setor">Setor Que Solicitou:</label>
-                        <input type="text" id="setor" name="setor" class="form-control" value="' . $date['SetorRementente'] . '" disabled>
+                        <input type="text" id="setor" name="setor" class="form-control input_view" value="' . $date['SetorRementente'] . '" disabled>
                     ';
                 echo '
                         <label for="encomenda">Encomenda:</label>
-                        <select id="encomenda" name="encomenda" class="form-control"  disabled>
+                        <select id="encomenda" name="encomenda" class="form-control input_view"  disabled>
                             <option value="'.$date['Encomenda'].'">'.$date['Encomenda'].'</option>
                      ';
 
@@ -159,7 +198,7 @@ class interaction_view  extends interaction
                         </select>
                         <label for="status">Status De Envio:</label>
                                           
-                        <select id="status" name="status" class="form-control" ' . $this->disabled_atualizacao_registro . '>
+                        <select id="status" name="status" class="form-control input_view" ' . $this->disabled_atualizacao_registro . '>
                             <option value="'.$date['status'].'">'.$date['status'].'</option>';
     
                         #imprimir lista de status utilizando objeito da class interaction
@@ -167,38 +206,40 @@ class interaction_view  extends interaction
                         echo '</select>
     
                         <label for="codigo">Codigo de Postagem:</label>
-                        <input type="text" id="codigo" name="codigo" class="form-control" value="' . $date['CodigoPostagen'] . '" ' . $this->disabled_atualizacao_registro . '>
+                        <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['CodigoPostagen'] . '" ' . $this->disabled_atualizacao_registro . '>
     
                         <label for="datapostagem">Data de Postagem:</label>
-                        <input type="date" id="datapostagem" name="datapostagem" class="form-control" value="' . $date['DataPostagem'] . '" ' . $this->disabled_atualizacao_registro . '>
+                        <input type="date" id="datapostagem" name="datapostagem" class="form-control input_view" value="' . $date['DataPostagem'] . '" ' . $this->disabled_atualizacao_registro . '>
 
                       
                         <label for="obs">Observação:</label>
-                        <textarea id="obs" name="obs" class="form-control" ' . $this->disabled_atualizacao_registro . '>' . $date['Observacao'] . '</textarea>
+                        <textarea id="obs" name="obs" class="form-control input_view" ' . $this->disabled_atualizacao_registro . '>' . $date['Observacao'] . '</textarea>
     
                         ';
         
         
                 echo '</div>';
         
+
+                // abrir container container_view
                 echo '<div class="container_view">
 
                 <label for="dataregistro">Data do Registro:</label>
-                <input type="text" id="dataregistro" name="dataregistro" class="form-control" value="' . $date['DataRegistro'] . '" disabled>
+                <input type="text" id="dataregistro" name="dataregistro" class="form-control input_view" value="' . $date['DataRegistro'] . '" disabled>
 
 
 
                         <label for="rua">Endereço:</label>
-                    <input type="text" id="rua" name="rua" class="form-control" value="' . $date['rua'] . '"' . $this->disabled_inf_registro.'>
+                    <input type="text" id="rua" name="rua" class="form-control input_view" value="' . $date['rua'] . '"' . $this->disabled_inf_registro.'>
         
                         <label for="Numero">Número:</label>
-                        <input type="text" id="Numero" name="Numero" class="form-control" value="' . $date['numero'] . '"' . $this->disabled_inf_registro. '>
+                        <input type="text" id="Numero" name="Numero" class="form-control input_view" value="' . $date['numero'] . '"' . $this->disabled_inf_registro. '>
         
                         <label for="bairro">Bairro:</label>
-                        <input type="text" id="bairro" name="bairro" class="form-control" value="' . $date['bairro'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="bairro" name="bairro" class="form-control input_view" value="' . $date['bairro'] . '"' . $this->disabled_inf_registro . '>
         
                         <label for="uf">Estado:</label>
-                        <select class="form-control" name="uf" id="uf" '. $this->disabled_inf_registro .'>
+                        <select class="form-control input_view" name="uf" id="uf" '. $this->disabled_inf_registro .'>
                                 <option value="'.$date['estado'].'">'.$date['estado'].'</option>
                                 <option value="AC">AC</option>
                                 <option value="AL">AL</option>
@@ -230,63 +271,57 @@ class interaction_view  extends interaction
                         </select>
         
                         <label for="cidade">Cidade:</label>
-                        <input type="text" id="cidade" name="cidade" class="form-control" value="' . $date['cidade'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="cidade" name="cidade" class="form-control input_view" value="' . $date['cidade'] . '"' . $this->disabled_inf_registro . '>
     
                         <label for="cep">Cep:</label>
-                        <input type="text" id="cep"  name="cep" class="form-control" value="' . $date['cep'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="cep"  name="cep" class="form-control input_view" value="' . $date['cep'] . '"' . $this->disabled_inf_registro . '>
     
                         <label for="complementar">Informações Complementares Endereço:</label>
-                        <input type="text" id="complementar"  name="complementar" class="form-control" value="' . $date['complementar'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="complementar"  name="complementar" class="form-control input_view" value="' . $date['complementar'] . '"' . $this->disabled_inf_registro . '>
     
                         
     
                     ';
-                    echo '</div>';
-                    
+                    echo '</div>'; // fechar container container_view
+                                        
             }
 
             if($type == 'e'){
                 echo '<div class="container_view">';
                 
-                echo '
-                        
-                <label for="idregistro">ID Registro:</label>
-                <input type="text" id="idregistro" name="idregistro" class="form-control" value="' . $date['id'] . '"disabled>
+                    echo ' <label for="idregistro">ID Registro:</label>
+                    <input type="text" id="idregistro" name="idregistro" class="form-control input_view" value="' . $date['id'] . '"disabled>
 
-                <label for="dataregistro">Data de registro:</label>
-                <input type="text" id="dataregistro" name="dataregistro" class="form-control" value="' . $date['Data Registro'] . '" disabled>
+                    <label for="dataregistro">Data de registro:</label>
+                    <input type="text" id="dataregistro" name="dataregistro" class="form-control input_view" value="' . $date['Data Registro'] . '" disabled>
 
-                <label for="datacoleta">Data coleta:</label>
-                <input type="text" id="datacoleta" name="datacoleta" class="form-control" value="' . $date['Data Coleta'] . '" ' . $this->disabled_inf_registro.'>
+                    <label for="datacoleta">Data coleta:</label>
+                    <input type="text" id="datacoleta" name="datacoleta" class="form-control input_view" value="' . $date['Data Coleta'] . '" ' . $this->disabled_inf_registro.'>
 
-                <label for="status">Status:</label>
-                <input type="text" id="status" name="status" class="form-control" value="' . $date['Status'] . '" disabled>
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" name="status" class="form-control input_view" value="' . $date['Status'] . '" disabled>
+                    
+
+                    <label for="Ipusuario">IP de registro:</label>
+                    <input type="text" id="Ipusuario" name="Ipusuario" class="form-control input_view" value="' . $date['ipcomputador'] . '" disabled>
+
+                    <label for="funcionario">Funcionário que Eegistrou:</label>
+                    <input type="text" id="funcionario" name="funcionario" class="form-control input_view" value="' . $date['Usuario Registro'] . '" disabled>';
                 
-
-                <label for="Ipusuario">IP de registro:</label>
-                <input type="text" id="Ipusuario" name="Ipusuario" class="form-control" value="' . $date['ipcomputador'] . '" disabled>
-
-                <label for="funcionario">Funcionário que Eegistrou:</label>
-                <input type="text" id="funcionario" name="funcionario" class="form-control" value="' . $date['Usuario Registro'] . '" disabled>
-
-
-            ';
                 echo '</div>';
 
                 echo '<div class="container_view">';
                 
-                    echo '
-                            
-                    <label for="Codigo">Codigo de Rastreio:</label>
-                    <input type="text" id="Codigo" name="Codigo" class="form-control" value="' . $date['Codigo'] . '"' . $this->disabled_inf_registro.'>
+                    echo '<label for="Codigo">Codigo de Rastreio:</label>
+                    <input type="text" id="Codigo" name="Codigo" class="form-control input_view" value="' . $date['Codigo'] . '"' . $this->disabled_inf_registro.'>
 
                     <label for="codigo">Codigo de Rastreio:</label>
-                    <input type="text" id="codigo" name="codigo" class="form-control" value="' . $date['Remetente'] . '"' . $this->disabled_inf_registro.'>
+                    <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['Remetente'] . '"' . $this->disabled_inf_registro.'>
 
                     ';
                     echo '
                         <label for="encomenda">Encomenda:</label>
-                        <select id="encomenda" name="encomenda" class="form-control" ' . $this->disabled_inf_registro.'  >
+                        <select id="encomenda" name="encomenda" class="form-control input_view" ' . $this->disabled_inf_registro.'  >
                             <option value="'.$date['Tipo da Encomenda'].'">'.$date['Tipo da Encomenda'].'</option>
                             
                         ';
@@ -298,36 +333,44 @@ class interaction_view  extends interaction
                 
                     echo '
                         <label for="setor">Setor destinatário:</label>
-                        <select id="setor" name="setor" class="form-control" '. $this->disabled_inf_registro.'>
+                        <select id="setor" name="setor" class="form-control input_view" '. $this->disabled_inf_registro.'>
                             <option value="'.$date['Setor'].'">'.$date['Setor'].'</option>
                         ';
 
                         $this->impressoption( $this->objectSector->listSectordesc());
 
                          echo '</select>';   
-                echo '
-                    <label for="DataEntrega">Data Entrega Setor:</label>
-                    <input type="text" id="DataEntrega" name="DataEntrega" class="form-control" value="' . $date['Data Entrega Setor'] . '"' . $this->disabled_inf_registro.'>
+                    echo '
+                        <label for="DataEntrega">Data Entrega Setor:</label>
+                        <input type="text" id="DataEntrega" name="DataEntrega" class="form-control input_view" value="' . $date['Data Entrega Setor'] . '"' . $this->disabled_inf_registro.'>
 
-                    <label for="obs">Observação do registro:</label>
-                    <textarea  id="obs" name="obs" class="form-control" ' . $this->disabled_inf_registro.'>' . $date['Observação do registro'] . '</textarea>
+                        <label for="obs">Observação do registro:</label>
+                        <textarea  id="obs" name="obs" class="form-control input_view" ' . $this->disabled_inf_registro.'>' . $date['Observação do registro'] . '</textarea>
 
                 
                 ';
 
-            echo '</div>';
-
+                echo '</div>';
+                
             }
                 echo "<div style = 'width:100%; text-align:center;' >";
-                if ($this->AccessToEditButton()) {
+                    if($type == 's'){
+                        if ($this->AccessToEditButton()) {
+                        
+                            echo '<input type="submit" value="Salvar" class="btn btn-success">';
+                            
+                        }
+                        echo "<a class='btn btn-primary' style='margin:5px;' href='index_comprovante.php?&id=".$date['id']."'>Imprimir</a>";
+                        
+                    }
+
+                
+                    echo "<button onclick='historico(".$_GET['cod'].",".'"'.$_GET['type'].'"'.")' class='btn btn-primary' type='button'>Historico</button>"; 
                     
-                    echo '<input type="submit" value="Salvar" class="btn btn-success">';
-                    
-                }
-                if($type == 's'){
-                    echo "<a class='btn btn-primary' style='margin-left:5px;' href='index_comprovante.php?&id=".$date['id']."'>Imprimir</a>";
-                }
-                echo "</div>";
+                    echo "<div id='historico' class='grid-container style_historico'>";
+                    echo "</div>";
+
+            echo "</div>";
         }
     }
 }

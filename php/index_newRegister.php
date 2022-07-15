@@ -3,7 +3,7 @@ require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
 $interaction = new interaction();
 $x = false; 
-if ($_POST) {
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if($_POST['tiporegistro'] == 'entrada'){
       
         $dadosentrada = array(
@@ -81,7 +81,7 @@ if ($_POST) {
     </style>
 
     <script>
-        <?php include('../js/javascripts.js');   ?>
+        <?php include('../js/javascriptsNewRegister.js');   ?>
 
         	
     </script>
@@ -92,6 +92,7 @@ if ($_POST) {
 
 <body>
     <header id="cabecalho_master">
+    <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
             <span class="titulo_cabecalho">Novo Registro</span>
@@ -113,15 +114,7 @@ if ($_POST) {
 
 
         </form>
-        <div id="Menu_lateral">
-            <article id="container_user">
-                <img src="../img/user.png">
-                <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-            </article>
-            <article class="buttons">
-                <a href="index.php" class="btn btn-primary buttons">Voltar</a>
-            </article>
-        </div>
+        
     </section>
 </body>
 
