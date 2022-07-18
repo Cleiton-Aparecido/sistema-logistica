@@ -142,7 +142,7 @@ class interaction
         $x = array();
         if ($type == 'ativo') {
             $x = $this->objectSector->listSectordescAtivo();
-        } else if ($type == 'geral') {
+        } else if ($type == 'Geral') {
             $x = $this->objectSector->listSectordesc();
         }
         $this->impressoption($x);
