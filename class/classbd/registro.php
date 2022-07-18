@@ -163,7 +163,7 @@ class registro
         ");
     }
     public function updateregistro($dados){
-        // $this->backlogEntrada($dados);
+        $this->backlogEntrada($dados);
         $this->updatestatusentrega($dados);
 
     }
