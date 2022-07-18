@@ -325,7 +325,7 @@ class interaction
                 array_push($idregistro, $value);
             }
         }
-        if ($status == 'Pendente' || count($idregistro) == 0) {
+        if ($status == 'Pendente' || $status == 'Preparo' || count($idregistro) == 0) {
             echo '<script>alert("Parametros Invalidoa")</script>';
         }
         // $_SERVER['REMOTE_ADDR']
@@ -341,6 +341,7 @@ class interaction
                 );
                 $this->objectRegister->updateregistro($dados);
             }
+            header('Location: index.php');
         }
     }
     //Alterar informações do registro das encomendas que foi enviada para setor de correios para realizar o envio

@@ -9,7 +9,7 @@ if (!isset($_POST['dataentrega'])) {
 
         $dados = filter_input_array(INPUT_POST,FILTER_DEFAULT);
         $interaction->alterarstatusentrega($dados);
-        header('Location: index.php');
+        
     
 }
 
