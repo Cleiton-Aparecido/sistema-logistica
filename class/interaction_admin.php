@@ -92,7 +92,7 @@ class interaction_admin  extends interaction
     }
     public function VerificarParaInserir($conteudo,$item){
         if($conteudo == '' ||  $conteudo == ' '){
-            echo 'Campa Vazioooo!';
+            echo 'Campo Vazioooo!';
         }
         else{
             $conteudo = strtoupper($conteudo);
@@ -154,7 +154,6 @@ class interaction_admin  extends interaction
             
             foreach ($dados as $value) {
                 $id = $value['nome'].$value['ipcomputador'];
-                $iddescconteudo = str_replace(' ','',$id);
                     echo "<div class='grid-item' id='id:".$value['id']."' value='".$value['id']."' >".$value['id']."</div> ";
 
                     echo "<div class='grid-item' >";

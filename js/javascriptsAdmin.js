@@ -26,13 +26,13 @@ function salvaralteracaousuario(id){
             loadtableUsuario('usuario');
             setTimeout(function () {
                 $("#RetornoSalvarUsuario").html('');
-            }, 40000);
+            }, 4000);
         },
         error: function () {
             console.log('Erro ao Atualizar');
             setTimeout(function () {
                 $("#RetornoSalvarUsuario").html('erro inseperado');
-            }, 40000);
+            }, 4000);
            
         },
     });

@@ -39,7 +39,7 @@ $interaction->acessos('admin');
 
 
     <style type="text/css">
-        <?php include('../css/style_Admin.css');   ?>
+        <?php include('../css/style_admin.css');   ?>
     </style>
 
     <script>
@@ -88,7 +88,7 @@ $interaction->acessos('admin');
                     <h4 class="titulo_container"> Usuario</h4>
                 </span>
                     <div id='formusuario' class='container_item_interno'>
-                </div>
+                    </div>
                 <div id='RetornoSalvarUsuario'></div>
             </article>
 

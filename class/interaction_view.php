@@ -22,8 +22,7 @@ class interaction_view  extends interaction
         $this->disabled_inf_registro = 'disabled';
         $this->disabled_atualizacao_registro = 'disabled';
     }
-    public function AccessToEditButton()
-    {
+    public function AccessToEditButton(){
         $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
         if ($level == 1 || $level == 2  ) {
             return true;
@@ -31,32 +30,53 @@ class interaction_view  extends interaction
             return false;
         }
     }
+    
+
+
     public function ControleDeAcesso(){
         $nivel = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
 
         if($nivel == 1){
-            $this->disabled_inf_registro = 'disabled';
             $this->disabled_atualizacao_registro = '';
+            return true;
+            
         }
         if($nivel == 2){
             $this->disabled_inf_registro = 'disabled';
             $this->disabled_atualizacao_registro = '';
+            return true;
         }
         if($nivel == 3){
-        $this->disabled_atualizacao_registro = 'disabled';
+            $this->disabled_atualizacao_registro = 'disabled';
+            return false;
         }
         if($nivel == 4){
             $this->disabled_atualizacao_registro = '';
+            return false;
         }
         if($nivel == 5){
             $this->disabled_atualizacao_registro = '';
+            return false;
         }
         if($nivel == 6){
             $this->disabled_atualizacao_registro = '';
+            return false;
         }
         if($nivel == 7){
             
         }
+
+    }
+    public function updateregistroentrada($dados){
+        
+        if($this->AccessToEditButton()){
+            
+            var_dump($dados);
+        }
+        else{
+            echo 'sem acesso';
+        }
+        
 
     }
 
@@ -296,13 +316,16 @@ class interaction_view  extends interaction
                     <input type="text" id="dataregistro" name="dataregistro" class="form-control input_view" value="' . $date['Data Registro'] . '" disabled>
 
                     <label for="datacoleta">Data coleta:</label>
-                    <input type="text" id="datacoleta" name="datacoleta" class="form-control input_view" value="' . $date['Data Coleta'] . '" ' . $this->disabled_inf_registro.'>
+                    <input type="date" id="datacoleta" name="datacoleta" class="form-control input_view" value="' . $date['Data Coleta'] . '" disabled>';
 
-                    <label for="status">Status:</label>
-                    <input type="text" id="status" name="status" class="form-control input_view" value="' . $date['Status'] . '" disabled>
+                    echo '<label for="status">Status:</label>
+                    <select  id="status" name="status" class="form-control input_view"  disabled>';
+                        echo '<option value="' . $date['Status'] . '">'.$date['Status'].'</option>';
+                        $this->impressoption( $this->statusentrega->listcstatusentrega());
+                    echo '</select>';
                     
 
-                    <label for="Ipusuario">IP de registro:</label>
+                   echo '<label for="Ipusuario">IP de registro:</label>
                     <input type="text" id="Ipusuario" name="Ipusuario" class="form-control input_view" value="' . $date['ipcomputador'] . '" disabled>
 
                     ';
@@ -312,15 +335,15 @@ class interaction_view  extends interaction
                 echo '<div class="container_view">';
                 
                     echo '<label for="Codigo">Codigo de Rastreio:</label>
-                    <input type="text" id="Codigo" name="Codigo" class="form-control input_view" value="' . $date['Codigo'] . '"' . $this->disabled_inf_registro.'>
+                    <input type="text" id="Codigo" name="Codigo" class="form-control input_view" value="' . $date['Codigo'] . '"disabled>
 
-                    <label for="codigo">Codigo de Rastreio:</label>
-                    <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['Remetente'] . '"' . $this->disabled_inf_registro.'>
+                    <label for="remetente">Remetente:</label>
+                    <input type="text" id="remetente" name="remetente" class="form-control input_view" value="' . $date['Remetente'] . '"disabled>
 
                     ';
                     echo '
                         <label for="encomenda">Encomenda:</label>
-                        <select id="encomenda" name="encomenda" class="form-control input_view" ' . $this->disabled_inf_registro.'  >
+                        <select id="encomenda" name="encomenda" class="form-control input_view" disabled  >
                             <option value="'.$date['Tipo da Encomenda'].'">'.$date['Tipo da Encomenda'].'</option>
                             
                         ';
@@ -341,10 +364,10 @@ class interaction_view  extends interaction
                          echo '</select>';   
                     echo '
                         <label for="DataEntrega">Data Entrega Setor:</label>
-                        <input type="text" id="DataEntrega" name="DataEntrega" class="form-control input_view" value="' . $date['Data Entrega Setor'] . '"' . $this->disabled_inf_registro.'>
+                        <input type="datetime-local" id="DataEntrega" name="DataEntrega" class="form-control input_view" value="' . $date['Data Entrega Setor'] . '"disabled>
 
                         <label for="obs">Observação do registro:</label>
-                        <textarea  id="obs" name="obs" class="form-control input_view" ' . $this->disabled_inf_registro.'>' . $date['Observação do registro'] . '</textarea>
+                        <textarea  id="obs" name="obs" class="form-control input_view" disabled>' . $date['Observação do registro'] . '</textarea>
 
                 
                 ';
@@ -356,15 +379,26 @@ class interaction_view  extends interaction
                     if($type == 's'){
                         if ($this->AccessToEditButton()) {
                         
-                            echo '<input type="submit" value="Salvar" class="btn btn-success">';
-                            
+                            echo '<input type="submit" style="margin:5px;" value="Salvar" class="btn btn-success">';
                         }
                         echo "<a class='btn btn-primary' style='margin:5px;' href='index_comprovante.php?&id=".$date['id']."'>Imprimir</a>";
                         
                     }
+                    if($type == 'e'){
+                        if ($this->AccessToEditButton()) {
+                        
+                            echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
 
-                
-                    echo "<button onclick='historico(".$_GET['cod'].",".'"'.$_GET['type'].'"'.")' class='btn btn-primary' type='button'>Historico</button>"; 
+                            echo '<button style="margin:5px;" onclick="editar_informacoes('."'".$_GET['type']."'".')" class="btn btn-info" type="button">Editar</button>'; 
+                            
+                            echo '<script>';
+                           
+                            echo '</script>';
+                        }                        
+                    }
+
+
+                    echo "<button style='margin:5px;' onclick='historico(".$_GET['cod'].",".'"'.$_GET['type'].'"'.")' class='btn btn-primary' type='button'>Historico</button>"; 
                     
                     echo "<div id='historico' class='grid-container style_historico'>";
                     echo "</div>";

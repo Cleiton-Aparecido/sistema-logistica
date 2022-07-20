@@ -1,11 +1,56 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 require_once("config.php");
 $interaction = new interaction();
 $interactionview = new interaction_view();
 
 if ($_POST) {
 
-    if($_GET['type'] = 's'){
+    
+
+    
+    if($_GET['type'] == 'e'){
+    
+        try {
+            if(!isset($_GET['cod']) || 
+                !isset($_POST['status']) || 
+                !isset($_POST['Codigo']) || 
+                !isset($_POST['remetente']) || 
+                !isset($_POST['encomenda']) || 
+                !isset($_POST['setor']) || 
+                !isset($_POST['DataEntrega']) || 
+                !isset($_POST['obs'])){
+
+                throw new Exception("algo inesperado ocorreu", 1);
+               
+            }else{
+                $dados_salvos = array(
+                    "id"=>$_GET['cod'],
+                    "status"=>$_POST['status'],
+                    "codigo"=>$_POST['Codigo'],
+                    "rementente"=>$_POST['remetente'],
+                    "encomenda"=>$_POST['encomenda'],
+                    "setor"=>$_POST['setor'],
+                    "DataEntrega"=>$_POST['DataEntrega'],
+                    "obs"=>$_POST['obs']
+                );
+
+                $interactionview->updateregistroentrada($dados_salvos);
+                // header('Location: index.php');
+            }
+            
+        } catch (Exception $e) {
+
+
+            echo '<script>alert("'.$e ->getMessage().'");</script>';
+            
+        }
+            
+    }
+
+    if($_GET['type'] == 's'){
         $dados = array(
             "id"=>$_GET['cod'],
             "status"=>$_POST['status'],
@@ -15,7 +60,7 @@ if ($_POST) {
         );
         
         $interaction->SalvaRegistroEnvio($dados);
-        header('Location: index.php');
+        header('Location: index_envio.php');
     }
 }
 

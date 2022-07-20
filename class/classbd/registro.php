@@ -125,6 +125,9 @@ class registro
         $data = new DateTime($data);
         return $data = $data->format('d/m/Y');
     }
+    function atualizar_informacoes_registro($dados){
+        $this->sql->query("");
+    }
 
 
     private function inserirNovoRegistro($dados){
@@ -148,8 +151,6 @@ class registro
     private function backlogEntrada($Registro){
         
         $dadosantigo = $this->queryRegistro($Registro['id']);
-
-
 
         $Registro['dataentrega'] = $this->formatDateHora($Registro['dataentrega']);
 
@@ -201,10 +202,10 @@ class registro
                 "Remetente" => $row['remetente'],
                 "Tipo da Encomenda" => $row['desctipoencomenda'],
                 "Data Registro" => $this->formatDateHora($row['dataregistro']),
-                "Data Coleta" => $this->formatDate( $row['datacoleta']),
+                "Data Coleta" => $row['datacoleta'],
                 "Status" => $row['descstatusentrega'],
                 "Setor" => $row['descsetor'],
-                "Data Entrega Setor" => $this->formatDateHora( $row['dataentregasetor']),
+                "Data Entrega Setor" => $row['dataentregasetor'],
                 "Observação do registro" => $row['registroObservacao'],
                 "Ip que realizou ultima alteração" =>$row['Idusuarioaltera']
             );
@@ -220,8 +221,7 @@ class registro
 
         return $resultado;
     }
-    public function listDateCodeQuery($search, $datestart, $dateend)
-    {
+    public function listDateCodeQuery($search, $datestart, $dateend){
 
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE (registroencomenda.dataregistro 
@@ -231,8 +231,7 @@ class registro
 
         return $resultado;
     }
-    public function listDateSectorQuery($sector, $datestart, $dateend)
-    {
+    public function listDateSectorQuery($sector, $datestart, $dateend){
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE (registroencomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
@@ -241,8 +240,7 @@ class registro
 
         return $resultado;
     }
-    public function listDateSectorSearchQuery($sector, $search, $datestart, $dateend)
-    {
+    public function listDateSectorSearchQuery($sector, $search, $datestart, $dateend){
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE (registroencomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 

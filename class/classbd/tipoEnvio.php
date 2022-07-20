@@ -112,7 +112,8 @@ class tipoEnvio{
         
     }
     public function inserirNovoTipoEnvio($tipoenvio){
-        $comando = "INSERT INTO tipoenvio SET desctipoEnvio = '$tipoenvio', statusAtivo = (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo')";
+        $comando = "INSERT INTO tipoenvio (desctipoEnvio,statusAtivo)
+        VALUES ('$tipoenvio', (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     

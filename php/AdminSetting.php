@@ -60,6 +60,8 @@ if (isset($_POST)) {
             $interactionview->historicoenvio($_POST['id']);
         }
       
+    }else if($_POST['tipo'] == 'edicao_view'){
+        echo $interactionview->ControleDeAcesso();
     }
     
 } else {

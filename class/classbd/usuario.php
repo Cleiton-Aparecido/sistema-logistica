@@ -70,7 +70,7 @@ class usuario
 
     private function insertIpNew($ip){
         $this->sql->query("INSERT INTO usuario (nome,ipcomputador,nivel) 
-        VALUES ('" . $ip . "','" . $ip . "',2);");
+        VALUES ('" . $ip . "','" . $ip . "',3);");
     }
     private function searchIp($ip){
 

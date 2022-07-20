@@ -58,7 +58,8 @@ class encomenda{
         $this->setlistaGEralEncomenda($list);
     }
     public function inserirNovaEncomenda($encomenda){
-        $comando = "INSERT INTO tipoencomenda SET desctipoencomenda = '$encomenda', statusAtivo = (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo')";
+        $comando = "INSERT INTO tipoencomenda (desctipoencomenda,statusAtivo) 
+        VALUES ('$encomenda',(SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     public function alterarStatusEncomenda($encomenda,$status){

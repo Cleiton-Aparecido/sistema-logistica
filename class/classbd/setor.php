@@ -45,7 +45,8 @@ class setor{
         $this->sql->query($comando);
     }
     public function inserirNOvoSetor($setor){
-        $comando = "INSERT INTO setor SET descsetor  = '$setor', statusAtivo = (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo')";
+        $comando = "INSERT INTO setor (descsetor,statusAtivo)  
+        VALUES  ('$setor',(SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     // Lista de todos setores
