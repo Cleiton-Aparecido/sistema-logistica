@@ -37,10 +37,7 @@ class interaction_view  extends interaction
             return false;
         }
     }
-    
-
-
-    
+        
     public function updateregistroentrada($dados){
         
         if($this->AccessToEditButton()){

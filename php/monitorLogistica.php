@@ -58,7 +58,7 @@ $interactionview = new interaction_view();
     <div id="container_master">
         <section class="container_inf">
             <article class="container">
-                <h3>Envio</h3>
+                <h3>Entrada</h3>
                 <div id="enviosmonitor"></div>
                
             </article>
@@ -68,7 +68,7 @@ $interactionview = new interaction_view();
         </section>
         <section class="container_inf">
             <article class="container">
-                <h3>Entrada</h3>
+                <h3>Envio</h3>
                 <div id="entradamonitor"></div>
                
             </article>
