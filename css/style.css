@@ -92,7 +92,7 @@ header#cabecalho_master div#cabecalho {
     border: 1px solid rgb(0, 0, 0);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.614);
+    background-color: rgba(255, 226, 226, 0.614);
 }
 
 #table_master .table_title {

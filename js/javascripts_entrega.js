@@ -16,12 +16,12 @@ function submitformentrega(){
 
 $(document).ready(function () {
 
-    $('#table_master').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-    });
+    // $('#table_master').DataTable({
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //         'copy', 'csv', 'excel', 'pdf', 'print'
+    //     ],
+    // });
    
 
 }); 
