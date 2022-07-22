@@ -30,7 +30,7 @@ class interaction
     }
     public function direito()
     {
-        echo '<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca Versão 1.0</footer>';
+        echo '<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca</footer>';
     }
     private function acessoAdmin()
     {
@@ -56,6 +56,7 @@ class interaction
         echo '<a href="index_envio.php" class="buttons"><img src="../img/simbolo_envio.svg">Envio de Encomendas</a>';
         echo '<a href="index_entrega.php" class="buttons"><img src="../img/simbolo_entregue_setor.png">Entregue aos Setores</a>';
         echo '<a href="index_newRegister.php" class="buttons"><img style="margin-left:1px;" src="../img/533864.png">Novo Registro</a>';
+        echo '<a href="monitorLogistica.php" class="buttons"><img style="margin-left:1px;" src="../img/television.webp">Monitor</a>';
 
         $this->buttonadmin();
         echo '</div>';
@@ -358,4 +359,6 @@ class interaction
     {
         return  $this->RegistroEnvioEncomenda->queryregisterenvio($id);
     }
+    
+
 }

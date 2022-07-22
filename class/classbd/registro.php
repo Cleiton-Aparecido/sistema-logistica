@@ -9,8 +9,8 @@ class registro
     private $remetente;
     private $datacadastro;
     private $sql = array();
-    private $objectSector = array();
     private $historicoregistro = array();
+    private $QtdDadosPorStatus;
 
     public function __construct()
     {
@@ -36,6 +36,12 @@ class registro
     }
     public function getinfbanco(){
         return $this->infbancogeral;
+    }
+    public function getQtdDadosPorStatus(){
+        return $this->QtdDadosPorStatus;
+    }
+    public function setQtdDadosPorStatus($value){
+        $this->QtdDadosPorStatus =  $value;
     }
 
     public function gethistoricoregistro(){
@@ -88,27 +94,22 @@ class registro
     {
         return $this->remetente;
     }
-
     public function setremetente($value)
     {
         $this->remetente = $value;
     }
-
     public function getdatacadastro()
     {
         return $this->datacadastro;
     }
-
     public function setdatacadastro($value)
     {
         $this->datacadastro = $value;
     }
-
     public function getaberto()
     {
         return $this->aberto;
     }
-
     public function setaberto($value)
     {
         $this->aberto = $value;
@@ -125,11 +126,49 @@ class registro
         $data = new DateTime($data);
         return $data = $data->format('d/m/Y');
     }
-    function atualizar_informacoes_registro($dados){
-        $this->sql->query("");
+    public function backloghistorico($id,$obsantiga = "",$obsnova){
+
+        $this->sql->query("INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES ('$id', 'Observacao',
+        '$obsantiga',
+        '$obsnova');");
     }
+    private function atualizar_informacoes_registro_backlog($dados){
+
+        $dadosantigo = $this->queryRegistro($dados['id']);
+        $dados['dataentrega'] = $this->formatDateHora($dados['dataentrega']);
+        $dados['dataentrega'] = str_replace('T',' ', $dados['dataentrega']);
 
 
+
+        $comando = "INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES ('".$dados['id']."',
+        'Codigo | Remetente | Data Entrega Setor | Data Coleta | Status entrega | Setor | Encomenda',
+        '".$dadosantigo['Codigo']." | ".$dadosantigo['Remetente']." | ".$dadosantigo['Data Entrega Setor']." | ".$this->formatDate( $dadosantigo['Data Coleta'])." | ".$dadosantigo['Status']." | ".$dadosantigo['Setor']." | ".$dadosantigo['Tipo da Encomenda']." ',
+        '".$dados['codigo']." | ".$dados['rementente']." | ".$dados['dataentrega']." | ".$this->formatDate( $dados['DataColeta'])." | ".$dados['status']." | ".$dados['setor']." | ".$dados['encomenda']."');";
+
+        $this->sql->query("$comando");
+        
+        $this->backloghistorico($dados['id'],$dadosantigo['Observação do registro'],$dados['obs']);
+        // echo $comando;
+    }
+    function atualizar_informacoes_registro($dados){
+
+        $dadosantigo = $this->queryRegistro($dados['id']);
+
+        $this->atualizar_informacoes_registro_backlog($dados);
+        
+        $this->sql->query("UPDATE registroencomenda 
+        SET codigo = '".$dados['codigo']."',
+        remetente = '".$dados['rementente']."' ,
+        dataentregasetor = '".$dados['dataentrega']."' ,
+        datacoleta = '".$dados['DataColeta']."' ,
+        registroObservacao = '".$dados['obs']."',
+        idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."'),
+        idtipoencomenda = (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'),
+        idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."')
+        WHERE idregistroenc = '".$dados['id']."'");
+    }
     private function inserirNovoRegistro($dados){
         $this->sql->query("INSERT INTO registroencomenda SET
         codigo = '".$dados['codigo']."',
@@ -177,7 +216,6 @@ class registro
        $this->inserirNovoRegistro($dados);
        
     }
-
     public function queryRegistro($id){
         $resultado = $this->sql->select("SELECT *, 
         registroencomenda.idregistroenc AS id
@@ -271,9 +309,29 @@ class registro
         }
         $this->sethistoricoregistro($historico);
     }
-
     public function requisitarhistorico($id){
         $this->historicoRegistroEntrada($id);
         return $this->gethistoricoregistro();
+    }
+    private function Requisitar_Qtd_Dados_Por_Status(){
+
+        $ResultadoFormatado = array();
+
+        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(registroencomenda.idregistroenc) AS 'qtd' FROM statusentrega 
+        LEFT JOIN registroencomenda On registroencomenda.idstatusentrega = statusentrega.idstatusentrega
+        GROUP BY statusentrega.descstatusentrega;");
+        
+        foreach ($resultado as $row) {
+            
+            array_push($ResultadoFormatado,array("status"=>$row['descstatusentrega'],
+                                                 "qtd"=>$row['qtd']));
+
+        }
+        
+        $this->setQtdDadosPorStatus($ResultadoFormatado);
+    }
+    public function Qtd_Dados_Por_Status(){
+        $this->Requisitar_Qtd_Dados_Por_Status();
+    return $this->getQtdDadosPorStatus();
     }
 }

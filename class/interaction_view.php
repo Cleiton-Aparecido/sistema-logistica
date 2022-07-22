@@ -8,8 +8,7 @@ class interaction_view  extends interaction
     private $encomenda = array();
     private $statusentrega = array();
     private $RegistroEnvioEncomenda = array();
-    private $disabled_inf_registro;
-    private $disabled_atualizacao_registro;
+
 
     public function __construct()
     {
@@ -19,8 +18,7 @@ class interaction_view  extends interaction
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
-        $this->disabled_inf_registro = 'disabled';
-        $this->disabled_atualizacao_registro = 'disabled';
+      
     }
     public function AccessToEditButton(){
         $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
@@ -30,48 +28,23 @@ class interaction_view  extends interaction
             return false;
         }
     }
+
+    public function AccessToEditButtonNoteEntrada(){
+        $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
+        if ($level == 1 || $level == 2 || $level == 3 || $level == 4 || $level == 5 || $level == 6 ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     
 
 
-    public function ControleDeAcesso(){
-        $nivel = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
-
-        if($nivel == 1){
-            $this->disabled_atualizacao_registro = '';
-            return true;
-            
-        }
-        if($nivel == 2){
-            $this->disabled_inf_registro = 'disabled';
-            $this->disabled_atualizacao_registro = '';
-            return true;
-        }
-        if($nivel == 3){
-            $this->disabled_atualizacao_registro = 'disabled';
-            return false;
-        }
-        if($nivel == 4){
-            $this->disabled_atualizacao_registro = '';
-            return false;
-        }
-        if($nivel == 5){
-            $this->disabled_atualizacao_registro = '';
-            return false;
-        }
-        if($nivel == 6){
-            $this->disabled_atualizacao_registro = '';
-            return false;
-        }
-        if($nivel == 7){
-            
-        }
-
-    }
+    
     public function updateregistroentrada($dados){
         
         if($this->AccessToEditButton()){
-            
-            var_dump($dados);
+            $this->objectRegister->atualizar_informacoes_registro($dados);
         }
         else{
             echo 'sem acesso';
@@ -183,7 +156,7 @@ class interaction_view  extends interaction
         }
         else {
             
-            $this->ControleDeAcesso();
+            
             
     
             if($type == 's'){
@@ -218,7 +191,7 @@ class interaction_view  extends interaction
                         </select>
                         <label for="status">Status De Envio:</label>
                                           
-                        <select id="status" name="status" class="form-control input_view" ' . $this->disabled_atualizacao_registro . '>
+                        <select id="status" name="status" class="form-control input_view">
                             <option value="'.$date['status'].'">'.$date['status'].'</option>';
     
                         #imprimir lista de status utilizando objeito da class interaction
@@ -226,14 +199,14 @@ class interaction_view  extends interaction
                         echo '</select>
     
                         <label for="codigo">Codigo de Postagem:</label>
-                        <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['CodigoPostagen'] . '" ' . $this->disabled_atualizacao_registro . '>
+                        <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['CodigoPostagen'] . '">
     
                         <label for="datapostagem">Data de Postagem:</label>
-                        <input type="date" id="datapostagem" name="datapostagem" class="form-control input_view" value="' . $date['DataPostagem'] . '" ' . $this->disabled_atualizacao_registro . '>
+                        <input type="date" id="datapostagem" name="datapostagem" class="form-control input_view" value="' . $date['DataPostagem'] . '">
 
                       
                         <label for="obs">Observação:</label>
-                        <textarea id="obs" name="obs" class="form-control input_view" ' . $this->disabled_atualizacao_registro . '>' . $date['Observacao'] . '</textarea>
+                        <textarea id="obs" name="obs" class="form-control input_view">' . $date['Observacao'] . '</textarea>
     
                         ';
         
@@ -250,16 +223,16 @@ class interaction_view  extends interaction
 
 
                         <label for="rua">Endereço:</label>
-                    <input type="text" id="rua" name="rua" class="form-control input_view" value="' . $date['rua'] . '"' . $this->disabled_inf_registro.'>
+                    <input type="text" id="rua" name="rua" class="form-control input_view" value="' . $date['rua'] . '"disabled>
         
                         <label for="Numero">Número:</label>
-                        <input type="text" id="Numero" name="Numero" class="form-control input_view" value="' . $date['numero'] . '"' . $this->disabled_inf_registro. '>
+                        <input type="text" id="Numero" name="Numero" class="form-control input_view" value="' . $date['numero'] . '"disabled>
         
                         <label for="bairro">Bairro:</label>
-                        <input type="text" id="bairro" name="bairro" class="form-control input_view" value="' . $date['bairro'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="bairro" name="bairro" class="form-control input_view" value="' . $date['bairro'] . '"disabled>
         
                         <label for="uf">Estado:</label>
-                        <select class="form-control input_view" name="uf" id="uf" '. $this->disabled_inf_registro .'>
+                        <select class="form-control input_view" name="uf" id="uf" disabled>
                                 <option value="'.$date['estado'].'">'.$date['estado'].'</option>
                                 <option value="AC">AC</option>
                                 <option value="AL">AL</option>
@@ -291,13 +264,13 @@ class interaction_view  extends interaction
                         </select>
         
                         <label for="cidade">Cidade:</label>
-                        <input type="text" id="cidade" name="cidade" class="form-control input_view" value="' . $date['cidade'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="cidade" name="cidade" class="form-control input_view" value="' . $date['cidade'] . '" disabled>
     
                         <label for="cep">Cep:</label>
-                        <input type="text" id="cep"  name="cep" class="form-control input_view" value="' . $date['cep'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="cep"  name="cep" class="form-control input_view" value="' . $date['cep'] . '"disabled>
     
                         <label for="complementar">Informações Complementares Endereço:</label>
-                        <input type="text" id="complementar"  name="complementar" class="form-control input_view" value="' . $date['complementar'] . '"' . $this->disabled_inf_registro . '>
+                        <input type="text" id="complementar"  name="complementar" class="form-control input_view" value="' . $date['complementar'] . '"disabled>
     
                         
     
@@ -355,11 +328,11 @@ class interaction_view  extends interaction
                 
                     echo '
                         <label for="setor">Setor destinatário:</label>
-                        <select id="setor" name="setor" class="form-control input_view" '. $this->disabled_inf_registro.'>
+                        <select id="setor" name="setor" class="form-control input_view" disabled>
                             <option value="'.$date['Setor'].'">'.$date['Setor'].'</option>
                         ';
 
-                        $this->impressoption( $this->objectSector->listSectordesc());
+                        $this->impressoption( $this->objectSector->listSectordescAtivo());
 
                          echo '</select>';   
                     echo '
@@ -392,9 +365,44 @@ class interaction_view  extends interaction
                             echo '<button style="margin:5px;" onclick="editar_informacoes('."'".$_GET['type']."'".')" class="btn btn-info" type="button">Editar</button>'; 
                             
                             echo '<script>';
+                            echo 'function editar_informacoes(type){
+    
+                                $.ajax({
+                                    type: "POST",
+                                    url: "AdminSetting.php",
+                                    data: { tipo:"edicao_view"},
+                                    success: function (result) {
+                                        console.log(result);
+                                        if(result == true){
+                                            document.getElementById("Codigo").disabled = false;
+                                            document.getElementById("remetente").disabled = false;
+                                            document.getElementById("encomenda").disabled = false;
+                                            document.getElementById("setor").disabled = false;
+                                            document.getElementById("DataEntrega").disabled = false;
+                                            document.getElementById("obs").disabled = false;
+                                            document.getElementById("datacoleta").disabled = false;
+                                            document.getElementById("status").disabled = false;
+                                            document.getElementById("salvar").classList.remove("btn-danger");
+                                            document.getElementById("salvar").classList.add("btn-success");
+                                        }
+                                },
+                                    error: function () {
+                                        console.log("Erro ao Atualizar");
+                                    }
+                                });
+                            }';
                            
                             echo '</script>';
-                        }                        
+                        }
+                        else if($this->AccessToEditButtonNoteEntrada()){
+                            echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
+
+                            echo '<button style="margin:5px;" onclick="editar_informacoes_obs('."'".$_GET['type']."'".')" class="btn btn-info" type="button">Editar Observações</button>'; 
+                            
+                            echo '<script>';
+                           
+                            echo '</script>';
+                        }                   
                     }
 
 

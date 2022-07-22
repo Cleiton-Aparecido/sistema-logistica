@@ -1,0 +1,80 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    /* border: 1px solid red; */
+    background-color: rgb(254, 245, 255);
+}
+
+
+/* #formatação do cabecalho */
+
+header {
+    background: rgb(1, 75, 136);
+    background: linear-gradient(90deg, rgba(1, 75, 136, 1) 2%, rgba(1, 75, 136, 1) 9%, rgba(5, 81, 139, 1) 37%, rgba(90, 195, 190, 1) 92%, rgba(90, 195, 190, 1) 100%);
+    color: white;
+    display: flex;
+    /* justify-content: center; */
+}
+
+header#cabecalho_master div#cabecalho .imglogo {
+    width: 120px;
+}
+
+header#cabecalho_master div#cabecalho span.titulo_cabecalho {
+    font-size: 10vh;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+header#cabecalho_master div#cabecalho {
+    /* margin: 15px; */
+    margin: 10px auto;
+}
+#container_master{
+    display: flex;
+    justify-content: space-around;    
+}
+.container_inf h3{
+    text-align: center;
+    font-size: 3em;
+    padding-bottom:5px ;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.211);
+}
+.container_inf{
+    height: 400px;
+    width: 50%;
+    margin: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.container_informacao{
+    /* border: 1px solid rgb(255, 255, 255); */
+    border-radius: 10px;
+    padding: 5px;
+}
+.statusQtd{
+    border-radius: 10px;
+    font-size: 2.5em;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.negado{
+    color: #fff;
+    background-color: #dc3545;
+}
+.entregue{
+    color: #fff;
+    background-color: #28a745;
+}
+.pendente{
+    color: #fff;
+    background-color: #17a2b8;
+}
+.preparo{
+    color: #000;
+    background-color: #ffc107;  
+}
+
+
+

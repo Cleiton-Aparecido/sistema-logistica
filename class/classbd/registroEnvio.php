@@ -22,6 +22,7 @@ class registroEnvio
     private $idusuariocodigo;
     private $sql = array();
     private $historicoregistro = array();
+    private $QtdDadosPorStatus;
     private $objectSector = array();
 
     public function __construct()
@@ -36,6 +37,14 @@ class registroEnvio
     public function sethistoricoregistro($value){
         $this->historicoregistro =  $value;
     }
+
+    public function getQtdDadosPorStatus(){
+        return $this->QtdDadosPorStatus;
+    }
+    public function setQtdDadosPorStatus($value){
+        $this->QtdDadosPorStatus =  $value;
+    }
+
     #-------- Id registro ---------------
     public function getidregistro()
     {
@@ -474,5 +483,27 @@ class registroEnvio
             WHERE idRegistroEncomendaEnvioCorreio = " . $dados['id'] . ";");
         }
         $this->sql->query($comando);
+    }
+
+    private function Requisitar_Qtd_Dados_Por_Status(){
+
+        $ResultadoFormatado = array();
+
+        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio) AS 'qtd' FROM statusentrega 
+        LEFT JOIN registroencomendaenviocorreio On registroencomendaenviocorreio.idstatusentrega = statusentrega.idstatusentrega
+        GROUP BY statusentrega.descstatusentrega;");
+        
+        foreach ($resultado as $row) {
+            
+            array_push($ResultadoFormatado,array("status"=>$row['descstatusentrega'],
+                                                 "qtd"=>$row['qtd']));
+
+        }
+        
+        $this->setQtdDadosPorStatus($ResultadoFormatado);
+    }
+    public function Qtd_Dados_Por_Status(){
+        $this->Requisitar_Qtd_Dados_Por_Status();
+    return $this->getQtdDadosPorStatus();
     }
 }

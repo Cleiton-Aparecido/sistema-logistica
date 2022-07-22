@@ -6,68 +6,6 @@ require_once("config.php");
 $interaction = new interaction();
 $interactionview = new interaction_view();
 
-if ($_POST) {
-
-    
-
-    
-    if($_GET['type'] == 'e'){
-    
-        try {
-            if(!isset($_GET['cod']) || 
-            !isset($_POST['status']) || 
-            !isset($_POST['Codigo']) || 
-            !isset($_POST['remetente']) || 
-            !isset($_POST['encomenda']) || 
-            !isset($_POST['setor']) || 
-            !isset($_POST['DataEntrega']) || 
-            !isset($_POST['obs'])){
-
-                throw new Exception("algo inesperado ocorreu", 1);
-               
-            }else{
-                $dados_salvos = array(
-                    "id"=>$_GET['cod'],
-                    "status"=>$_POST['status'],
-                    "codigo"=>$_POST['Codigo'],
-                    "rementente"=>$_POST['remetente'],
-                    "encomenda"=>$_POST['encomenda'],
-                    "setor"=>$_POST['setor'],
-                    "dataentrega"=>$_POST['DataEntrega'],
-                    "DataColeta"=>$_POST['datacoleta'],
-                    "obs"=>$_POST['obs']
-                );
-
-                $interactionview->updateregistroentrada($dados_salvos);
-                header('Location: index.php');
-            }
-            
-        } catch (Exception $e) {
-
-
-            echo '<script>alert("'.$e ->getMessage().'");</script>';
-            
-        }
-            
-    }
-
-    if($_GET['type'] == 's'){
-        $dados = array(
-            "id"=>$_GET['cod'],
-            "status"=>$_POST['status'],
-            "codigo"=>$_POST['codigo'],
-            "datapostagem"=>$_POST['datapostagem'],
-            "obs"=>$_POST['obs']
-        );
-        
-        $interaction->SalvaRegistroEnvio($dados);
-        header('Location: index_envio.php');
-    }
-}
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -97,10 +35,10 @@ if ($_POST) {
 
 
     <style type="text/css">
-        <?php include('../css/style.css');   ?>
+        <?php include('../css/style_monitor.css');   ?>
     </style>
     <script >
-        <?php include("../js/javascripts_view.js") ?>
+        <?php include("../js/javascripts_monitor.js") ?>
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -110,33 +48,31 @@ if ($_POST) {
 <body>
 
     <header id="cabecalho_master">
-    <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png">
-            <span class="titulo_cabecalho" id="titulocabecalho"></span>
+            <span class="titulo_cabecalho" id="titulocabecalho">Monitor -</span>
+            <span class="titulo_cabecalho" id="titulocabecalho"><?php echo date('Y');?></span>
         </div>
-
+  
     </header>
-    <div id="container_master_newregistro">
-        <section id="container_inf">
-            <article class="">
-                <h3>Dados do Registro</h3>
-                <form id="container_inf2" method="POST">
-                    
-                    <?php
-
-                    if ($_GET) {
-                        if ($_GET['type'] == 's' || $_GET['type'] == 'e' || $_GET['type'] == 'ee') {
-                            $interactionview->dadosViewEnvio($_GET['cod'], $_GET['type']);
-                        } 
-                    }
-
-
-                    ?>
-                    
-                </form>
+    <div id="container_master">
+        <section class="container_inf">
+            <article class="container">
+                <h3>Envio</h3>
+                <div id="enviosmonitor"></div>
                
             </article>
+
+
+
+        </section>
+        <section class="container_inf">
+            <article class="container">
+                <h3>Entrada</h3>
+                <div id="entradamonitor"></div>
+               
+            </article>
+
 
 
         </section>

@@ -6,6 +6,8 @@ require_once("config.php");
 $interactionadmin = new interaction_admin();
 $interaction = new interaction();
 $interactionview = new interaction_view();
+$interactionmonitor = new interaction_monitor();
+
 if (isset($_POST)) {
     if ($_POST['tipo'] == 'setornovo') {
         $interactionadmin->VerificarParaInserir($_POST['NewSetor'], 'setor');
@@ -60,8 +62,13 @@ if (isset($_POST)) {
             $interactionview->historicoenvio($_POST['id']);
         }
       
-    }else if($_POST['tipo'] == 'edicao_view'){
-        echo $interactionview->ControleDeAcesso();
+    } else if($_POST['tipo'] == 'edicao_view'){
+        echo $interactionview->AccessToEditButton();
+    } else if ($_POST['tipo'] == 'monitorPOSEntrada') {
+        $interactionmonitor->monitorEntrada();
+    }
+    else if ($_POST['tipo'] == 'monitorPOSEnvio') {
+        $interactionmonitor->monitorEnvio();
     }
     
 } else {
