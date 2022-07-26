@@ -209,7 +209,8 @@ class registro
     }
     public function listGroupPendente(){
         $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado' or statusentrega.descstatusentrega = 'Preparo' ");
+        WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado' or statusentrega.descstatusentrega = 'Preparo'
+        ORDER BY registroencomenda.idregistroenc ");
         return $resultado;
     }
     public function insertregistro($dados){

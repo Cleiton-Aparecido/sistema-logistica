@@ -86,7 +86,7 @@ CREATE TABLE `tipoEnvio` (
   `statusAtivo` int NOT NULL
 );
 
-CREATE TABLE `StatusAtivacao` (
+CREATE TABLE `Statusativacao` (
   `idStatusAtivacao` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `descStatus` varchar(20)
 );

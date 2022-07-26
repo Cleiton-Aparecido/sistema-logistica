@@ -19,7 +19,7 @@ if (!isset($_POST['dataentrega'])) {
 
 
 <head>
-    <title>Novo Registro</title>
+    <title>Entrega de encomenda</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,7 +59,7 @@ if (!isset($_POST['dataentrega'])) {
     <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
-            <span class="titulo_cabecalho">Entrega de Encomenda</span>
+            <span class="titulo_cabecalho">Entrega de Encomenda em Setor</span>
         </div>
     </header>
     <section id="container_master">
