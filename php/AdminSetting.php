@@ -64,12 +64,10 @@ if (isset($_POST)) {
       
     } else if($_POST['tipo'] == 'edicao_view'){
         echo $interactionview->AccessToEditButton();
-    } else if ($_POST['tipo'] == 'monitorPOSEntrada') {
-        $interactionmonitor->monitorEntrada();
+    } else if ($_POST['tipo'] == 'monitorPOS') {
+        $interactionmonitor->monitor();
     }
-    else if ($_POST['tipo'] == 'monitorPOSEnvio') {
-        $interactionmonitor->monitorEnvio();
-    }
+   
     
 } else {
     echo "Sem post encaminhado";

@@ -44,7 +44,7 @@ class encomenda{
 
     private function encomendasAtivas(){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda
-        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = tipoencomenda.statusAtivo
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = tipoencomenda.statusAtivo
         where descStatus = 'Ativo'");
         $list = array();
         if (count($resultado)>0) {
@@ -59,16 +59,16 @@ class encomenda{
     }
     public function inserirNovaEncomenda($encomenda){
         $comando = "INSERT INTO tipoencomenda (desctipoencomenda,statusAtivo) 
-        VALUES ('$encomenda',(SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
+        VALUES ('$encomenda',(SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     public function alterarStatusEncomenda($encomenda,$status){
-        $comando = "UPDATE tipoencomenda SET statusAtivo =  (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = '$status')  WHERE desctipoencomenda = '$encomenda';";
+        $comando = "UPDATE tipoencomenda SET statusAtivo =  (SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = '$status')  WHERE desctipoencomenda = '$encomenda';";
         $this->sql->query($comando);
     }
     private function searchencomenda($descricao){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda 
-        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = tipoencomenda.statusAtivo
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = tipoencomenda.statusAtivo
         WHERE desctipoencomenda = '$descricao';");
 
         if(count($resultado)>0){
@@ -98,7 +98,7 @@ class encomenda{
     // gerar atributo todos os dados de encomenda
     private function listaTodosDadosEncomenda(){
         $resultado = $this->sql->select("SELECT * FROM tipoencomenda 
-        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = tipoencomenda.statusAtivo");
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = tipoencomenda.statusAtivo");
         $dados = array();
         foreach ($resultado as $row) {
             array_push($dados,array(

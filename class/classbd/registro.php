@@ -17,21 +17,21 @@ class registro
         $this->sql = new sql();
         $this->objectSector = new setor();
         $this->infbancogeral = 'SELECT 
-                            registroencomenda.idregistroenc AS id,
-                            registroencomenda.dataregistro,
+                            RegistroEncomenda.idregistroenc AS id,
+                            RegistroEncomenda.dataregistro,
                             usuario.nome,
-                            registroencomenda.codigo,
-                            registroencomenda.remetente,
-                            registroencomenda.datacoleta,   
+                            RegistroEncomenda.codigo,
+                            RegistroEncomenda.remetente,
+                            RegistroEncomenda.datacoleta,   
                             tipoencomenda.desctipoencomenda,
                             statusentrega.descstatusentrega, 
-                            registroencomenda.dataentregasetor, 
+                            RegistroEncomenda.dataentregasetor, 
                             setor.descsetor
-                            FROM registroencomenda
-                            INNER JOIN statusentrega ON registroencomenda.idstatusentrega = statusentrega.idstatusentrega
-                            INNER JOIN setor ON registroencomenda.idsetor=setor.idsetor
-                            INNER JOIN usuario ON registroencomenda.idusuario=usuario.idusuario
-                            INNER JOIN tipoencomenda ON registroencomenda.idtipoencomenda=tipoencomenda.idtipoencomenda';
+                            FROM RegistroEncomenda
+                            INNER JOIN statusentrega ON RegistroEncomenda.idstatusentrega = statusentrega.idstatusentrega
+                            INNER JOIN setor ON RegistroEncomenda.idsetor=setor.idsetor
+                            INNER JOIN usuario ON RegistroEncomenda.idusuario=usuario.idusuario
+                            INNER JOIN tipoencomenda ON RegistroEncomenda.idtipoencomenda=tipoencomenda.idtipoencomenda';
         
     }
     public function getinfbanco(){
@@ -128,7 +128,7 @@ class registro
     }
     public function backloghistorico($id,$obsantiga = "",$obsnova){
 
-        $this->sql->query("INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        $this->sql->query("INSERT INTO BackLogRegisEntrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES ('$id', 'Observacao',
         '$obsantiga',
         '$obsnova');");
@@ -141,7 +141,7 @@ class registro
 
 
 
-        $comando = "INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        $comando = "INSERT INTO BackLogRegisEntrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES ('".$dados['id']."',
         'Codigo | Remetente | Data Entrega Setor | Data Coleta | Status entrega | Setor | Encomenda',
         '".$dadosantigo['Codigo']." | ".$dadosantigo['Remetente']." | ".$dadosantigo['Data Entrega Setor']." | ".$this->formatDate( $dadosantigo['Data Coleta'])." | ".$dadosantigo['Status']." | ".$dadosantigo['Setor']." | ".$dadosantigo['Tipo da Encomenda']." ',
@@ -158,7 +158,7 @@ class registro
 
         $this->atualizar_informacoes_registro_backlog($dados);
         
-        $this->sql->query("UPDATE registroencomenda 
+        $this->sql->query("UPDATE RegistroEncomenda 
         SET codigo = '".$dados['codigo']."',
         remetente = '".$dados['rementente']."' ,
         dataentregasetor = '".$dados['dataentrega']."' ,
@@ -170,7 +170,7 @@ class registro
         WHERE idregistroenc = '".$dados['id']."'");
     }
     private function inserirNovoRegistro($dados){
-        $this->sql->query("INSERT INTO registroencomenda SET
+        $this->sql->query("INSERT INTO RegistroEncomenda SET
         codigo = '".$dados['codigo']."',
         remetente = '".$dados['remetente']."' ,
         idtipoencomenda =  (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'), 
@@ -181,7 +181,7 @@ class registro
         idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."');");
     }
     private function updatestatusentrega($dados){
-        $this->sql->query("UPDATE registroencomenda SET 
+        $this->sql->query("UPDATE RegistroEncomenda SET 
         dataentregasetor = '".$dados['dataentrega']."',
         idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '".$dados['status']."')
         WHERE idregistroenc = '".$dados['id']."';");
@@ -195,7 +195,7 @@ class registro
 
         $Registro['dataentrega'] = str_replace('T',' ', $Registro['dataentrega']);
 
-        $this->sql->query("INSERT INTO backlogregisentrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        $this->sql->query("INSERT INTO BackLogRegisEntrada (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES (".$Registro['id'].",
         'Status | Data Entrega',
         '".$dadosantigo['Status']." | ".$dadosantigo['Data Entrega Setor']."',
@@ -210,7 +210,7 @@ class registro
     public function listGroupPendente(){
         $resultado = $this->sql->select($this->getinfbanco()."
         WHERE statusentrega.descstatusentrega = 'Pendente' or statusentrega.descstatusentrega = 'Negado' or statusentrega.descstatusentrega = 'Preparo'
-        ORDER BY registroencomenda.idregistroenc ");
+        ORDER BY RegistroEncomenda.idregistroenc ");
         return $resultado;
     }
     public function insertregistro($dados){
@@ -219,12 +219,12 @@ class registro
     }
     public function queryRegistro($id){
         $resultado = $this->sql->select("SELECT *, 
-        registroencomenda.idregistroenc AS id
-        FROM registroencomenda
-        INNER JOIN statusentrega ON registroencomenda.idstatusentrega = statusentrega.idstatusentrega
-        INNER JOIN setor ON registroencomenda.idsetor=setor.idsetor
-        INNER JOIN usuario ON registroencomenda.idusuario=usuario.idusuario
-        INNER JOIN tipoencomenda ON registroencomenda.idtipoencomenda=tipoencomenda.idtipoencomenda
+        RegistroEncomenda.idregistroenc AS id
+        FROM RegistroEncomenda
+        INNER JOIN statusentrega ON RegistroEncomenda.idstatusentrega = statusentrega.idstatusentrega
+        INNER JOIN setor ON RegistroEncomenda.idsetor=setor.idsetor
+        INNER JOIN usuario ON RegistroEncomenda.idusuario=usuario.idusuario
+        INNER JOIN tipoencomenda ON RegistroEncomenda.idtipoencomenda=tipoencomenda.idtipoencomenda
         WHERE idregistroenc = " . $id . "");
 
         
@@ -255,7 +255,7 @@ class registro
     public function listDateQueryRegistro($datestart, $dateend){
 
         $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE registroencomenda.dataregistro 
+        WHERE RegistroEncomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' and '" . $dateend . " 23:59:59'");
 
         return $resultado;
@@ -263,16 +263,16 @@ class registro
     public function listDateCodeQuery($search, $datestart, $dateend){
 
         $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE (registroencomenda.dataregistro 
+        WHERE (RegistroEncomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
         AND  '" . $dateend . " 23:59:59')
-        AND registroencomenda.codigo ='" . $search . "'");
+        AND RegistroEncomenda.codigo ='" . $search . "'");
 
         return $resultado;
     }
     public function listDateSectorQuery($sector, $datestart, $dateend){
         $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE (registroencomenda.dataregistro 
+        WHERE (RegistroEncomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
         AND  '" . $dateend . " 23:59:59')
         AND setor.descsetor ='" . $sector . "'");
@@ -281,15 +281,15 @@ class registro
     }
     public function listDateSectorSearchQuery($sector, $search, $datestart, $dateend){
         $resultado = $this->sql->select($this->getinfbanco()."
-        WHERE (registroencomenda.dataregistro 
+        WHERE (RegistroEncomenda.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
         AND  '" . $dateend . " 23:59:59')
         AND setor.descsetor ='" . $sector . "'
-        AND registroencomenda.codigo = '" . $search . "'");
+        AND RegistroEncomenda.codigo = '" . $search . "'");
         return $resultado;
     }
     private function historicoRegistroEntrada($id){
-        $resultado = $this->sql->select("SELECT * FROM backlogregisentrada
+        $resultado = $this->sql->select("SELECT * FROM BackLogRegisEntrada
         WHERE idRegistroEnvio = $id
         ORDER BY `data`;");
 
@@ -318,8 +318,8 @@ class registro
 
         $ResultadoFormatado = array();
 
-        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(registroencomenda.idregistroenc) AS 'qtd' FROM statusentrega 
-        LEFT JOIN registroencomenda On registroencomenda.idstatusentrega = statusentrega.idstatusentrega
+        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(RegistroEncomenda.idregistroenc) AS 'qtd' FROM statusentrega 
+        LEFT JOIN RegistroEncomenda On RegistroEncomenda.idstatusentrega = statusentrega.idstatusentrega
         GROUP BY statusentrega.descstatusentrega;");
         
         foreach ($resultado as $row) {

@@ -1,6 +1,6 @@
 <?php
 require_once("config.php");
-class interaction_view  extends interaction
+class interaction_view extends interaction
 {
     private $objectSector = array();
     private $objectUser = array();

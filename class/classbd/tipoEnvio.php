@@ -39,8 +39,8 @@ class tipoEnvio{
    
     private function listaGeralEnvio(){
         $list = array();
-        $resultado = $this->sql->select("SELECT * FROM tipoenvio
-        INNER JOIN statusativacao ON  statusativacao.idStatusAtivacao=tipoenvio.statusAtivo;");
+        $resultado = $this->sql->select("SELECT * FROM tipoEnvio
+        INNER JOIN StatusAtivacao ON  StatusAtivacao.idStatusAtivacao=tipoEnvio.statusAtivo;");
         foreach ($resultado as $row) {
             array_push($list,array("id"=> $row['idtipoEnvio'],
                                     "nome"=> $row['desctipoEnvio'],
@@ -49,8 +49,8 @@ class tipoEnvio{
         $this->setlistageral($list);
     }
     private function searchtipoenvio($tipoenvio){
-        $comando = "SELECT * FROM tipoenvio
-        INNER JOIN statusativacao ON  statusativacao.idStatusAtivacao=tipoenvio.statusAtivo
+        $comando = "SELECT * FROM tipoEnvio
+        INNER JOIN StatusAtivacao ON  StatusAtivacao.idStatusAtivacao=tipoEnvio.statusAtivo
         where desctipoEnvio = '$tipoenvio'";
 
         $resultado = $this->sql->select($comando);
@@ -66,7 +66,7 @@ class tipoEnvio{
     }
 
     public function alterarStatus($transporte,$status){
-        $comando = "UPDATE tipoenvio SET statusAtivo =  (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = '$status')  WHERE desctipoEnvio = '$transporte';";
+        $comando = "UPDATE tipoEnvio SET statusAtivo =  (SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = '$status')  WHERE desctipoEnvio = '$transporte';";
         $this->sql->query($comando);
     }
     public function listctipoenvio(){
@@ -112,8 +112,8 @@ class tipoEnvio{
         
     }
     public function inserirNovoTipoEnvio($tipoenvio){
-        $comando = "INSERT INTO tipoenvio (desctipoEnvio,statusAtivo)
-        VALUES ('$tipoenvio', (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
+        $comando = "INSERT INTO tipoEnvio (desctipoEnvio,statusAtivo)
+        VALUES ('$tipoenvio', (SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     

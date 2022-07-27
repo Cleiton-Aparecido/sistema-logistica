@@ -41,18 +41,18 @@ class setor{
     }
      // Alterar status de um setor
     public function alterarStatus($setor,$status){
-        $comando = "UPDATE setor SET statusAtivo =  (SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = '$status')  WHERE descsetor = '$setor';";
+        $comando = "UPDATE setor SET statusAtivo =  (SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = '$status')  WHERE descsetor = '$setor';";
         $this->sql->query($comando);
     }
     public function inserirNOvoSetor($setor){
         $comando = "INSERT INTO setor (descsetor,statusAtivo)  
-        VALUES  ('$setor',(SELECT idStatusAtivacao FROM statusativacao WHERE descStatus = 'Ativo'))";
+        VALUES  ('$setor',(SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
     }
     // Lista de todos setores
     private function listSectorG(){
         $resultado = $this->sql->select("SELECT * FROM setor
-        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = setor.statusAtivo");
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = setor.statusAtivo");
         $dados = array();
         
         foreach ($resultado as $row) {
@@ -68,7 +68,7 @@ class setor{
     // fazer busca do setor
     private function setorSeach($setor){
         $resultado = $this->sql->select("SELECT * FROM setor 
-        INNER JOIN  statusativacao ON statusativacao.idStatusAtivacao = setor.statusAtivo
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = setor.statusAtivo
         WHERE descsetor = '$setor'");
 
 

@@ -6,7 +6,7 @@ function entrada(){
     $.ajax({
         type: "POST",
         url: "AdminSetting.php",
-        data: { tipo:"monitorPOSEntrada"},
+        data: { tipo:"monitorPOS"},
         success: function (result) {
             $('#enviosmonitor').html(result);
         },
@@ -16,31 +16,18 @@ function entrada(){
     });
 }
 
-function envio(){
-    $.ajax({
-        type: "POST",
-        url: "AdminSetting.php",
-        data: { tipo:"monitorPOSEnvio"},
-        success: function (result) {
-            $('#entradamonitor').html(result);
-        },
-        error: function () {
-            console.log('Erro ao Atualizar');
-        }
-    });
-}
 
 
 $(document).ready(function () {
 
  
     entrada();
-    envio();
+  
     setInterval(function (){
         
         entrada();
-        envio();
+       
 
-    }, 5000);
+    }, 1000);
 
 }); 

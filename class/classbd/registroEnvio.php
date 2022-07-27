@@ -224,7 +224,7 @@ class registroEnvio
     {
         $idsalvo = array("id");
         $comando = ("INSERT INTO
-        registroencomendaenviocorreio 
+        RegistroEncomendaEnvioCorreio 
         (idtipoEnvio,
         idusuarioNewRegistro,
         idstatusentrega,
@@ -240,7 +240,7 @@ class registroEnvio
         complementarend,
         observacaoenvio) 
         VALUES 
-        ((SELECT idtipoEnvio FROM tipoenvio WHERE desctipoEnvio = '" . $dados['tipoenvio'] . "'),
+        ((SELECT idtipoEnvio FROM tipoEnvio WHERE desctipoEnvio = '" . $dados['tipoenvio'] . "'),
         (SELECT idusuario FROM usuario WHERE ipcomputador = '" . $dados['ipcomputador'] . "'),
         (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
         (SELECT idsetor FROM setor WHERE descsetor = '" . $dados['setor'] . "'),
@@ -271,7 +271,7 @@ class registroEnvio
 
     private function backlogEnvio($id)
     {
-        $resultado = $this->sql->select("SELECT * FROM backlogregisenvio
+        $resultado = $this->sql->select("SELECT * FROM BackLogRegisEnvio
         WHERE idRegistroEnvio = '$id'
         ORDER BY `data`;");
 
@@ -295,60 +295,60 @@ class registroEnvio
 
     public function listDateQueryRegistroenvio($datestart, $dateend)
     {
-        $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
-        registroencomendaenviocorreio.dataregistro,
-        registroencomendaenviocorreio.Nomefuncionario,
+        $resultado = $this->sql->select("SELECT RegistroEncomendaEnvioCorreio.idRegistroEncomendaEnvioCorreio AS id,
+        RegistroEncomendaEnvioCorreio.dataregistro,
+        RegistroEncomendaEnvioCorreio.Nomefuncionario,
         setor.descsetor,
         statusentrega.descstatusentrega,
         tipoencomenda.desctipoencomenda,
-        registroencomendaenviocorreio.codigopostagem,
-        registroencomendaenviocorreio.datapostagem
-        FROM registroencomendaenviocorreio
-        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
-        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
-        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
-        INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
-        WHERE registroencomendaenviocorreio.dataregistro 
+        RegistroEncomendaEnvioCorreio.codigopostagem,
+        RegistroEncomendaEnvioCorreio.datapostagem
+        FROM RegistroEncomendaEnvioCorreio
+        INNER JOIN usuario ON usuario.idusuario=RegistroEncomendaEnvioCorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = RegistroEncomendaEnvioCorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = RegistroEncomendaEnvioCorreio.idtipoencomenda
+        INNER JOIN setor ON setor.idsetor=RegistroEncomendaEnvioCorreio.setorRemetente
+        WHERE RegistroEncomendaEnvioCorreio.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' and '" . $dateend . " 23:59:59'");
         return $resultado;
     }
     public function listDateCodeQueryEnvio($search, $datestart, $dateend)
     {
 
-        $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
-        registroencomendaenviocorreio.dataregistro,
-        registroencomendaenviocorreio.Nomefuncionario,
+        $resultado = $this->sql->select("SELECT RegistroEncomendaEnvioCorreio.idRegistroEncomendaEnvioCorreio AS id,
+        RegistroEncomendaEnvioCorreio.dataregistro,
+        RegistroEncomendaEnvioCorreio.Nomefuncionario,
         setor.descsetor,
         statusentrega.descstatusentrega,
         tipoencomenda.desctipoencomenda,
-        registroencomendaenviocorreio.codigopostagem,
-        registroencomendaenviocorreio.datapostagem
-        FROM registroencomendaenviocorreio
-        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
-        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
-        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
-        INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
-        WHERE (registroencomendaenviocorreio.dataregistro 
+        RegistroEncomendaEnvioCorreio.codigopostagem,
+        RegistroEncomendaEnvioCorreio.datapostagem
+        FROM RegistroEncomendaEnvioCorreio
+        INNER JOIN usuario ON usuario.idusuario=RegistroEncomendaEnvioCorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = RegistroEncomendaEnvioCorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = RegistroEncomendaEnvioCorreio.idtipoencomenda
+        INNER JOIN setor ON setor.idsetor=RegistroEncomendaEnvioCorreio.setorRemetente
+        WHERE (RegistroEncomendaEnvioCorreio.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
         AND  '" . $dateend . " 23:59:59')
-        AND registroencomendaenviocorreio.codigopostagem ='" . $search . "'");
+        AND RegistroEncomendaEnvioCorreio.codigopostagem ='" . $search . "'");
 
         return $resultado;
     }
     public function listDateSectorQueryEnvio($sector, $datestart, $dateend)
     {
-        $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
-        registroencomendaenviocorreio.dataregistro,
-        registroencomendaenviocorreio.Nomefuncionario,
+        $resultado = $this->sql->select("SELECT RegistroEncomendaEnvioCorreio.idRegistroEncomendaEnvioCorreio AS id,
+        RegistroEncomendaEnvioCorreio.dataregistro,
+        RegistroEncomendaEnvioCorreio.Nomefuncionario,
         setor.descsetor,
         statusentrega.descstatusentrega,
         tipoencomenda.desctipoencomenda,
-        registroencomendaenviocorreio.codigopostagem,
-        registroencomendaenviocorreio.datapostagem
-        FROM registroencomendaenviocorreio
-        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
-        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
-        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
+        RegistroEncomendaEnvioCorreio.codigopostagem,
+        RegistroEncomendaEnvioCorreio.datapostagem
+        FROM RegistroEncomendaEnvioCorreio
+        INNER JOIN usuario ON usuario.idusuario=RegistroEncomendaEnvioCorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = RegistroEncomendaEnvioCorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = RegistroEncomendaEnvioCorreio.idtipoencomenda
         INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
         WHERE (registroencomendaenviocorreio.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
@@ -360,24 +360,24 @@ class registroEnvio
     }
     public function listDateSectorSearchQueryEnvio($sector, $search, $datestart, $dateend)
     {
-        $resultado = $this->sql->select("SELECT registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio AS id,
-        registroencomendaenviocorreio.dataregistro,
-        registroencomendaenviocorreio.Nomefuncionario,
+        $resultado = $this->sql->select("SELECT RegistroEncomendaEnvioCorreio.idRegistroEncomendaEnvioCorreio AS id,
+        RegistroEncomendaEnvioCorreio.dataregistro,
+        RegistroEncomendaEnvioCorreio.Nomefuncionario,
         setor.descsetor,
         statusentrega.descstatusentrega,
         tipoencomenda.desctipoencomenda,
-        registroencomendaenviocorreio.codigopostagem,
-        registroencomendaenviocorreio.datapostagem
-        FROM registroencomendaenviocorreio
-        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
-        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
-        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
-        INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente
-        WHERE (registroencomendaenviocorreio.dataregistro 
+        RegistroEncomendaEnvioCorreio.codigopostagem,
+        RegistroEncomendaEnvioCorreio.datapostagem
+        FROM RegistroEncomendaEnvioCorreio
+        INNER JOIN usuario ON usuario.idusuario=RegistroEncomendaEnvioCorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = RegistroEncomendaEnvioCorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = RegistroEncomendaEnvioCorreio.idtipoencomenda
+        INNER JOIN setor ON setor.idsetor=RegistroEncomendaEnvioCorreio.setorRemetente
+        WHERE (RegistroEncomendaEnvioCorreio.dataregistro 
         BETWEEN '" . $datestart . " 00:00:00' 
         AND  '" . $dateend . " 23:59:59')
         AND setor.descsetor = '" . $sector . "'
-        AND registroencomendaenviocorreio.codigopostagem = '" . $search . "'");
+        AND RegistroEncomendaEnvioCorreio.codigopostagem = '" . $search . "'");
 
 
         return $resultado;
@@ -385,11 +385,11 @@ class registroEnvio
     public function queryregisterenvio($id)
     {
         $resultado = $this->sql->select("SELECT *
-        FROM registroencomendaenviocorreio
-        INNER JOIN usuario ON usuario.idusuario=registroencomendaenviocorreio.idusuarioNewRegistro
-        INNER JOIN statusentrega ON statusentrega.idstatusentrega = registroencomendaenviocorreio.idstatusentrega
-        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = registroencomendaenviocorreio.idtipoencomenda
-        INNER JOIN setor ON setor.idsetor=registroencomendaenviocorreio.setorRemetente          
+        FROM RegistroEncomendaEnvioCorreio
+        INNER JOIN usuario ON usuario.idusuario=RegistroEncomendaEnvioCorreio.idusuarioNewRegistro
+        INNER JOIN statusentrega ON statusentrega.idstatusentrega = RegistroEncomendaEnvioCorreio.idstatusentrega
+        INNER JOIN tipoencomenda ON tipoencomenda.idtipoencomenda = RegistroEncomendaEnvioCorreio.idtipoencomenda
+        INNER JOIN setor ON setor.idsetor=RegistroEncomendaEnvioCorreio.setorRemetente          
         WHERE idRegistroEncomendaEnvioCorreio = " . $id . "");
 
         if (count($resultado) > 0) {
@@ -440,7 +440,7 @@ class registroEnvio
     private function backlogEnvioRegistrarSemDataEntrega($dadosnovos){
         $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
 
-        $comando = "INSERT INTO backlogregisenvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        $comando = "INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES (".$dadosnovos['id'].",
         'Status | Codigo | Observacao',
         '".$dadosantigo['status']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
@@ -452,7 +452,7 @@ class registroEnvio
     private function backlogEnvioRegistrarComDataEntrega($dadosnovos){
         $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
 
-        $comando = "INSERT INTO backlogregisenvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        $comando = "INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES (".$dadosnovos['id'].",
         'Status | data | Codigo | Observacao',
         '".$dadosantigo['status']."| ".$dadosantigo['DataPostagem']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
@@ -466,7 +466,7 @@ class registroEnvio
         if ($dados['datapostagem'] == "") {
 
             $this->backlogEnvioRegistrarSemDataEntrega($dados);
-            $comando = ("UPDATE registroencomendaenviocorreio SET 
+            $comando = ("UPDATE RegistroEncomendaEnvioCorreio SET 
             idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "' ),
             codigopostagem = '" . $dados['codigo'] . "',
             observacaoenvio = '" . $dados['obs'] . "'
@@ -475,7 +475,7 @@ class registroEnvio
         } else {
 
             $this->backlogEnvioRegistrarComDataEntrega($dados);
-            $comando = ("UPDATE registroencomendaenviocorreio SET 
+            $comando = ("UPDATE RegistroEncomendaEnvioCorreio SET 
             idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "'),
             codigopostagem = '" . $dados['codigo'] . "',
             datapostagem = '" . $dados['datapostagem'] . "',
@@ -489,8 +489,8 @@ class registroEnvio
 
         $ResultadoFormatado = array();
 
-        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(registroencomendaenviocorreio.idRegistroEncomendaEnvioCorreio) AS 'qtd' FROM statusentrega 
-        LEFT JOIN registroencomendaenviocorreio On registroencomendaenviocorreio.idstatusentrega = statusentrega.idstatusentrega
+        $resultado = $this->sql->select("SELECT descstatusentrega, COUNT(RegistroEncomendaEnvioCorreio.idRegistroEncomendaEnvioCorreio) AS 'qtd' FROM statusentrega 
+        LEFT JOIN RegistroEncomendaEnvioCorreio On RegistroEncomendaEnvioCorreio.idstatusentrega = statusentrega.idstatusentrega
         GROUP BY statusentrega.descstatusentrega;");
         
         foreach ($resultado as $row) {
