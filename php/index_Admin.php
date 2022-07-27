@@ -97,7 +97,7 @@ $interaction->acessos('admin');
                 <div id='formsetor' class='container_item_interno'>
                 </div>
                 <Form action="" method="post" id='form_new_setor'>
-                    <label for="setornew" class="titulo_menu_input">Adicionar novo Setor</label>
+                    <label for="setornew" class="titulo_menu_input">Adicionar Novo Setor</label>
                     <input type="text" class="form-control" id="setornew" name="setornew">
                     <input type="hidden" name="type" id="type" value="setor">
                     <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons">
@@ -113,7 +113,7 @@ $interaction->acessos('admin');
                 <div id='formencomenda' class='container_item_interno'>
                 </div>
                 <Form action="" method="post" id='form_new_encomenda'>
-                    <label for="encomendanew" class="titulo_menu_input">Adicionar novo Tipo de Encomenda</label>
+                    <label for="encomendanew" class="titulo_menu_input">Adicionar Novo Tipo de Encomenda</label>
                     <input type="text" class="form-control" id="encomendanew" name="encomendanew">
                     <input type="hidden" name="type" id="type" value="encomenda">
                     <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons">
@@ -127,7 +127,7 @@ $interaction->acessos('admin');
                 <div id='formtransporte' class='container_item_interno'>
                 </div>
                 <Form action="" method="post" id='form_new_transporte'>
-                    <label for="transportenew" class="titulo_menu_input">Adicionar novo Tipo de transporte</label>
+                    <label for="transportenew" class="titulo_menu_input">Adicionar Novo Tipo de transporte</label>
                     <input type="text" class="form-control" id="transportenew" name="transportenew">
                     <input type="hidden" name="type" id="type" value="transporte">
                     <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons">

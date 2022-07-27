@@ -104,9 +104,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 <h4>Tipo de Registro</h4>
                 <div class="container_menu_logistica">
                     <input type="radio" id="entrada"  onclick="requisitarPagina('entrada.php')" name="tiporegistro" value="entrada">
-                    <label for="entrada">Entrada</label><br>
+                    <label for="entrada">Entrada de Encomenda</label><br>
                     <input type="radio" id="envio" onclick="requisitarPagina('envio.php')" name="tiporegistro" value="envio">
-                    <label for="envio">Envio</label><br>
+                    <label for="envio">Envio de Encomenda</label><br>
                 </div>
             </div>
             <div id="form_new_js">

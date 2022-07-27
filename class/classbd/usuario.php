@@ -117,7 +117,8 @@ class usuario
     private function listatodosusuarios(){
         $lista = array();
         $resultado = $this->sql->select("SELECT * FROM usuario 
-        LEFT JOIN setor ON setor.idsetor = usuario.idsetor");
+        LEFT JOIN setor ON setor.idsetor = usuario.idsetor
+        ORDER BY usuario.idusuario");
 
         foreach ($resultado as $row) {
             if(!isset($row['descsetor'])){

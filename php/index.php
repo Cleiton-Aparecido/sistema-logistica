@@ -92,7 +92,6 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                         <label for="datafinal">Data Final:</label>
                         <input name="datafinal" type="date" id="datafinal" class="form-control" value="<?php echo $datafinal; ?>">
                         <input class="btn btn-primary" type="submit" value="Buscar">
-                        <!-- <input class="btn btn-primary" type="button" onclick="buscaBando();" value="Buscar"> -->
                     </form>
                 </section>
 

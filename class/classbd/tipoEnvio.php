@@ -40,7 +40,9 @@ class tipoEnvio{
     private function listaGeralEnvio(){
         $list = array();
         $resultado = $this->sql->select("SELECT * FROM tipoEnvio
-        INNER JOIN StatusAtivacao ON  StatusAtivacao.idStatusAtivacao=tipoEnvio.statusAtivo;");
+        INNER JOIN StatusAtivacao ON  StatusAtivacao.idStatusAtivacao = tipoEnvio.statusAtivo
+        ORDER BY tipoEnvio.idtipoEnvio;");
+
         foreach ($resultado as $row) {
             array_push($list,array("id"=> $row['idtipoEnvio'],
                                     "nome"=> $row['desctipoEnvio'],
