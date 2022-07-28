@@ -11,6 +11,7 @@ $interactionmonitor = new interaction_monitor();
 if (isset($_POST)) {
     if ($_POST['tipo'] == 'setornovo') {
         $interactionadmin->VerificarParaInserir($_POST['NewSetor'], 'setor');
+        
     } else if ($_POST['tipo'] == 'encomendanovo') {
         $interactionadmin->VerificarParaInserir($_POST['Newencomenda'], 'encomenda');
     } else if ($_POST['tipo'] == 'transportenovo') {

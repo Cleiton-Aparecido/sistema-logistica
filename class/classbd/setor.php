@@ -48,11 +48,13 @@ class setor{
         $comando = "INSERT INTO setor (descsetor,statusAtivo)  
         VALUES  ('$setor',(SELECT idStatusAtivacao FROM StatusAtivacao WHERE descStatus = 'Ativo'))";
         $this->sql->query($comando);
+    
     }
     // Lista de todos setores
     private function listSectorG(){
         $resultado = $this->sql->select("SELECT * FROM setor
-        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = setor.statusAtivo");
+        INNER JOIN  StatusAtivacao ON StatusAtivacao.idStatusAtivacao = setor.statusAtivo
+        ORDER BY setor.idsetor");
         $dados = array();
         
         foreach ($resultado as $row) {

@@ -102,7 +102,7 @@ class interaction_admin  extends interaction
                 }
                 else{
                     $this->objectSector->inserirNOvoSetor($conteudo);
-                   echo 'Salvo com sucesso';           
+                    echo 'setor inserido com sucesso!';
                 }
             }
 
@@ -141,6 +141,16 @@ class interaction_admin  extends interaction
 
 
     private function impressUsuario($dados){
+
+        echo '<article class="container_item_usuario">
+        <span>
+            <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1G_nxggR-Hd49r34unuUZlEZV-lQIiYNfy3Rg5am19hk/edit?usp=sharing">Lista Acessos</a>
+            <h4 class="titulo_container"> Usuario</h4>
+        </span>
+        <div id="formusuario" class="container_item_interno">
+        </div>
+        <div id="RetornoSalvarUsuario"></div>';
+        
 
         echo "<div class='grid-container'>";
                 echo "<div class='grid-item cabecalho-grid' >ID</div> ";
@@ -183,7 +193,7 @@ class interaction_admin  extends interaction
             
         }
         echo "</div>";
-
+        echo '</article>';
     }
     
     public function atualizardadosusuario($dadosUsuarios){

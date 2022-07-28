@@ -30,7 +30,7 @@ class interaction
     }
     public function direito()
     {
-        echo '<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca</footer>';
+        echo '<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca - Versão Para Teste</footer>';
     }
     private function acessoAdmin()
     {
@@ -113,7 +113,6 @@ class interaction
             $salva = false;
         } else if ($this->nivelusuario == 1  || $this->nivelusuario == 2 || $this->nivelusuario == 3 || $this->nivelusuario == 5) {
             echo 'passou acesso';
-            var_dump($dados);
             $this->objectRegister->insertregistro($dados);
             $salva = true;
         } else {

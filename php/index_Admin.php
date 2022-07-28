@@ -63,7 +63,7 @@ $interaction->acessos('admin');
 <body>
 
     <header id="cabecalho_master">
-        
+
         <div id="cabecalho">
             <span class="titulo_cabecalho">Configurações</span>
         </div>
@@ -82,61 +82,55 @@ $interaction->acessos('admin');
 
         <section id="container_inf">
 
-            <article class="container_item_usuario">
-                <span>
-                <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1G_nxggR-Hd49r34unuUZlEZV-lQIiYNfy3Rg5am19hk/edit?usp=sharing">Lista Acessos</a>
-                    <h4 class="titulo_container"> Usuario</h4>
-                </span>
-                    <div id='formusuario' class='container_item_interno'>
+            <article id='usuario'>
+
+            <div id="formusuario" class="container_item_interno">
+        </div>
+                
+            </article>
+
+                <article class="container_item">
+                    <h4 class="titulo_container">Setores</h4>
+                    <div id='formsetor' class='container_item_interno'>
                     </div>
-                <div id='RetornoSalvarUsuario'></div>
-            </article>
+                    <Form action="" method="post" id='form_new_setor'>
+                        <label for="setornew" class="titulo_menu_input">Adicionar Novo Setor</label>
+                        <input type="text" class="form-control" id="setornew" name="setornew">
+                        <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons">
+                    </Form>
+                    <div id="resultSector" style="color: green; font-size:20px;">
 
-            <article class="container_item">
-                <h4 class="titulo_container">Setores</h4>
-                <div id='formsetor' class='container_item_interno'>
-                </div>
-                <Form action="" method="post" id='form_new_setor'>
-                    <label for="setornew" class="titulo_menu_input">Adicionar Novo Setor</label>
-                    <input type="text" class="form-control" id="setornew" name="setornew">
-                    <input type="hidden" name="type" id="type" value="setor">
-                    <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons">
-                </Form>
-                <div id="resultSector" style="color: green; font-size:20px;">
+                    </div>
 
-                </div>
+                </article>
 
-            </article>
+                <article class="container_item">
+                    <h4 class="titulo_container">Tipo de Encomenda</h4>
+                    <div id='formencomenda' class='container_item_interno'>
+                    </div>
+                    <Form action="" method="post" id='form_new_encomenda'>
+                        <label for="encomendanew" class="titulo_menu_input">Adicionar Novo Tipo de Encomenda</label>
+                        <input type="text" class="form-control" id="encomendanew" name="encomendanew">
+                        <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons">
+                    </Form>
 
-            <article class="container_item">
-                <h4 class="titulo_container">Tipo de Encomenda</h4>
-                <div id='formencomenda' class='container_item_interno'>
-                </div>
-                <Form action="" method="post" id='form_new_encomenda'>
-                    <label for="encomendanew" class="titulo_menu_input">Adicionar Novo Tipo de Encomenda</label>
-                    <input type="text" class="form-control" id="encomendanew" name="encomendanew">
-                    <input type="hidden" name="type" id="type" value="encomenda">
-                    <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons">
-                </Form>
+                    <div id="resultencomenda" style="color: green; font-size:20px;">
+                    </div>
+                </article>
+                <article class="container_item">
+                    <h4 class="titulo_container">Tipo de Transporte</h4>
+                    <div id='formtransporte' class='container_item_interno'>
+                    </div>
+                    <Form action="" method="post" id='form_new_transporte'>
+                        <label for="transportenew" class="titulo_menu_input">Adicionar Novo Tipo de transporte</label>
+                        <input type="text" class="form-control" id="transportenew" name="transportenew">
+                        <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons">
+                    </Form>
 
-                <div id="resultencomenda" style="color: green; font-size:20px;">
-                </div>
-            </article>
-            <article class="container_item">
-                <h4 class="titulo_container">Tipo de Transporte</h4>
-                <div id='formtransporte' class='container_item_interno'>
-                </div>
-                <Form action="" method="post" id='form_new_transporte'>
-                    <label for="transportenew" class="titulo_menu_input">Adicionar Novo Tipo de transporte</label>
-                    <input type="text" class="form-control" id="transportenew" name="transportenew">
-                    <input type="hidden" name="type" id="type" value="transporte">
-                    <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons">
-                </Form>
+                    <div id="resulttransporte" style="color: green; font-size:20px;">
+                    </div>
 
-                <div id="resulttransporte" style="color: green; font-size:20px;">
-                </div>
-
-            </article>
+                </article>
 
 
 

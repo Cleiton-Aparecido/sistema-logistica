@@ -34,9 +34,13 @@ class Sql extends PDO {
 
         $this->setParams($stmt, $params);
 
-        $stmt->execute();
+        if ($stmt->execute()) {
+            return $stmt;
+        }else{
+            http_response_code(500);
+        }
+         
 
-        return $stmt;
 
     }
 

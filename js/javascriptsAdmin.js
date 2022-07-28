@@ -75,14 +75,14 @@ function loadtableUsuario(typetable) {
     imgLoading.src = '../img/loading.gif';
     imgLoading.className = 'rounded mx-auto d-block'
     imgLoading.style.width = '70px';
-    document.getElementById('form' + typetable).appendChild(imgLoading);
+    document.getElementById('usuario').appendChild(imgLoading);
     
     $.ajax({
         type: "POST",
         url: "AdminSetting.php",
-        data: { tipo: 'atttable' + typetable },
+        data: { tipo: 'atttableusuario' },
         success: function (result) {
-            $('#form' + typetable).html(result);
+            $('#usuario').html(result);
             
         },
         error: function () {
@@ -142,7 +142,12 @@ $(document).ready(function () {
                     }, 4000);
                 },
                 error: function () {
-                    $("#resultSector").html('Deu ruim');
+                    $("#resultSector").html('Erro inesperado ao inserir!');
+                    loadtable('setor');
+                    setTimeout(function () {
+                        $("#resultSector").html('');
+
+                    }, 4000);
 
                 }
             });
@@ -175,7 +180,12 @@ $(document).ready(function () {
                     }, 4000);
                 },
                 error: function () {
-                    $("#resultencomenda").html('Deu ruim');
+                    $("#resultencomenda").html('Erro inesperado ao inserir!');
+                    loadtable('encomenda');
+                    setTimeout(function () {
+                        $("#resultSector").html('');
+
+                    }, 4000);
 
                 }
             });
@@ -205,10 +215,15 @@ $(document).ready(function () {
                     setTimeout(function () {
                         $("#resulttransporte").html('');
 
-                    }, 40000);
+                    }, 4000);
                 },
                 error: function () {
-                    $("#resulttransporte").html('Deu ruim');
+                    $("#resulttransporte").html('Erro inesperado ao inserir!');
+                    loadtable('transporte');
+                    setTimeout(function () {
+                        $("#resulttransporte").html('');
+
+                    }, 4000);
 
                 }
             });
