@@ -42,7 +42,11 @@ class interaction
         }
     }
     public function menulateral()
-    {
+    {   
+        echo '<style type="text/css">';
+        include('../css/style.css');
+        echo '</style>';
+
         echo '<div id="mySidenav" class="sidenav">';
         echo '<h3 class="titulo_menulateral">Usuario</h3>';
         echo '<article id="container_user">';
@@ -71,7 +75,7 @@ class interaction
             document.getElementById("mySidenav").style.width = "250px";
             document.getElementById("mySidenav").style.border = "5px solid rgba(0, 0, 0, 0.159)";
             document.getElementById("mySidenav").style.borderRadius = "0px 20px 20px 0px";
-            borderRadius
+
 
           }
           
@@ -102,6 +106,9 @@ class interaction
                 header('Location: index.php');
             }
         }
+        else if($typeAcess == 'alterarstatus'){
+
+        }
     }
     public function insertEntrada($dados)
     {
@@ -112,9 +119,7 @@ class interaction
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
         } else if ($this->nivelusuario == 1  || $this->nivelusuario == 2 || $this->nivelusuario == 3 || $this->nivelusuario == 5) {
-            echo 'passou acesso';
-            $this->objectRegister->insertregistro($dados);
-            $salva = true;
+            $salva =  $this->objectRegister->insertregistro($dados);
         } else {
             echo '<script>alert("Acesso Negado") </script>';
             $salva = false;
@@ -124,16 +129,21 @@ class interaction
     #dados que estão entrando na empresa
     public function insertEnvio($dados)
     {
-        $salva = false;
+        
 
         if (strlen($dados['endereco']) == 0 || strlen($dados['cidade']) == 0 || strlen($dados['bairro']) == 0 || strlen($dados['num']) == 0 || strlen($dados['funcionario']) == 0 || strlen($dados['cep']) == 0 || $dados['setor'] == 'null' || $dados['encomenda'] == 'null' || $dados['uf'] == 'null' || $dados['tipoenvio'] == 'null') {
             echo '<script> alert("Contém campo sem preencher");</script>';
-            $salva = false;
+            
         } else {
-            $idsalvo = $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
-            $salva = true;
-        }
-        return $idsalvo;
+            $retornoinsert = $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
+
+            if (!$retornoinsert) {
+                return false;
+            } else {
+                return $retornoinsert;
+            }
+            
+            }
     }
     
     #print a listga de setores na tag option

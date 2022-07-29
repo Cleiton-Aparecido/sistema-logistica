@@ -30,9 +30,6 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
     
     <link rel="icon" href="../img/correios-logo.png">
 
-    <script>
-        <?php include('../js/javascripts.js');   ?>
-    </script>
 
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">

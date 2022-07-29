@@ -143,43 +143,43 @@ class interaction_admin  extends interaction
     private function impressUsuario($dados){
 
         echo '<article class="container_item_usuario">
-        <span>
-            <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1G_nxggR-Hd49r34unuUZlEZV-lQIiYNfy3Rg5am19hk/edit?usp=sharing">Lista Acessos</a>
-            <h4 class="titulo_container"> Usuario</h4>
-        </span>
-        <div id="formusuario" class="container_item_interno">
-        </div>
+                <span>
+                    <a class="btn btn-primary" href="https://docs.google.com/spreadsheets/d/1G_nxggR-Hd49r34unuUZlEZV-lQIiYNfy3Rg5am19hk/edit?usp=sharing">Lista Acessos</a>
+                    <h4 class="titulo_container"> Usuario</h4>
+                </span>
+                <div id="formusuario" class="container_item_interno">
+                </div>
         <div id="RetornoSalvarUsuario"></div>';
         
 
-        echo "<div class='grid-container'>";
-                echo "<div class='grid-item cabecalho-grid' >ID</div> ";
-                echo "<div class='grid-item cabecalho-grid' >Nome</div> ";
-                echo "<div class='grid-item cabecalho-grid' >IP <br> Computador</div>";
-                echo "<div class='grid-item cabecalho-grid' >Nivel <br> Acesso</div>";
+        echo "<div class='grid-container-usuario'>";
+                echo "<div class='grid-item-admin cabecalho-grid' >ID</div> ";
+                echo "<div class='grid-item-admin cabecalho-grid' >Nome</div> ";
+                echo "<div class='grid-item-admin cabecalho-grid' >IP <br> Computador</div>";
+                echo "<div class='grid-item-admin cabecalho-grid' >Nivel <br> Acesso</div>";
 
-                echo "<div class='grid-item cabecalho-grid' >Setor</div>";
+                echo "<div class='grid-item-admin cabecalho-grid' >Setor</div>";
                 
-                echo "<div class='grid-item cabecalho-grid' >Salvar</div>";
+                echo "<div class='grid-item-admin cabecalho-grid' >Salvar</div>";
             
             foreach ($dados as $value) {
                 $id = $value['nome'].$value['ipcomputador'];
-                    echo "<div class='grid-item' id='id:".$value['id']."' value='".$value['id']."' >".$value['id']."</div> ";
+                    echo "<div class='grid-item-admin' id='id:".$value['id']."' value='".$value['id']."' >".$value['id']."</div> ";
 
-                    echo "<div class='grid-item' >";
+                    echo "<div class='grid-item-admin' >";
                         echo "<input class='form-control' id='nome:".$value['id']."' value='".$value['nome']."'>";
                     echo "</div> ";
 
-                    echo "<div class='grid-item' >";
-                        echo "<input class='form-control input_style' id='ipcomputador:".$value['id']."' value='".$value['ipcomputador']."' disabled>";
+                    echo "<div class='grid-item-admin' >";
+                        echo "<input class='form-control input_style-admin' id='ipcomputador:".$value['id']."' value='".$value['ipcomputador']."' disabled>";
                     echo "</div> ";
 
 
-                    echo "<div class='grid-item'>";
-                        echo "<input class='form-control input_style' id='nivel:".$value['id']."'  value='".$value['nivel']."'>";
+                    echo "<div class='grid-item-admin'>";
+                        echo "<input class='form-control input_style-admin' id='nivel:".$value['id']."'  value='".$value['nivel']."'>";
                     echo "</div>";
                     
-                    echo "<div class='grid-item'  >";
+                    echo "<div class='grid-item-admin'  >";
                         echo "<select class='form-control' id='setor:".$value['id']."'>";
                             echo "<option value='".$value['setor']."'>".$value['setor']."</option>";
                             $x = $this->objectSector->listSectordesc();
@@ -187,7 +187,7 @@ class interaction_admin  extends interaction
                         echo "</select>";
                     echo "</div>";
                     
-                    echo "<div class='grid-item'>";
+                    echo "<div class='grid-item-admin'>";
                         echo " <button class = 'btn btn-success' id='salvar:".$value['id']."' value='".$value['id']."' onclick='salvaralteracaousuario(this.value);'>Salvar</button>";
                     echo "</div>";
             

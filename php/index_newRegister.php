@@ -20,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         if ($autorizacaoMudarTela) {
             header('Location: index.php');
         }
+        else{
+            echo '<script> alert("Erro inesperado ao inserir!");</script>';
+        }
     }
     if($_POST['tiporegistro'] == 'envio'){
        
@@ -39,9 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             "obs"=>$_POST['obs']
         );
 
-        $x = $interaction->insertEnvio($dadosenvio);
+        $retorno = $interaction->insertEnvio($dadosenvio);
 
-        header("Location: index_comprovante.php?&id=$x");
+        if (!$retorno) {
+            echo '<script> alert("Erro inesperado ao inserir!");</script>';
+        }
+        else{
+            header("Location: index_comprovante.php?&id=$retorno");
+       
+        }
+
         
     }
 }

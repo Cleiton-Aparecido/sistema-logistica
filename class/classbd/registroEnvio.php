@@ -222,7 +222,6 @@ class registroEnvio
 
     public function insertRegisterEnvio($dados)
     {
-        $idsalvo = array("id");
         $comando = ("INSERT INTO
         RegistroEncomendaEnvioCorreio 
         (idtipoEnvio,
@@ -256,17 +255,19 @@ class registroEnvio
         '" . $dados['obs'] . "'
         )");
 
-        $this->sql->query($comando);
+        
 
-        $idresultado = $this->sql->select("SELECT LAST_INSERT_ID();");
-
-        if (count($idresultado) > 0) {
-            $row = $idresultado[0];
-            $idsalvo = $row["LAST_INSERT_ID()"];
+        if(!$this->sql->query($comando)){
+            return false;
+        }else {
+            $idresultado = $this->sql->select("SELECT LAST_INSERT_ID();");
+            
+            if (count($idresultado) > 0) {
+                $row = $idresultado[0];
+                $idsalvo = $row["LAST_INSERT_ID()"];
+            }   
+            return $idsalvo;
         }
-
-
-        return $idsalvo;
     }
 
     private function backlogEnvio($id)

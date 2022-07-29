@@ -63,14 +63,14 @@ $interaction->acessos('admin');
 <body>
 
     <header id="cabecalho_master">
-
+    <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <span class="titulo_cabecalho">Configurações</span>
         </div>
 
     </header>
     <div id="container_master_newregistro">
-        <div id="Menu_lateral">
+        <!-- <div id="Menu_lateral">
             <article id="container_user">
                 <img src="../img/user.png">
                 <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
@@ -78,7 +78,7 @@ $interaction->acessos('admin');
             <article class="buttons">
                 <a href="index.php" class="btn btn-primary buttons">Sair</a>
             </article>
-        </div>
+        </div> -->
 
         <section id="container_inf">
 
@@ -96,7 +96,7 @@ $interaction->acessos('admin');
                     <Form action="" method="post" id='form_new_setor'>
                         <label for="setornew" class="titulo_menu_input">Adicionar Novo Setor</label>
                         <input type="text" class="form-control" id="setornew" name="setornew">
-                        <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons">
+                        <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons-admin">
                     </Form>
                     <div id="resultSector" style="color: green; font-size:20px;">
 
@@ -111,7 +111,7 @@ $interaction->acessos('admin');
                     <Form action="" method="post" id='form_new_encomenda'>
                         <label for="encomendanew" class="titulo_menu_input">Adicionar Novo Tipo de Encomenda</label>
                         <input type="text" class="form-control" id="encomendanew" name="encomendanew">
-                        <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons">
+                        <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons-admin">
                     </Form>
 
                     <div id="resultencomenda" style="color: green; font-size:20px;">
@@ -124,7 +124,7 @@ $interaction->acessos('admin');
                     <Form action="" method="post" id='form_new_transporte'>
                         <label for="transportenew" class="titulo_menu_input">Adicionar Novo Tipo de transporte</label>
                         <input type="text" class="form-control" id="transportenew" name="transportenew">
-                        <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons">
+                        <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons-admin">
                     </Form>
 
                     <div id="resulttransporte" style="color: green; font-size:20px;">

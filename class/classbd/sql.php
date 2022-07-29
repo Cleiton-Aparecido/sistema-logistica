@@ -38,6 +38,7 @@ class Sql extends PDO {
             return $stmt;
         }else{
             http_response_code(500);
+            return false;
         }
          
 
@@ -47,7 +48,7 @@ class Sql extends PDO {
     public function select($rawQuery, $params = array()) {
 
         $stmt = $this->query($rawQuery, $params);
-         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     }
 

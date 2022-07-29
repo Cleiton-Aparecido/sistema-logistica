@@ -83,7 +83,7 @@ header#cabecalho_master div#cabecalho {
     max-width: 50px;
     display: inline;
 }
-.buttons{
+.buttons-admin{
     display: block;
     width: 150px;
     max-width: 100px;
@@ -106,7 +106,7 @@ header#cabecalho_master div#cabecalho {
     justify-content: space-between;
     margin: 10px;
 }
-.input_style{
+.input_style-admin{
     width: 100%;
     text-align: center;
 }
@@ -181,11 +181,11 @@ header#cabecalho_master div#cabecalho {
     text-transform: uppercase;
 }
 
-.grid-container {
+.grid-container-usuario {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto;
 }
-.grid-item {
+.grid-item-admin {
     background-color: rgba(255, 255, 255, 0.8);
     font-size: 1em;
     text-align: center;
@@ -197,7 +197,7 @@ header#cabecalho_master div#cabecalho {
     align-items: center;
     justify-content: space-around;
 }
-.cabecalho-grid{
+.cabecalho-grid-admin{
     display:flex;
     align-items: center;
     justify-content: space-around;

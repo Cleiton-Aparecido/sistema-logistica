@@ -170,7 +170,7 @@ class registro
         WHERE idregistroenc = '".$dados['id']."'");
     }
     private function inserirNovoRegistro($dados){
-        $this->sql->query("INSERT INTO RegistroEncomenda SET
+        $retornoinsert = $this->sql->query("INSERT INTO RegistroEncomenda SET
         codigo = '".$dados['codigo']."',
         remetente = '".$dados['remetente']."' ,
         idtipoencomenda =  (SELECT idtipoencomenda FROM tipoencomenda WHERE desctipoencomenda = '".$dados['encomenda']."'), 
@@ -179,6 +179,13 @@ class registro
         datacoleta ='".$dados['dcoleta']."',
         idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = 'Pendente'),
         idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor']."');");
+
+
+        if(!$retornoinsert){
+            return false;
+        }else{
+            return true;
+        }
     }
     private function updatestatusentrega($dados){
         $this->sql->query("UPDATE RegistroEncomenda SET 
@@ -214,7 +221,7 @@ class registro
         return $resultado;
     }
     public function insertregistro($dados){
-       $this->inserirNovoRegistro($dados);
+       return $this->inserirNovoRegistro($dados);
        
     }
     public function queryRegistro($id){
