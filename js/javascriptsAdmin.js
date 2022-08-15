@@ -1,74 +1,4 @@
-function loading(typetable) {
-    if (!document.getElementById('loading')) {
-        let imgLoading = document.createElement('img')
-        imgLoading.id = 'loading';
-        imgLoading.src = '../img/loading.gif';
-        imgLoading.className = 'rounded mx-auto d-block'
-        imgLoading.style.width = '70px';
-        document.getElementById('form' + typetable).appendChild(imgLoading);
-        document.getElementById(typetable + 'new').disabled = true;
-        document.getElementById('salvar' + typetable).disabled = true;
-    }
-}
-
-function salvaralteracaousuario(id){
-    var nome = document.getElementById("nome:"+id).value;
-    var ipcomputador = document.getElementById("ipcomputador:"+id).value;
-    var nivel = document.getElementById("nivel:"+id).value;
-    var setor = document.getElementById("setor:"+id).value;
-    
-    $.ajax({
-        type: "POST",
-        url: "AdminSetting.php",
-        data: { tipo: 'atualizarusuario',id:id,nome:nome,ipcomputador:ipcomputador,nivel:nivel,setor:setor },
-        success: function (result) {
-            $('#RetornoSalvarUsuario').html(result);
-            loadtableUsuario('usuario');
-            setTimeout(function () {
-                $("#RetornoSalvarUsuario").html('');
-            }, 4000);
-        },
-        error: function () {
-            console.log('Erro ao Atualizar');
-            setTimeout(function () {
-                $("#RetornoSalvarUsuario").html('erro inseperado');
-            }, 4000);
-           
-        },
-    });
-    
-
-
-}
-
-function loadtable(typetable) {
-
-    let imgLoading = document.createElement('img')
-    imgLoading.id = 'loading';
-    imgLoading.src = '../img/loading.gif';
-    imgLoading.className = 'rounded mx-auto d-block'
-    imgLoading.style.width = '70px';
-    document.getElementById('form' + typetable).appendChild(imgLoading);
-    
-    $.ajax({
-        type: "POST",
-        url: "AdminSetting.php",
-        data: { tipo: 'atttable' + typetable },
-        success: function (result) {
-            $('#form' + typetable).html(result);
-            document.getElementById(typetable + 'new').disabled = false
-            document.getElementById('salvar' + typetable).disabled = false
-        },
-        error: function () {
-            console.log('Erro ao Atualizar');
-            document.getElementById(typetable + 'new').disabled = false
-            document.getElementById('salvar' + typetable).disabled = false
-        },
-    });
-    
-}
-
-function loadtableUsuario(typetable) {
+function loadtableUsuario() {
 
     let imgLoading = document.createElement('img')
     imgLoading.id = 'loading';
@@ -93,15 +23,78 @@ function loadtableUsuario(typetable) {
     
 }
 
-function status(value, id,type) {
-    var item = "status" + type;
+function salvaralteracaousuario(id){
+    var nome = document.getElementById("nome:"+id).value;
+    var ipcomputador = document.getElementById("ipcomputador:"+id).value;
+    var nivel = document.getElementById("nivel:"+id).value;
+    var setor = document.getElementById("setor:"+id).value;
+    
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { tipo: 'atualizarusuario',id:id,nome:nome,ipcomputador:ipcomputador,nivel:nivel,setor:setor },
+        success: function (result) {
+            $('#RetornoSalvarUsuario').html(result);
+            loadtableUsuario();
+            setTimeout(function () {
+                $("#RetornoSalvarUsuario").html('');
+            }, 4000);
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+            setTimeout(function () {
+                $("#RetornoSalvarUsuario").html('erro inseperado');
+            }, 4000);
+           
+        },
+    });
+    
+}
+
+function loadtable(typetable) {
+
+        let imgLoading = document.createElement('img')
+        imgLoading.id = 'loading';
+        imgLoading.src = '../img/loading.gif';
+        imgLoading.className = 'rounded mx-auto d-block'
+        imgLoading.style.width = '70px';
+        document.getElementById(typetable).appendChild(imgLoading);
+        document.getElementById(typetable + 'new').disabled = true
+        document.getElementById('salvar' + typetable).disabled = true
+    
+    $.ajax({
+        type: "POST",
+        url: "AdminSetting.php",
+        data: { tipo: 'atttable' + typetable },
+        success: function (result) {
+            $('#tabela' + typetable).html(result);
+            document.getElementById('loading').remove()
+            document.getElementById(typetable + 'new').disabled = false
+            document.getElementById('salvar' + typetable).disabled = false
+        },
+        error: function () {
+            console.log('Erro ao Atualizar');
+            document.getElementById(typetable + 'new').disabled = false
+            document.getElementById('salvar' + typetable).disabled = false
+        },
+    });
+    
+}
+
+
+
+
+
+
+function status(value, id,tabela) {
+    var item = "status" + tabela;
     $.ajax({
         type: "POST",
         url: "AdminSetting.php",
         data: { value: value, tipo: item },
         success: function (result) {
             $('#' + id).html(result);
-            loadtable(type);
+            loadtable(tabela);
 
         },
         error: function () {
@@ -111,12 +104,9 @@ function status(value, id,type) {
 };
 
 $(document).ready(function () {
-    loadtable('encomenda');
-    loadtable('setor');
-    loadtable('transporte');
-    loadtableUsuario('usuario');
 
-    // Adicionar novo setor
+
+    
     $("#salvarsetor").on("click", function () {
         var NewSetor = $('#setornew').val();
         var type = 'setornovo';
@@ -176,15 +166,13 @@ $(document).ready(function () {
                     loadtable('encomenda');
                     setTimeout(function () {
                         $("#resultencomenda").html('');
-
                     }, 4000);
                 },
                 error: function () {
                     $("#resultencomenda").html('Erro inesperado ao inserir!');
                     loadtable('encomenda');
                     setTimeout(function () {
-                        $("#resultSector").html('');
-
+                        $("#resultencomenda").html('');
                     }, 4000);
 
                 }
@@ -229,6 +217,4 @@ $(document).ready(function () {
             });
         }
     });
-
-
 }); 

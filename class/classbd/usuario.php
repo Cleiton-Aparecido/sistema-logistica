@@ -2,18 +2,29 @@
 
 class usuario
 {
-    private $listausuario = array();
     private $idusuario;
+    private $listausuario = array();
     private $nome;
     private $ipcomputador;
     private $ipnivel;
     private $setoruser;
+    private $acessos = array();
     private $sql = array();
 
     public function __construct()
     {
         $this->sql = new sql();
     }
+    private function getacessos()
+    {
+        return $this->acessos;
+    }
+    private function setacessos($value)
+    {
+        $this->acessos = $value;
+    }
+
+
     private function getlistausuario()
     {
         return $this->listausuario;
@@ -76,7 +87,10 @@ class usuario
 
         $resultado = $this->sql->select("SELECT * FROM usuario 
         LEFT JOIN setor ON setor.idsetor = usuario.idsetor
-        WHERE usuario.ipcomputador = :ID", array(
+        LEFT JOIN controlepermissao ON controlepermissao.idusuario=usuario.idusuario
+        LEFT JOIN acessos ON acessos.idacessos = controlepermissao.idacessos
+        WHERE usuario.ipcomputador = :ID 
+        ORDER BY acessos.descacessos DESC", array(
             ":ID" => $ip
         ));
         return $resultado;
@@ -90,23 +104,33 @@ class usuario
             $resultado = $this->searchIp($ip);
         }
 
+        $auxacesso = array();
+
+        foreach ($resultado as $row) {
+         array_push($auxacesso,$row['descacessos']);
+           
+        }
+
         $row = $resultado[0];
         $this->setidusuario($row['idusuario']);
         $this->setnome($row['nome']);
         $this->setipcomputador($row['ipcomputador']);
         $this->setipnivel($row['nivel']);
+        $this->setacessos($auxacesso);
         if(!isset($row['descsetor'])){
             $this->setsetoruser('Sem Setor');
         }else{
             $this->setsetoruser($row['descsetor']);
         }
+
       
         return array(
             "idusuario" => $this->getidusuario(),
             "nome" => $this->getnome(),
             "ipcomputador" => $this->getipcomputador(),
             "nivel" => $this->getipnivel(),
-            "setor" => $this->getsetoruser()
+            "setor" => $this->getsetoruser(),
+            "acessos" => $this->getacessos()
         );
     }
     public function level($ip){
@@ -147,5 +171,8 @@ class usuario
     }
     public function atualizarusuario($dadosUsuario){
         $this->AtualizaNameSetorNivelUsuario($dadosUsuario);
+    }
+    public function acessos(){
+
     }
 }

@@ -111,20 +111,16 @@ header#cabecalho_master div#cabecalho {
     text-align: center;
 }
 #container_master_newregistro{
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 10px;
-    margin-bottom: 20px;
+    border: 1px solid black;
 }
 
 
 /* estilização dos container com coteudo de configuração */
 #container_inf{
+   
     border: 1px solid rgba(148, 127, 127, 0.32);
     border-radius: 10px;
-    width: 75%;
+    width: 90%;
     min-width: 400px;
     margin: auto auto;
     margin-top: 10px;
@@ -133,10 +129,10 @@ header#cabecalho_master div#cabecalho {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    min-width: 900px;
 }
 #container_inf h4{
     text-align: center;
-    /* text-decoration:underline; */
 }
 .container_item{
     border: 1px solid rgb(0, 0, 0);
@@ -147,11 +143,8 @@ header#cabecalho_master div#cabecalho {
     padding: 5px;
 }
 .container_item_usuario{
-    border: 1px solid rgb(0, 0, 0);
     border-radius: 10px;
-    width: 90%;
-    min-width: 300px;
-    margin: 10px;
+    min-width: 700px;
     padding: 5px;
 }
 
@@ -181,9 +174,12 @@ header#cabecalho_master div#cabecalho {
     text-transform: uppercase;
 }
 
+#usuario{
+    width: 95%;
+}
 .grid-container-usuario {
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto auto;
 }
 .grid-item-admin {
     background-color: rgba(255, 255, 255, 0.8);
@@ -204,6 +200,5 @@ header#cabecalho_master div#cabecalho {
     font-weight: bold;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-
 }
 

@@ -43,16 +43,6 @@ $interaction->acessos('admin');
     </style>
 
     <script>
-        $(document).ready(function() {
-            $('#table_master').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
-    </script>
-    <script>
         <?php include('../js/javascriptsAdmin.js');   ?>
     </script>
 
@@ -63,79 +53,29 @@ $interaction->acessos('admin');
 <body>
 
     <header id="cabecalho_master">
-    <?php $interaction->menulateral(); ?>
+        <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
             <span class="titulo_cabecalho">Configurações</span>
         </div>
 
     </header>
     <div id="container_master_newregistro">
-        <!-- <div id="Menu_lateral">
-            <article id="container_user">
-                <img src="../img/user.png">
-                <div id="inf_user"> <?php $interaction->IpSearch(); ?></div>
-            </article>
-            <article class="buttons">
-                <a href="index.php" class="btn btn-primary buttons">Sair</a>
-            </article>
-        </div> -->
+
 
         <section id="container_inf">
 
-            <article id='usuario'>
+            <?php 
+                $interactionAdmin->acessosContainer();
+            ?>
+            
 
-            <div id="formusuario" class="container_item_interno">
-        </div>
-                
-            </article>
-
-                <article class="container_item">
-                    <h4 class="titulo_container">Setores</h4>
-                    <div id='formsetor' class='container_item_interno'>
-                    </div>
-                    <Form action="" method="post" id='form_new_setor'>
-                        <label for="setornew" class="titulo_menu_input">Adicionar Novo Setor</label>
-                        <input type="text" class="form-control" id="setornew" name="setornew">
-                        <input type="button" value="Salvar" id="salvarsetor" class="btn btn-primary buttons-admin">
-                    </Form>
-                    <div id="resultSector" style="color: green; font-size:20px;">
-
-                    </div>
-
-                </article>
-
-                <article class="container_item">
-                    <h4 class="titulo_container">Tipo de Encomenda</h4>
-                    <div id='formencomenda' class='container_item_interno'>
-                    </div>
-                    <Form action="" method="post" id='form_new_encomenda'>
-                        <label for="encomendanew" class="titulo_menu_input">Adicionar Novo Tipo de Encomenda</label>
-                        <input type="text" class="form-control" id="encomendanew" name="encomendanew">
-                        <input type="button" value="Salvar" id="salvarencomenda" class="btn btn-primary buttons-admin">
-                    </Form>
-
-                    <div id="resultencomenda" style="color: green; font-size:20px;">
-                    </div>
-                </article>
-                <article class="container_item">
-                    <h4 class="titulo_container">Tipo de Transporte</h4>
-                    <div id='formtransporte' class='container_item_interno'>
-                    </div>
-                    <Form action="" method="post" id='form_new_transporte'>
-                        <label for="transportenew" class="titulo_menu_input">Adicionar Novo Tipo de transporte</label>
-                        <input type="text" class="form-control" id="transportenew" name="transportenew">
-                        <input type="button" value="Salvar" id="salvartransporte" class="btn btn-primary buttons-admin">
-                    </Form>
-
-                    <div id="resulttransporte" style="color: green; font-size:20px;">
-                    </div>
-
-                </article>
+            
 
 
 
         </section>
 
+      
 
     </div>
     <footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca Versão 1.0</footer>
