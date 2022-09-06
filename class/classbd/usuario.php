@@ -6,14 +6,22 @@ class usuario
     private $listausuario = array();
     private $nome;
     private $ipcomputador;
-    private $ipnivel;
     private $setoruser;
     private $acessos = array();
+    private $ListaDeAcessos = array();
     private $sql = array();
 
     public function __construct()
     {
         $this->sql = new sql();
+    }
+    private function getListaDeAcessos()
+    {
+        return $this->ListaDeAcessos;
+    }
+    private function setListaDeAcessos($value)
+    {
+        array_push($this->ListaDeAcessos,$value);
     }
     private function getacessos()
     {
@@ -23,8 +31,6 @@ class usuario
     {
         $this->acessos = $value;
     }
-
-
     private function getlistausuario()
     {
         return $this->listausuario;
@@ -61,14 +67,6 @@ class usuario
         $this->ipcomputador = $value;
     }
 
-    private function getipnivel()
-    {
-        return $this->ipnivel;
-    }
-    private function setipnivel($value)
-    {
-        $this->ipnivel = $value;
-    }
 
     private function getsetoruser()
     {
@@ -80,11 +78,10 @@ class usuario
     }
 
     private function insertIpNew($ip){
-        $this->sql->query("INSERT INTO usuario (nome,ipcomputador,nivel) 
-        VALUES ('" . $ip . "','" . $ip . "',3);");
+        $this->sql->query("INSERT INTO usuario (nome,ipcomputador) 
+        VALUES ('" . $ip . "','" . $ip . "');");
     }
     private function searchIp($ip){
-
         $resultado = $this->sql->select("SELECT * FROM usuario 
         LEFT JOIN setor ON setor.idsetor = usuario.idsetor
         LEFT JOIN controlepermissao ON controlepermissao.idusuario=usuario.idusuario
@@ -96,12 +93,62 @@ class usuario
         return $resultado;
     }
 
-    public function loadByIdUsuario($ip){
+    private function searchId($id){
+
+        $resultado = $this->sql->select("SELECT * FROM usuario 
+        LEFT JOIN setor ON setor.idsetor = usuario.idsetor
+        LEFT JOIN controlepermissao ON controlepermissao.idusuario=usuario.idusuario
+        LEFT JOIN acessos ON acessos.idacessos = controlepermissao.idacessos
+        WHERE usuario.idusuario = :ID 
+        ORDER BY acessos.descacessos DESC", array(
+            ":ID" => $id
+        ));
+        
+        
+        return $resultado;
+    }
+
+    public function loadByIpUsuario($ip){
+        
         $resultado = $this->searchIp($ip);
 
         if (count($resultado) == 0) {
             $this->insertIpNew($ip);
             $resultado = $this->searchIp($ip);
+        }
+
+        $auxacesso = array();
+
+        foreach ($resultado as $row) {
+         array_push($auxacesso,$row['descacessos']);  
+        }
+        
+        $row = $resultado[0];
+        $this->setidusuario($row['idusuario']);
+        $this->setnome($row['nome']);
+        $this->setipcomputador($row['ipcomputador']);
+        $this->setacessos($auxacesso);
+        if(!isset($row['descsetor'])){
+            $this->setsetoruser('Sem Setor');
+        }else{
+            $this->setsetoruser($row['descsetor']);
+        }
+
+        return array(
+            "idusuario" => $this->getidusuario(),
+            "nome" => $this->getnome(),
+            "ipcomputador" => $this->getipcomputador(),
+            "setor" => $this->getsetoruser(),
+            "acessos" => $this->getacessos()
+        );
+    }
+
+
+    public function loadByIdUsuario($ip){
+        $resultado = $this->searchId($ip);
+
+        if (count($resultado) == 0) {
+            $resultado = $this->searchId($ip);
         }
 
         $auxacesso = array();
@@ -115,7 +162,6 @@ class usuario
         $this->setidusuario($row['idusuario']);
         $this->setnome($row['nome']);
         $this->setipcomputador($row['ipcomputador']);
-        $this->setipnivel($row['nivel']);
         $this->setacessos($auxacesso);
         if(!isset($row['descsetor'])){
             $this->setsetoruser('Sem Setor');
@@ -124,19 +170,16 @@ class usuario
         }
 
       
+    
         return array(
             "idusuario" => $this->getidusuario(),
             "nome" => $this->getnome(),
             "ipcomputador" => $this->getipcomputador(),
-            "nivel" => $this->getipnivel(),
             "setor" => $this->getsetoruser(),
             "acessos" => $this->getacessos()
         );
     }
-    public function level($ip){
-        $dados = $this->loadByIdUsuario($ip);
-        return $dados['nivel'];
-    }
+
 
     private function listatodosusuarios(){
         $lista = array();
@@ -153,7 +196,6 @@ class usuario
             array_push($lista,array("id"=>$row['idusuario'],
                                     "nome" => $row['nome'],
                                     "ipcomputador" => $row['ipcomputador'],
-                                    "nivel" =>  $row['nivel'],
                                     "setor" =>  $row['descsetor']
                                     ));
         }
@@ -165,14 +207,34 @@ class usuario
         return $this->getlistausuario();
     }
 
-    private function AtualizaNameSetorNivelUsuario($usuarioDados){
-        $comando ="UPDATE usuario SET nome = '".$usuarioDados['nome']."',nivel = '".$usuarioDados['nivel']."', idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$usuarioDados['setor']."') WHERE idusuario = '".$usuarioDados['id']."'";
-        $this->sql->query($comando);
+    public function atualizarnome($dados){
+        $this->sql->query("UPDATE usuario SET nome ='".$dados['nome_novo']."' WHERE idusuario='".$dados['id']."'");  
+
     }
-    public function atualizarusuario($dadosUsuario){
-        $this->AtualizaNameSetorNivelUsuario($dadosUsuario);
+    public function atualizarsetor($dados){
+        $this->sql->query("UPDATE usuario SET idsetor = (SELECT idsetor FROM setor WHERE descsetor = '".$dados['setor_novo']."') WHERE idusuario='".$dados['id']."'");  
     }
-    public function acessos(){
+    // Configuração de acessos
+    public function ListaDeAcessos(){
+        $resultado = $this->sql->select("SELECT descacessos FROM acessos");
+       if (count($resultado)>0 ) {
+            foreach ($resultado as $key => $value) {
+                $this->setListaDeAcessos($value['descacessos']);
+            }
+       }
+       return  $this->getListaDeAcessos();
+
+    }
+    public function excluir_acessos($acesso_excluir){
+
+        $this->sql->query("DELETE controlepermissao FROM controlepermissao
+        INNER JOIN acessos ON acessos.idacessos = controlepermissao.idacessos
+        WHERE idusuario = '".$acesso_excluir['id']."' AND acessos.descacessos = '".$acesso_excluir['acesso']."';");  
+
+    }
+    public function criar_acessos($acesso_criar){
+
+        $this->sql->query("INSERT INTO controlepermissao (idusuario,idacessos) VALUES ('".$acesso_criar['id']."',(SELECT idacessos FROM acessos WHERE descacessos = '".$acesso_criar['acesso']."'))");   
 
     }
 }

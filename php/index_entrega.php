@@ -2,11 +2,10 @@
 require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
 $interaction = new interaction();
-if (!isset($_POST['dataentrega'])) {
-    // echo '<script>alert("Paramentros inválidos")</script>';
-    echo '';
-} else if (isset($_POST['dataentrega'])) {
 
+$interaction->acessos('entrega-setor');
+
+if (isset($_POST['dataentrega'])) {
         $dados = filter_input_array(INPUT_POST,FILTER_DEFAULT);
         $interaction->alterarstatusentrega($dados);
         

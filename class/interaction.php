@@ -8,7 +8,7 @@ class interaction
     private $encomenda = array();
     private $statusentrega = array();
     private $RegistroEnvioEncomenda = array();
-    private $nivelusuario;
+    private $dadosusuario_acesso;
 
     public function __construct()
     {
@@ -19,12 +19,21 @@ class interaction
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
-        $this->nivelusuario = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
+        $this->dadosusuario_acesso = $this->objectUser->loadByIpUsuario($_SERVER['REMOTE_ADDR']);
+    }
+    public function getdadosusuario_acesso()
+    {
+        return $this->dadosusuario_acesso;
+    }
+    public function setdadosusuario_acesso($value)
+    {
+        $this->dadosusuario_acesso = $value;
     }
     public function buttonadmin()
     {
-        $x = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-        if ($x['nivel'] == 1) {
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+
+        if (in_array("administrador", $dadosusuario_acesso['acessos'])) {
             echo '<a href="index_Admin.php" class="buttons">Administrador</a>';
         }
     }
@@ -32,17 +41,31 @@ class interaction
     {
         echo '<footer style="text-align: center; color:cadetblue;">&copyCleiton Fonseca - Versão Para Teste</footer>';
     }
-    private function acessoAdmin()
-    {
-        if ($this->nivelusuario == 1) {
 
-            return true;
-        } else {
-            return false;
+    public function acessos($tipo_de_acesso)
+    {
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+
+        if ($tipo_de_acesso == 'administrador') {
+            if (!in_array("administrador", $dadosusuario_acesso['acessos'])) {
+
+                header('Location: index.php');
+            }
+        } else if ($tipo_de_acesso == 'entrega-setor') {
+            if (!in_array("entrega-setor", $dadosusuario_acesso['acessos'])) {
+
+                header('Location: index.php');
+            }
+        } else if ($tipo_de_acesso == 'novo-registro') {
+            if (!in_array("novo-envio", $dadosusuario_acesso['acessos']) && !in_array("novo-entrada", $dadosusuario_acesso['acessos'])) {
+                header('Location: index.php');
+            }
         }
     }
+
     public function menulateral()
-    {   
+    {
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
         echo '<style type="text/css">';
         include('../css/style.css');
         echo '</style>';
@@ -50,16 +73,26 @@ class interaction
         echo '<div id="mySidenav" class="sidenav">';
         echo '<h3 class="titulo_menulateral">Usuario</h3>';
         echo '<article id="container_user">';
-                echo '<div id="inf_user">';
-                     $this->IpSearch();
-                    echo '</div>';
-                echo '</article>';
+        echo '<div id="inf_user">';
+        $this->IpSearch();
+        echo '</div>';
+        echo '</article>';
+
         echo '<h3 style="margin-top:40px;" class="titulo_menulateral">Menu Opções</h3>';
+
         echo '<span href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</span>';
+
         echo '<a href="index.php" class="buttons"><img src="../img/simbolo_entrada.svg">Entrada de Encomendas</a>';
+
         echo '<a href="index_envio.php" class="buttons"><img src="../img/simbolo_envio.svg">Envio de Encomendas</a>';
-        echo '<a href="index_entrega.php" class="buttons"><img src="../img/simbolo_entregue_setor.png">Entregue aos Setores</a>';
-        echo '<a href="index_newRegister.php" class="buttons"><img style="margin-left:1px;" src="../img/533864.png">Novo Registro</a>';
+
+        if (in_array("entrega-setor", $dadosusuario_acesso['acessos'])) {
+            echo '<a href="index_entrega.php" class="buttons"><img src="../img/simbolo_entregue_setor.png">Entregue aos Setores</a>';
+        }
+        if (in_array("novo-envio", $dadosusuario_acesso['acessos']) || in_array("novo-entrada", $dadosusuario_acesso['acessos'])) {
+            echo '<a href="index_newRegister.php" class="buttons"><img style="margin-left:1px;" src="../img/533864.png">Novo Registro</a>';
+        }
+
         echo '<a href="monitorLogistica.php" class="buttons"><img style="margin-left:1px;" src="../img/television.webp">Monitor</a>';
 
         $this->buttonadmin();
@@ -84,41 +117,31 @@ class interaction
             document.getElementById("mySidenav").style.border = "0px solid rgba(0, 0, 0, 0.159)";
           }';
         echo '</script>';
-        
     }
     #Toda vez que um usuario novo loga no sistema, o ip fica salvo
     public function IpSearch()
     {
-        $x = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-        if ($x['nome'] == '') {
+
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+        if ($dadosusuario_acesso['nome'] == '') {
             echo 'Não encontrado';
         } else {
-            echo '<strong> Usuario:</strong> ' . $x['nome'] . '<br>';
-            echo '<strong> IP:</strong> ' . $x['ipcomputador'] . '<br>';
-            echo '<strong> Setor:</strong> ' .  $x['setor'];
+            echo '<strong> Usuario:</strong> ' . $dadosusuario_acesso['nome'] . '<br>';
+            echo '<strong> IP:</strong> ' . $dadosusuario_acesso['ipcomputador'] . '<br>';
+            echo '<strong> Setor:</strong> ' .  $dadosusuario_acesso['setor'];
         }
     }
-    public function acessos($typeAcess)
-    {
-        if ($typeAcess == 'admin') {
-            if (!$this->acessoAdmin()) {
-                echo $this->nivelusuario;
-                header('Location: index.php');
-            }
-        }
-        else if($typeAcess == 'alterarstatus'){
 
-        }
-    }
+
     public function insertEntrada($dados)
     {
-
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
         $salva = false;
 
         if (strlen($dados['codigo']) == 0 || strlen($dados['remetente']) == 0 || $dados['setor'] == 'null' || $dados['encomenda'] == 'null') {
             echo '<script> alert("Contém campo sem preencher");</script>';
             $salva = false;
-        } else if ($this->nivelusuario == 1  || $this->nivelusuario == 2 || $this->nivelusuario == 3 || $this->nivelusuario == 5) {
+        } else if (in_array("novo-entrada", $dadosusuario_acesso['acessos'])) {
             $salva =  $this->objectRegister->insertregistro($dados);
         } else {
             echo '<script>alert("Acesso Negado") </script>';
@@ -126,15 +149,18 @@ class interaction
         }
         return $salva;
     }
+
     #dados que estão entrando na empresa
     public function insertEnvio($dados)
     {
-        
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
 
         if (strlen($dados['endereco']) == 0 || strlen($dados['cidade']) == 0 || strlen($dados['bairro']) == 0 || strlen($dados['num']) == 0 || strlen($dados['funcionario']) == 0 || strlen($dados['cep']) == 0 || $dados['setor'] == 'null' || $dados['encomenda'] == 'null' || $dados['uf'] == 'null' || $dados['tipoenvio'] == 'null') {
+
             echo '<script> alert("Contém campo sem preencher");</script>';
-            
-        } else {
+
+        } else if (in_array("novo-envio", $dadosusuario_acesso['acessos'])) {
+
             $retornoinsert = $this->RegistroEnvioEncomenda->insertRegisterEnvio($dados);
 
             if (!$retornoinsert) {
@@ -142,10 +168,9 @@ class interaction
             } else {
                 return $retornoinsert;
             }
-            
-            }
+        } 
     }
-    
+
     #print a listga de setores na tag option
     public function listasetoropcoes($type)
     {
@@ -193,7 +218,6 @@ class interaction
     {
         foreach ($x as $row) {
             echo '<option value="' . $row . '">' . $row . '</option>';
-            // echo $row;
         }
     }
     #imprime a lista de registros
@@ -337,9 +361,7 @@ class interaction
         }
         if ($status == 'Pendente' || $status == 'Preparo' || count($idregistro) == 0) {
             echo '<script>alert("Parametros Invalidoa")</script>';
-        }
-        // $_SERVER['REMOTE_ADDR']
-        else if ($this->nivelusuario == 2 || $this->nivelusuario == 3) {
+        } else if ($this->nivelusuario == 2 || $this->nivelusuario == 3) {
             echo '<script>alert("Sem Autorização")</script>';
         } else {
 
@@ -355,19 +377,84 @@ class interaction
         }
     }
     //Alterar informações do registro das encomendas que foi enviada para setor de correios para realizar o envio
-    public function SalvaRegistroEnvio($dados)
-    {
-        if ($this->nivelusuario == 1 || $this->nivelusuario == 2  || $this->nivelusuario == 3) {
-            $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($dados);
-        } else {
-            echo 'sem autorização';
-        }
-    }
+
 
     public function comprovante($id)
     {
         return  $this->RegistroEnvioEncomenda->queryregisterenvio($id);
     }
-    
 
+    public function acesso_novo_registro()
+    {
+
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+
+        if (in_array("novo-envio", $dadosusuario_acesso['acessos'])) {
+
+            echo "<input type='radio' id='envio' onclick='requisitarPaginaenvio()' name='tiporegistro' value='envio'>
+            <label for='envio'>Envio de Encomenda</label><br>";
+
+            echo " 
+            <script>
+            function requisitarPaginaenvio() {
+                document.getElementById('form_new_js').innerHTML = ''
+                let imgLoading = document.createElement('img')
+                imgLoading.id = 'loading';
+                imgLoading.src = '../img/loading.gif';
+                imgLoading.className = 'rounded mx-auto d-block'
+                imgLoading.style.width = '70px';
+                document.getElementById('form_new_js').appendChild(imgLoading);
+                let ajax = new XMLHttpRequest();
+                var url = '../php/pacote/envio.php'
+                ajax.open('GET', url)
+                ajax.onreadystatechange = () => {
+            
+                    if (ajax.readyState == 4 && ajax.status == 200) {
+            
+                        document.getElementById('form_new_js').innerHTML = ajax.responseText
+            
+            
+                    } else if (ajax.readyState == 4 && ajax.status == 404) {
+                        callbackErro();
+                    }
+                }
+                ajax.send()
+        
+        } </script>";
+        }
+        if (in_array("novo-entrada", $dadosusuario_acesso['acessos'])) {
+
+            echo "<input type='radio' id='entrada'  onclick='requisitarPaginaentrada()' name='tiporegistro' value='entrada'>
+            <label for='entrada'>Entrada de Encomenda</label><br>";
+
+            echo " 
+            <script>
+            function requisitarPaginaentrada() {
+                document.getElementById('form_new_js').innerHTML = ''
+                let imgLoading = document.createElement('img')
+                    imgLoading.id = 'loading';
+                    imgLoading.src = '../img/loading.gif';
+                    imgLoading.className = 'rounded mx-auto d-block'
+                    imgLoading.style.width = '70px';
+                    document.getElementById('form_new_js').appendChild(imgLoading);
+            
+                let ajax = new XMLHttpRequest();
+                var url = '../php/pacote/entrada.php'
+                ajax.open('GET', url)
+                ajax.onreadystatechange = () => {
+            
+                    if (ajax.readyState == 4 && ajax.status == 200) {
+            
+                        document.getElementById('form_new_js').innerHTML = ajax.responseText
+            
+            
+                    } else if (ajax.readyState == 4 && ajax.status == 404) {
+                        callbackErro();
+                    }
+                }
+                ajax.send()
+            
+            } </script>";
+        }
+    }
 }

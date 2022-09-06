@@ -2,8 +2,11 @@
 require_once("config.php");
 date_default_timezone_set('America/Sao_Paulo');
 $interaction = new interaction();
-$x = false; 
+
+$interaction->acessos("novo-registro");
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
+
     if($_POST['tiporegistro'] == 'entrada'){
       
         $dadosentrada = array(
@@ -113,12 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             <div class="MenuLogistica">
                 <h4>Tipo de Registro</h4>
                 <div class="container_menu_logistica">
-                    <input type="radio" id="entrada"  onclick="requisitarPagina('entrada.php')" name="tiporegistro" value="entrada">
-                    <label for="entrada">Entrada de Encomenda</label><br>
-                    <input type="radio" id="envio" onclick="requisitarPagina('envio.php')" name="tiporegistro" value="envio">
-                    <label for="envio">Envio de Encomenda</label><br>
+
+                    <?php 
+                        $interaction->acesso_novo_registro();
+                    ?>
                 </div>
             </div>
+
             <div id="form_new_js">
             </div>
 

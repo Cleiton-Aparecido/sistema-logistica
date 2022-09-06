@@ -3,7 +3,7 @@ require_once("config.php");
 $interaction = new interaction();
 $interactionAdmin = new interaction_admin();
 
-$interaction->acessos('admin');
+$interaction->acessos('administrador');
 
 
 ?>
@@ -55,7 +55,7 @@ $interaction->acessos('admin');
     <header id="cabecalho_master">
         <?php $interaction->menulateral(); ?>
         <div id="cabecalho">
-            <span class="titulo_cabecalho">Configurações</span>
+            <span class="titulo_cabecalho">Administrador</span>
         </div>
 
     </header>

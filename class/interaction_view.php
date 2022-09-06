@@ -8,7 +8,7 @@ class interaction_view extends interaction
     private $encomenda = array();
     private $statusentrega = array();
     private $RegistroEnvioEncomenda = array();
-
+    private $dadosusuario_acesso;
 
     public function __construct()
     {
@@ -18,36 +18,35 @@ class interaction_view extends interaction
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
+        $this->dadosusuario_acesso = $this->objectUser->loadByIpUsuario($_SERVER['REMOTE_ADDR']);
       
     }
-    public function AccessToEditButton(){
-        $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
-        if ($level == 1 || $level == 2  ) {
-            return true;
-        } else {
-            return false;
-        }
+    public function getdadosusuario_acesso(){
+        return $this->dadosusuario_acesso;
     }
-
-    public function AccessToEditButtonNoteEntrada(){
-        $level = $this->objectUser->level($_SERVER['REMOTE_ADDR']);
-        if ($level == 1 || $level == 2 || $level == 3 || $level == 4 || $level == 5 || $level == 6 ) {
-            return true;
-        } else {
-            return false;
-        }
+    public function setdadosusuario_acesso($value){
+        $this->dadosusuario_acesso = $value;
     }
         
     public function updateregistroentrada($dados){
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
         
-        if($this->AccessToEditButton()){
+        if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
             $this->objectRegister->atualizar_informacoes_registro($dados);
         }
         else{
             echo 'sem acesso';
         }
-        
+    }
 
+    public function AccessToEditButton(){
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+        if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     private function impresshistorico($historico){
@@ -123,6 +122,15 @@ class interaction_view extends interaction
             }
         }
     }
+    public function SalvaRegistroEnvio($dados)
+    {
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+        if (in_array("editar-registro",$dadosusuario_acesso['acessos']) ) {
+            $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($dados);
+        } else {
+            echo 'sem autorização';
+        }
+    }
     public function dadosViewEnvio($id, $tipo)
     {
         
@@ -135,14 +143,21 @@ class interaction_view extends interaction
         if ($tipo == 'e') {
             echo "<script> document.getElementById('title').innerHTML='Registro de entrada' </script>";
             echo "<script> document.getElementById('titulocabecalho').innerHTML='Registro de entrada' </script>";
-            $date = $this->objectRegister->queryRegistro($id);
-            $this->viewandconfiguration($date,$tipo);
+            $dados = $this->objectRegister->queryRegistro($id);
+            $this->viewandconfiguration($dados,$tipo);
         }
     }
     
 
     private function viewandconfiguration($date,$type)
     {
+        $dadosusuario_acesso = $this->getdadosusuario_acesso();
+        $editar_registro = null;
+
+        if (!in_array("editar-registro",$dadosusuario_acesso['acessos'])) { 
+            $editar_registro = "disabled"; 
+        }
+        
         if(!isset($date['id'])){
             echo '<div class="container_view">
                    <h1> Não encontrado na base de dados </h1>   
@@ -188,7 +203,7 @@ class interaction_view extends interaction
                         </select>
                         <label for="status">Status De Envio:</label>
                                           
-                        <select id="status" name="status" class="form-control input_view">
+                        <select id="status" name="status" class="form-control input_view" '.$editar_registro.'>
                             <option value="'.$date['status'].'">'.$date['status'].'</option>';
     
                         #imprimir lista de status utilizando objeito da class interaction
@@ -196,14 +211,14 @@ class interaction_view extends interaction
                         echo '</select>
     
                         <label for="codigo">Codigo de Postagem:</label>
-                        <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['CodigoPostagen'] . '">
+                        <input type="text" id="codigo" name="codigo" class="form-control input_view" value="' . $date['CodigoPostagen'] . '" '.$editar_registro.'>
     
                         <label for="datapostagem">Data de Postagem:</label>
-                        <input type="date" id="datapostagem" name="datapostagem" class="form-control input_view" value="' . $date['DataPostagem'] . '">
+                        <input type="date" id="datapostagem" name="datapostagem" class="form-control input_view" value="' . $date['DataPostagem'] . '" '.$editar_registro.'>
 
                       
                         <label for="obs">Observação:</label>
-                        <textarea id="obs" name="obs" class="form-control input_view">' . $date['Observacao'] . '</textarea>
+                        <textarea id="obs" name="obs" class="form-control input_view" '.$editar_registro.'>' . $date['Observacao'] . '</textarea>
     
                         ';
         
@@ -347,7 +362,7 @@ class interaction_view extends interaction
             }
                 echo "<div style = 'width:100%; text-align:center;' >";
                     if($type == 's'){
-                        if ($this->AccessToEditButton()) {
+                        if (in_array("editar-registro",$dadosusuario_acesso['acessos']) ) {
                         
                             echo '<input type="submit" style="margin:5px;" value="Salvar" class="btn btn-success">';
                         }
@@ -355,7 +370,7 @@ class interaction_view extends interaction
                         
                     }
                     if($type == 'e'){
-                        if ($this->AccessToEditButton()) {
+                        if (in_array("editar-registro",$dadosusuario_acesso['acessos'])) {
                         
                             echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
 
@@ -391,7 +406,7 @@ class interaction_view extends interaction
                            
                             echo '</script>';
                         }
-                        else if($this->AccessToEditButtonNoteEntrada()){
+                        else if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
                             echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
 
                             echo '<button style="margin:5px;" onclick="editar_informacoes_obs('."'".$_GET['type']."'".')" class="btn btn-info" type="button">Editar Observações</button>'; 

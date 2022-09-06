@@ -2,8 +2,8 @@
 require_once("config.php");
 class interaction_admin  extends interaction
 {
-    
-
+    private $dadosusuario_acesso;
+    private $dadosusuario;
     public function __construct()
     {
         
@@ -14,8 +14,19 @@ class interaction_admin  extends interaction
         $this->encomenda = new encomenda();
         $this->statusentrega = new statusentrega();
         $this->RegistroEnvioEncomenda = new registroEnvio();
+        $this->dadosusuario_acesso = $this->objectUser->loadByIpUsuario($_SERVER['REMOTE_ADDR']);
 
     }
+
+    private function getdadosusuario()
+    {
+        return $this->dadosusuario;
+    }
+    private function setdadosusuario($value)
+    {
+        $this->dadosusuario = $value;
+    }
+
     private function StyleStatus($status){
         if($status == 'Ativo'){
             return 'btn-primary';
@@ -23,14 +34,24 @@ class interaction_admin  extends interaction
         else if($status == 'Desativo'){
             return 'btn-danger';
         }
+    }   
+    public function AcessoNaAbaParaEditarUsuario(){
+        if(in_array("editar-usuario",$this->dadosusuario_acesso['acessos'])){
+        }
+        else{
+            header('Location: index.php');
+        }
     }
+
     public function acessosContainer(){
-        $dadosusuario = $this->objectUser->loadByIdUsuario($_SERVER['REMOTE_ADDR']);
-        foreach ($dadosusuario['acessos'] as $key => $value) {
+
+        foreach ($this->dadosusuario_acesso['acessos'] as $key => $value) {
             if($value == 'editar-usuario' ){
                 echo '<article id="usuario" class="container_item">';
                     $this->tabelausuario();
                 echo '</article>';
+                
+
             }
             if($value == 'editar-setor' ){
                 echo '<article id="setor" class="container_item">';
@@ -197,80 +218,13 @@ class interaction_admin  extends interaction
         
     }
     public function tabelausuario(){
-
-
        $lista = $this->objectUser->listausuarios();
     //    var_dump($lista);
         $this->impressUsuario($lista);
     }
 
-    public function atualizardadosusuario($dadosUsuarios){
-        
-        if($this->objectUser->level($_SERVER['REMOTE_ADDR']) == 1){
-        $this->objectUser->atualizarusuario($dadosUsuarios);
-         echo 'Salvo com Sucesso';
-            
-        }
-        else{
-            echo "sem permissão";
-        }
-    }
 
-
-    private function impressUsuariodesabilitado($dados){
-
-        echo '<article class="container_item_usuario">
-                <span>
-                    <h4 class="titulo_container"> Usuario</h4>
-                </span>
-                <div id="formusuario" class="container_item_interno">
-                </div>
-        <div id="RetornoSalvarUsuario"></div>';
-        
-
-        echo "<div class='grid-container-usuario'>";
-                echo "<div class='grid-item-admin cabecalho-grid' >ID</div> ";
-                echo "<div class='grid-item-admin cabecalho-grid' >Nome</div> ";
-                echo "<div class='grid-item-admin cabecalho-grid' >IP <br> Computador</div>";
-                echo "<div class='grid-item-admin cabecalho-grid' >Nivel <br> Acesso</div>";
-
-                echo "<div class='grid-item-admin cabecalho-grid' >Setor</div>";
-                
-                echo "<div class='grid-item-admin cabecalho-grid' >Salvar</div>";
-            
-            foreach ($dados as $value) {
-                $id = $value['nome'].$value['ipcomputador'];
-                    echo "<div class='grid-item-admin' id='id:".$value['id']."' value='".$value['id']."' >".$value['id']."</div> ";
-
-                    echo "<div class='grid-item-admin' >";
-                        echo "<input class='form-control' id='nome:".$value['id']."' value='".$value['nome']."'>";
-                    echo "</div> ";
-
-                    echo "<div class='grid-item-admin' >";
-                        echo "<input class='form-control input_style-admin' id='ipcomputador:".$value['id']."' value='".$value['ipcomputador']."' disabled>";
-                    echo "</div> ";
-
-
-                    echo "<div class='grid-item-admin'>";
-                        echo "<input class='form-control input_style-admin' id='nivel:".$value['id']."'  value='".$value['nivel']."'>";
-                    echo "</div>";
-                    
-                    echo "<div class='grid-item-admin'  >";
-                        echo "<select class='form-control' id='setor:".$value['id']."'>";
-                            echo "<option value='".$value['setor']."'>".$value['setor']."</option>";
-                            $x = $this->objectSector->listSectordesc();
-                            $this->impressoption($x);
-                        echo "</select>";
-                    echo "</div>";
-                    
-                    echo "<div class='grid-item-admin'>";
-                        echo " <button class = 'btn btn-success' id='salvar:".$value['id']."' value='".$value['id']."' onclick='salvaralteracaousuario(this.value);'>Salvar</button>";
-                    echo "</div>";
-            
-        }
-        echo "</div>";
-        echo '</article>';
-    }
+    
     
    private function impressUsuario($dados){
 
@@ -286,7 +240,6 @@ class interaction_admin  extends interaction
         echo "<div class='grid-container-usuario'>";
                 echo "<div class='grid-item-admin cabecalho-grid' >ID</div> ";
                 echo "<div class='grid-item-admin cabecalho-grid' >Nome</div> ";
-                echo "<div class='grid-item-admin cabecalho-grid' >IP <br> Computador</div>";
                 
 
                 echo "<div class='grid-item-admin cabecalho-grid' >Setor</div>";
@@ -301,19 +254,12 @@ class interaction_admin  extends interaction
                         echo "<input class='form-control' id='nome:".$value['id']."' value='".$value['nome']."' disabled>";
                     echo "</div> ";
 
-                    echo "<div class='grid-item-admin' >";
-                        echo "<input class='form-control input_style-admin' id='ipcomputador:".$value['id']."' value='".$value['ipcomputador']."' disabled>";
-                    echo "</div> ";
-
-
-    
-                    
                     echo "<div class='grid-item-admin'  >";
                         echo "<input class='form-control input_style-admin' id='ipcomputador:".$value['setor']."' value='".$value['setor']."' disabled>";
                     echo "</div>";
                     
                     echo "<div class='grid-item-admin'>";
-                        echo " <button class = 'btn btn-success' id='salvar:".$value['id']."' value='".$value['id']."' >Editar</button>";
+                        echo " <a href='editar_usuario.php?usuario=".$value['id']."'  class = 'btn btn-success' id='salvar:".$value['id']."' value='".$value['id']."' >Editar</a>";
                     echo "</div>";
             
         }
@@ -321,5 +267,70 @@ class interaction_admin  extends interaction
         echo '</article>';
     }
     
-    
+    // editar acessos de usuarios
+
+    public function acessos_usuario($acessos){
+      foreach ($this->objectUser->ListaDeAcessos() as $key => $value) {
+        echo "<input class='style_checkbox' type='checkbox' id='$value' name='$value'";
+            if(in_array($value,$acessos)){
+                echo 'checked';
+            }
+        echo ">";
+        echo "<label class='style_checkbox_label' for='$value'>$value</label><br>";
+      }
+
+    }
+    public function alterar_acessos($acessos_novos){
+
+        $dados_antigos = $this->getdadosusuario();
+        
+        
+        
+        foreach ($dados_antigos['acessos'] as $value) {
+          
+            if(!in_array($value,$acessos_novos)){
+                $this->objectUser->excluir_acessos(array("id"=>$dados_antigos['idusuario'],
+                                                        "acesso"=>$value));
+            }
+        }
+        foreach ($acessos_novos as $value) {
+
+            if(!in_array($value,$dados_antigos['acessos'])){
+                $this->objectUser->criar_acessos(array("id"=>$dados_antigos['idusuario'],
+                                                        "acesso"=>$value));
+                
+            }   
+        }
+
+
+    }
+
+    public function SalvarAlteracao($dados_novos){
+        
+        
+        $this->alterar_acessos($dados_novos['acessos']);
+
+        $dados_antigos = $this->getdadosusuario();
+
+        if($dados_novos['nome'] != $dados_antigos['nome']){
+
+            $this->objectUser->atualizarnome(array("id"=>$dados_antigos['idusuario'],"nome_novo"=>$dados_novos['nome']));
+
+        }
+        if($dados_novos['setor'] != $dados_antigos['setor']){
+            $this->objectUser->atualizarsetor(array("id"=>$dados_antigos['idusuario'],"setor_novo"=>$dados_novos['setor']));
+        }
+        
+        
+
+        header('Location: index_Admin.php');
+
+    }
+ 
+    public function dadosusuario($idusuario){
+        $this->setdadosusuario($this->objectUser->loadByIdUsuario($idusuario));
+        return $this->getdadosusuario();
+         
+
+    }
 }

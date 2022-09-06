@@ -111,7 +111,10 @@ header#cabecalho_master div#cabecalho {
     text-align: center;
 }
 #container_master_newregistro{
+    display: flex;
+    justify-content: space-between;
     border: 1px solid black;
+    text-align: left;
 }
 
 
@@ -179,7 +182,7 @@ header#cabecalho_master div#cabecalho {
 }
 .grid-container-usuario {
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: auto auto auto auto;
 }
 .grid-item-admin {
     background-color: rgba(255, 255, 255, 0.8);
@@ -202,3 +205,4 @@ header#cabecalho_master div#cabecalho {
     border-bottom: 1px solid black;
 }
 
+/* estilizacao da aba de editar usuario */

@@ -1,32 +1,32 @@
-
-function requisitarPagina(url) {
-    document.getElementById('form_new_js').innerHTML = ''
-    let imgLoading = document.createElement('img')
-        imgLoading.id = 'loading';
-        imgLoading.src = '../img/loading.gif';
-        imgLoading.className = 'rounded mx-auto d-block'
-        imgLoading.style.width = '70px';
-        document.getElementById('form_new_js').appendChild(imgLoading);
-
+// function requisitarPagina(url) {
+//     document.getElementById('form_new_js').innerHTML = ''
+//     let imgLoading = document.createElement('img')
+//         imgLoading.id = 'loading';
+//         imgLoading.src = '../img/loading.gif';
+//         imgLoading.className = 'rounded mx-auto d-block'
+//         imgLoading.style.width = '70px';
+//         document.getElementById('form_new_js').appendChild(imgLoading);
 
 
-    let ajax = new XMLHttpRequest();
-    var url = "../php/pacote/" + url
-    ajax.open('GET', url)
-    ajax.onreadystatechange = () => {
 
-        if (ajax.readyState == 4 && ajax.status == 200) {
+//     let ajax = new XMLHttpRequest();
+//     var url = '../php/pacote/' + url
+//     ajax.open('GET', url)
+//     ajax.onreadystatechange = () => {
 
-            document.getElementById('form_new_js').innerHTML = ajax.responseText
+//         if (ajax.readyState == 4 && ajax.status == 200) {
+
+//             document.getElementById('form_new_js').innerHTML = ajax.responseText
 
 
-        } else if (ajax.readyState == 4 && ajax.status == 404) {
-            callbackErro();
-        }
-    }
-    ajax.send()
+//         } else if (ajax.readyState == 4 && ajax.status == 404) {
+//             callbackErro();
+//         }
+//     }
+//     ajax.send()
 
-}
+// }
+
 
 var callbackErro = function () {
     document.getElementById('form_new_js').innerHTML = 'A requisição realizada não foi encontrada no servidor. <br> <strong> Erro: 404'

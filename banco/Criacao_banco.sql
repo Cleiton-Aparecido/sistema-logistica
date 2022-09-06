@@ -6,7 +6,7 @@ CREATE TABLE `RegistroEncomenda` (
   `codigo` varchar(30) NOT NULL,
   `remetente` varchar(150) NOT NULL,
   `idtipoencomenda` int NOT NULL,
-  `dataregistro` datetime NOT NULL DEFAULT now(),
+  `dataregistro` datetime NOT NULL DEFAULT (now()),
   `idstatusentrega` int NOT NULL,
   `registroObservacao` varchar(300),
   `idsetor` int NOT NULL,
@@ -18,18 +18,27 @@ CREATE TABLE `RegistroEncomenda` (
 
 CREATE TABLE `BackLogRegisEntrada` (
   `idRegistroEnvio` int NOT NULL,
-  `data` datetime NOT NULL DEFAULT now(),
-  `campo` varchar(50),
-  `dados_antigo` varchar(100),
-  `dados_novo` varchar(100)
+  `data` datetime NOT NULL DEFAULT (now()),
+  `campo` varchar(100),
+  `dados_antigo` varchar(150),
+  `dados_novo` varchar(150)
 );
 
 CREATE TABLE `usuario` (
   `idusuario` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nome` varchar(50),
   `ipcomputador` varchar(50) NOT NULL,
-  `nivel` int NOT NULL,
   `idsetor` int
+);
+
+CREATE TABLE `controlepermissao` (
+  `idusuario` int NOT NULL,
+  `idacessos` int NOT NULL
+);
+
+CREATE TABLE `acessos` (
+  `idacessos` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `descacessos` varchar(50) NOT NULL
 );
 
 CREATE TABLE `statusentrega` (
@@ -52,7 +61,7 @@ CREATE TABLE `tipoencomenda` (
 CREATE TABLE `RegistroEncomendaEnvioCorreio` (
   `idRegistroEncomendaEnvioCorreio` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `idtransporte` int NOT NULL,
-  `dataregistro` datetime NOT NULL DEFAULT now(),
+  `dataregistro` datetime NOT NULL DEFAULT (now()),
   `idtipoencomenda` int NOT NULL,
   `idstatusentrega` int NOT NULL,
   `setorRemetente` int NOT NULL,
@@ -74,10 +83,10 @@ CREATE TABLE `RegistroEncomendaEnvioCorreio` (
 
 CREATE TABLE `BackLogRegisEnvio` (
   `idRegistroEnvio` int NOT NULL,
-  `data` datetime NOT NULL DEFAULT now(),
-  `campo` varchar(50),
-  `dados_antigo` varchar(100),
-  `dados_novo` varchar(100)
+  `data` datetime NOT NULL DEFAULT (now()),
+  `campo` varchar(100),
+  `dados_antigo` varchar(150),
+  `dados_novo` varchar(150)
 );
 
 CREATE TABLE `tipoEnvio` (
@@ -86,7 +95,7 @@ CREATE TABLE `tipoEnvio` (
   `statusAtivo` int NOT NULL
 );
 
-CREATE TABLE `Statusativacao` (
+CREATE TABLE `StatusAtivacao` (
   `idStatusAtivacao` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `descStatus` varchar(20)
 );
@@ -121,7 +130,9 @@ ALTER TABLE `BackLogRegisEnvio` ADD FOREIGN KEY (`idRegistroEnvio`) REFERENCES `
 
 ALTER TABLE `BackLogRegisEntrada` ADD FOREIGN KEY (`idRegistroEnvio`) REFERENCES `RegistroEncomenda` (`idregistroenc`);
 
-insert into  usuario (nome,ipcomputador,nivel) VALUES ("Cleiton","192.168.2.202","1");
+ALTER TABLE `controlepermissao` ADD FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`);
+
+ALTER TABLE `controlepermissao` ADD FOREIGN KEY (`idacessos`) REFERENCES `acessos` (`idacessos`);
 
 
 insert into  StatusAtivacao (descStatus) VALUES ("Ativo");
@@ -131,3 +142,14 @@ INSERT INTO statusentrega (descstatusentrega) VALUES ("Pendente");
 INSERT INTO statusentrega (descstatusentrega) VALUES ("Entregue");
 INSERT INTO statusentrega (descstatusentrega) VALUES ("Preparo");
 INSERT INTO statusentrega (descstatusentrega) VALUES ("Negado");
+
+
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-usuario');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-encomenda');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-setor');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-envio');
+INSERT INTO `acessos` (`descacessos`) VALUES ('administrador');
+INSERT INTO `acessos` (`descacessos`) VALUES ('entrega-setor');
+INSERT INTO `acessos` (`descacessos`) VALUES ('novo-envio');
+INSERT INTO `acessos` (`descacessos`) VALUES ('novo-entrada');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-registro');

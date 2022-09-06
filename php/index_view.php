@@ -7,9 +7,6 @@ $interactionview = new interaction_view();
 
 if ($_POST) {
 
-    
-
-    
     if($_GET['type'] == 'e'){
     
         try {
@@ -59,7 +56,7 @@ if ($_POST) {
             "obs"=>$_POST['obs']
         );
         
-        $interaction->SalvaRegistroEnvio($dados);
+        $interactionview->SalvaRegistroEnvio($dados);
         header('Location: index_envio.php');
     }
 }
