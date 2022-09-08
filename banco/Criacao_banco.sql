@@ -6,7 +6,7 @@ CREATE TABLE `RegistroEncomenda` (
   `codigo` varchar(30) NOT NULL,
   `remetente` varchar(150) NOT NULL,
   `idtipoencomenda` int NOT NULL,
-  `dataregistro` datetime NOT NULL DEFAULT (now()),
+  `dataregistro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idstatusentrega` int NOT NULL,
   `registroObservacao` varchar(300),
   `idsetor` int NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE `RegistroEncomenda` (
 
 CREATE TABLE `BackLogRegisEntrada` (
   `idRegistroEnvio` int NOT NULL,
-  `data` datetime NOT NULL DEFAULT (now()),
+  `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `campo` varchar(100),
   `dados_antigo` varchar(150),
   `dados_novo` varchar(150)
@@ -61,7 +61,7 @@ CREATE TABLE `tipoencomenda` (
 CREATE TABLE `RegistroEncomendaEnvioCorreio` (
   `idRegistroEncomendaEnvioCorreio` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `idtransporte` int NOT NULL,
-  `dataregistro` datetime NOT NULL DEFAULT (now()),
+  `dataregistro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idtipoencomenda` int NOT NULL,
   `idstatusentrega` int NOT NULL,
   `setorRemetente` int NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `RegistroEncomendaEnvioCorreio` (
 
 CREATE TABLE `BackLogRegisEnvio` (
   `idRegistroEnvio` int NOT NULL,
-  `data` datetime NOT NULL DEFAULT (now()),
+  `data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `campo` varchar(100),
   `dados_antigo` varchar(150),
   `dados_novo` varchar(150)

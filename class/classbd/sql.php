@@ -7,7 +7,7 @@ class Sql extends PDO {
 
     public function __construct() {
 
-        $this->conn = new PDO("mysql:dbname=lgreversa1;host=localhost","root","");
+        $this->conn = new PDO("mysql:dbname=lgreversa;host=localhost","root","");
 
     }
 
@@ -34,12 +34,16 @@ class Sql extends PDO {
 
         $this->setParams($stmt, $params);
 
-        if ($stmt->execute()) {
-            return $stmt;
-        }else{
-            http_response_code(500);
-            return false;
-        }
+        $stmt->execute();
+
+        return $stmt;
+
+        // if ($stmt->execute()) {
+            // return $stmt;
+        // }else{
+        //     http_response_code(500);
+        //     return false;
+        // }
          
 
 

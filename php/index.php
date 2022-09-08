@@ -1,6 +1,7 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 require_once("config.php");
+
 $interaction = new interaction();
 if (isset($_POST['setor']) && isset($_POST['datainicio']) && isset($_POST['datafinal']) && isset($_POST['busca'])) {
     $busca = $_POST['busca'];
@@ -65,7 +66,8 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 
     <header id="cabecalho_master">
-        <?php $interaction->menulateral(); ?>
+        <?php 
+        $interaction->menulateral(); ?>
         <div id="cabecalho">
             <img class="imglogo " src="../img/correios-logo.png" alt="">
             <span class="titulo_cabecalho" id="titulo_principal_cabeçalho">Entrada de Encomenda</span>
@@ -83,7 +85,8 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
                         <label for="setor">Setor</label>
                         <select class="form-control" name="setor" id="setor">
                             <option value="all">Todos</option>
-                            <?php $interaction->listasetoropcoes('Geral') ?>
+                            <?php 
+                            $interaction->listasetoropcoes('Geral') ?>
                         </select>
                         <label for="buscar">Buscar Codigo:</label>
                         <input name="busca" type="text" id="buscar" class="form-control" placeholder=" <?php echo $busca; ?>">
@@ -136,6 +139,7 @@ if ((!isset($_POST['datainicio'])) && (!isset($_POST['datafinal'])) && (!isset($
 
 </body>
 
-<?php $interaction->direito(); ?>
+<?php 
+$interaction->direito(); ?>
 
 </html>
