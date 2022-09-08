@@ -99,10 +99,8 @@ class usuario
         LEFT JOIN setor ON setor.idsetor = usuario.idsetor
         LEFT JOIN controlepermissao ON controlepermissao.idusuario=usuario.idusuario
         LEFT JOIN acessos ON acessos.idacessos = controlepermissao.idacessos
-        WHERE usuario.idusuario = :ID 
-        ORDER BY acessos.descacessos DESC", array(
-            ":ID" => $id
-        ));
+        WHERE usuario.idusuario = ".$id." 
+        ORDER BY acessos.descacessos DESC");
         
         
         return $resultado;
@@ -144,11 +142,11 @@ class usuario
     }
 
 
-    public function loadByIdUsuario($ip){
-        $resultado = $this->searchId($ip);
+    public function loadByIdUsuario($id){
+        $resultado = $this->searchId($id);
 
         if (count($resultado) == 0) {
-            $resultado = $this->searchId($ip);
+            $resultado = $this->searchId($id);
         }
 
         $auxacesso = array();
@@ -159,6 +157,9 @@ class usuario
         }
 
         $row = $resultado[0];
+
+    
+
         $this->setidusuario($row['idusuario']);
         $this->setnome($row['nome']);
         $this->setipcomputador($row['ipcomputador']);
@@ -172,7 +173,7 @@ class usuario
       
     
         return array(
-            "idusuario" => $this->getidusuario(),
+            "idusuario" => $id,
             "nome" => $this->getnome(),
             "ipcomputador" => $this->getipcomputador(),
             "setor" => $this->getsetoruser(),

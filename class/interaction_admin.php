@@ -283,9 +283,16 @@ class interaction_admin  extends interaction
     public function alterar_acessos($acessos_novos){
 
         $dados_antigos = $this->getdadosusuario();
+       
+
         
-        
-        
+        foreach ($acessos_novos as $value) {
+            
+            if(!in_array($value,$dados_antigos['acessos'])){
+                $this->objectUser->criar_acessos(array("id"=>$dados_antigos['idusuario'],
+                "acesso"=>$value));
+            }   
+        }
         foreach ($dados_antigos['acessos'] as $value) {
           
             if(!in_array($value,$acessos_novos)){
@@ -293,24 +300,17 @@ class interaction_admin  extends interaction
                                                         "acesso"=>$value));
             }
         }
-        foreach ($acessos_novos as $value) {
-
-            if(!in_array($value,$dados_antigos['acessos'])){
-                $this->objectUser->criar_acessos(array("id"=>$dados_antigos['idusuario'],
-                                                        "acesso"=>$value));
-                
-            }   
-        }
 
 
     }
 
     public function SalvarAlteracao($dados_novos){
+
         
-        
-        $this->alterar_acessos($dados_novos['acessos']);
+        $this->alterar_acessos($dados_novos['acessos']); 
 
         $dados_antigos = $this->getdadosusuario();
+
 
         if($dados_novos['nome'] != $dados_antigos['nome']){
 
