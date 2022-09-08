@@ -109,8 +109,7 @@ $interaction = new interaction();
 <div class="container_from">
     <label for="obs">Observação</label>
    
-    <textarea class="form-control input_style " type="text" name="obs" placeholder="Observação" id="obs">
-    </textarea>
+    <textarea class="form-control input_style " type="text" name="obs" placeholder="Observação" id="obs"></textarea>
 </div>
 
 

@@ -152,5 +152,6 @@ INSERT INTO `acessos` (`descacessos`) VALUES ('administrador');
 INSERT INTO `acessos` (`descacessos`) VALUES ('entrega-setor');
 INSERT INTO `acessos` (`descacessos`) VALUES ('novo-envio');
 INSERT INTO `acessos` (`descacessos`) VALUES ('novo-entrada');
-INSERT INTO `acessos` (`descacessos`) VALUES ('editar-registro');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-registro-entrada');
+INSERT INTO `acessos` (`descacessos`) VALUES ('editar-registro-envio');
 

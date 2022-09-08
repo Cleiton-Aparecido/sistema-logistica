@@ -39,7 +39,7 @@ class Sql extends PDO {
         return $stmt;
 
         // if ($stmt->execute()) {
-            // return $stmt;
+        //     return $stmt;
         // }else{
         //     http_response_code(500);
         //     return false;

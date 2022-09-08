@@ -438,26 +438,47 @@ class registroEnvio
             "UsuarioQueRealizouAPostagem" => $this->getidusuariocodigo()
         );
     }
+    private function formatDateHora($data){
+        $data = new DateTime($data);
+        return $data = $data->format('d/m/Y H:i:s');
+    }
+    private function formatDate($data){
+        $data = new DateTime($data);
+        return $data = $data->format('d/m/Y');
+    }
     private function backlogEnvioRegistrarSemDataEntrega($dadosnovos){
         $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
 
         $comando = "INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES (".$dadosnovos['id'].",
-        'Status | Codigo | Observacao',
-        '".$dadosantigo['status']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
-        '".$dadosnovos['status']." | ".$dadosnovos['codigo']." | ".$dadosnovos['obs']."');";
+        'Status | Codigo',
+        '".$dadosantigo['status']." | ".$dadosantigo['CodigoPostagen']."',
+        '".$dadosnovos['status']." | ".$dadosnovos['codigo']." ');
+        INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
+        VALUES (".$dadosnovos['id'].",'Observacao','".$dadosantigo['Observacao']."','".$dadosnovos['obs']."');
+        ";
 
         $this->sql->query($comando);   
 
     }
     private function backlogEnvioRegistrarComDataEntrega($dadosnovos){
+
         $dadosantigo = $this->queryregisterenvio($dadosnovos['id']);
+
+        $dadosnovos['datapostagem'] = $this->formatDate($dadosnovos['datapostagem']);
+        $dadosantigo['DataPostagem'] = $this->formatDate($dadosantigo['DataPostagem']);
+         
+
 
         $comando = "INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo) 
         VALUES (".$dadosnovos['id'].",
-        'Status | data | Codigo | Observacao',
-        '".$dadosantigo['status']."| ".$dadosantigo['DataPostagem']." | ".$dadosantigo['CodigoPostagen']." | ".$dadosantigo['Observacao']."',
-        '".$dadosnovos['status']."| ".$dadosnovos['datapostagem']."  | ".$dadosnovos['codigo']." | ".$dadosnovos['obs']."');";
+        'Status | data | Codigo',
+        '".$dadosantigo['status']."| ".$dadosantigo['DataPostagem']." | ".$dadosantigo['CodigoPostagen']."',
+        '".$dadosnovos['status']."| ".$dadosnovos['datapostagem']."  | ".$dadosnovos['codigo']."');
+
+        INSERT INTO BackLogRegisEnvio (idRegistroEnvio,campo,dados_antigo,dados_novo)
+        VALUES (".$dadosnovos['id'].",'Observacao','".$dadosantigo['Observacao']."','".$dadosnovos['obs']."');
+        ";
 
         $this->sql->query($comando);   
 
@@ -467,6 +488,7 @@ class registroEnvio
         if ($dados['datapostagem'] == "") {
 
             $this->backlogEnvioRegistrarSemDataEntrega($dados);
+
             $comando = ("UPDATE RegistroEncomendaEnvioCorreio SET 
             idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "' ),
             codigopostagem = '" . $dados['codigo'] . "',
@@ -475,7 +497,10 @@ class registroEnvio
 
         } else {
 
+           
+
             $this->backlogEnvioRegistrarComDataEntrega($dados);
+
             $comando = ("UPDATE RegistroEncomendaEnvioCorreio SET 
             idstatusentrega = (SELECT idstatusentrega FROM statusentrega WHERE descstatusentrega = '" . $dados['status'] . "'),
             codigopostagem = '" . $dados['codigo'] . "',

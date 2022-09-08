@@ -31,7 +31,7 @@ class interaction_view extends interaction
     public function updateregistroentrada($dados){
         $dadosusuario_acesso = $this->getdadosusuario_acesso();
         
-        if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
+        if(in_array("editar-registro-entrada",$dadosusuario_acesso['acessos'])){
             $this->objectRegister->atualizar_informacoes_registro($dados);
         }
         else{
@@ -41,7 +41,7 @@ class interaction_view extends interaction
 
     public function AccessToEditButton(){
         $dadosusuario_acesso = $this->getdadosusuario_acesso();
-        if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
+        if(in_array("editar-registro-entrada",$dadosusuario_acesso['acessos'])){
             return true;
         }
         else{
@@ -125,7 +125,7 @@ class interaction_view extends interaction
     public function SalvaRegistroEnvio($dados)
     {
         $dadosusuario_acesso = $this->getdadosusuario_acesso();
-        if (in_array("editar-registro",$dadosusuario_acesso['acessos']) ) {
+        if (in_array("editar-registro-envio",$dadosusuario_acesso['acessos']) ) {
             $this->RegistroEnvioEncomenda->AtualizaCodigoRementeEncomendaData($dados);
         } else {
             echo 'sem autorização';
@@ -154,7 +154,7 @@ class interaction_view extends interaction
         $dadosusuario_acesso = $this->getdadosusuario_acesso();
         $editar_registro = null;
 
-        if (!in_array("editar-registro",$dadosusuario_acesso['acessos'])) { 
+        if (!in_array("editar-registro-envio",$dadosusuario_acesso['acessos'])) { 
             $editar_registro = "disabled"; 
         }
         
@@ -362,7 +362,7 @@ class interaction_view extends interaction
             }
                 echo "<div style = 'width:100%; text-align:center;' >";
                     if($type == 's'){
-                        if (in_array("editar-registro",$dadosusuario_acesso['acessos']) ) {
+                        if (in_array("editar-registro-envio",$dadosusuario_acesso['acessos']) ) {
                         
                             echo '<input type="submit" style="margin:5px;" value="Salvar" class="btn btn-success">';
                         }
@@ -370,7 +370,7 @@ class interaction_view extends interaction
                         
                     }
                     if($type == 'e'){
-                        if (in_array("editar-registro",$dadosusuario_acesso['acessos'])) {
+                        if (in_array("editar-registro-entrada",$dadosusuario_acesso['acessos'])) {
                         
                             echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
 
@@ -406,7 +406,7 @@ class interaction_view extends interaction
                            
                             echo '</script>';
                         }
-                        else if(in_array("editar-registro",$dadosusuario_acesso['acessos'])){
+                        else if(in_array("editar-registro-entrada",$dadosusuario_acesso['acessos'])){
                             echo '<input id="salvar" style="margin:5px;" type="submit" value="Salvar" class="btn btn-success">';
 
                             echo '<button style="margin:5px;" onclick="editar_informacoes_obs('."'".$_GET['type']."'".')" class="btn btn-info" type="button">Editar Observações</button>'; 

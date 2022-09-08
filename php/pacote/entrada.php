@@ -24,11 +24,11 @@ $interaction = new interaction();
 </div>
 <div class="container_from">
     <label for="codigo">Codigo rastreio:</label>
-    <input class="form-control input_style " type="text" name="codigo" id="codigo">
+    <input class="form-control input_style " type="text" name="codigo"  placeholder="codigo" id="codigo">
 </div>
 <div class="container_from">
     <label for="remetente">Remetente:</label>
-    <input class="form-control input_style " type="text" name="remetente" id="remetente">
+    <input class="form-control input_style " type="text" name="remetente"  placeholder="Remetente" id="remetente">
 </div>
 <div class="container_from">
     <label for="datacoleta">Data coleta:</label>
@@ -36,7 +36,7 @@ $interaction = new interaction();
 </div>
 <div class="container_from">
     <label for="obs">Observação:</label>
-    <textarea class="form-control input_style " type="text" name="obs" id="obs"></textarea>
+    <textarea class="form-control input_style " type="text" placeholder="Observação" name="obs" id="obs"></textarea>
 </div>
 
 <div class="container_from">
